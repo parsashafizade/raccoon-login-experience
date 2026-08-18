@@ -1,0 +1,71 @@
+.experience {
+  --card-width: min(100%, 430px);
+  --mascot-size: clamp(240px, 28vw, 270px);
+
+  position: relative;
+  width: var(--card-width);
+  padding-top: calc(var(--mascot-size) - 14px);
+  margin: 0 auto;
+}
+
+.mascot {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  width: var(--mascot-size);
+  transform: translateX(-50%);
+  z-index: 2;
+  pointer-events: none;
+}
+
+.card {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  box-sizing: border-box;
+  padding: 40px 28px 30px;
+  border-radius: 28px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: linear-gradient(180deg, rgba(18, 34, 56, 0.96), rgba(10, 24, 42, 0.96));
+  box-shadow:
+    0 24px 60px rgba(0, 0, 0, 0.35),
+    inset 0 1px 0 rgba(255, 255, 255, 0.04);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
+.header {
+  text-align: center;
+  margin-bottom: 28px;
+}
+
+.header h1 {
+  margin: 0;
+  color: #f5f7fb;
+  font-size: clamp(2rem, 4vw, 2.35rem);
+  font-weight: 800;
+  line-height: 1.05;
+  letter-spacing: -0.03em;
+}
+
+.header p {
+  margin: 10px 0 0;
+  color: #90a0b7;
+  font-size: 0.98rem;
+}
+
+.form {
+  display: grid;
+  gap: 18px;
+}
+
+@media (max-width: 520px) {
+  .experience {
+    --mascot-size: 220px;
+  }
+
+  .card {
+    padding: 34px 20px 24px;
+    border-radius: 24px;
+  }
+}
