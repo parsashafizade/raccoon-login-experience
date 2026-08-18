@@ -1,0 +1,53 @@
+# macOS
+.DS_Store
+
+# Environment / secrets
+.env
+.env.*
+!.env.example
+
+# Logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# React / Vite generated files
+web/node_modules/
+web/dist/
+web/dist-ssr/
+web/.vite/
+
+# Flutter / Dart generated files
+mobile/.dart_tool/
+mobile/build/
+mobile/coverage/
+mobile/.flutter-plugins
+mobile/.flutter-plugins-dependencies
+mobile/.packages
+
+# Android generated/local files
+mobile/android/.gradle/
+mobile/android/.cxx/
+mobile/android/local.properties
+mobile/android/**/key.properties
+mobile/android/**/*.jks
+mobile/android/**/*.keystore
+
+# iOS generated/local files
+mobile/ios/Pods/
+mobile/ios/.symlinks/
+mobile/ios/Flutter/ephemeral/
+mobile/ios/Flutter/Generated.xcconfig
+mobile/ios/Flutter/flutter_export_environment.sh
+
+# IDE local files
+.idea/
+.vscode/
+*.iml
+
+# Temporary files
+*.swp
+*.swo
+*~
