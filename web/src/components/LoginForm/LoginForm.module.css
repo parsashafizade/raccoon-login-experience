@@ -83,3 +83,653 @@
   font-weight: 650;
   cursor: pointer;
 }
+
+
+
+
+
+/* Sign-in door animation */
+
+.submitButton {
+  position: relative;
+  overflow: hidden;
+  min-height: 46px;
+  transition:
+    transform 180ms ease,
+    filter 180ms ease,
+    background 220ms ease,
+    box-shadow 220ms ease;
+}
+
+.submitButton:not(:disabled):active {
+  transform: scale(0.985);
+}
+
+.submitButton[data-state='submitting'] {
+  cursor: wait;
+  background: linear-gradient(
+    180deg,
+    rgba(82, 132, 224, 0.95),
+    rgba(55, 102, 197, 0.95)
+  );
+  box-shadow:
+    0 10px 24px rgba(56, 104, 201, 0.28),
+    inset 0 1px 0 rgba(255, 255, 255, 0.14);
+}
+
+.entryScene {
+  position: relative;
+  display: block;
+  width: 164px;
+  height: 34px;
+  margin: 0 auto;
+  color: #f7fbff;
+}
+
+.walker {
+  position: absolute;
+  left: 4px;
+  bottom: 3px;
+  width: 16px;
+  height: 25px;
+  animation: walkToDoor 2.1s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+.personHead {
+  position: absolute;
+  top: 0;
+  left: 5px;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: currentColor;
+  box-shadow: 0 0 10px rgba(255, 255, 255, 0.12);
+}
+
+.personBody {
+  position: absolute;
+  top: 8px;
+  left: 7px;
+  width: 3px;
+  height: 10px;
+  border-radius: 999px;
+  background: currentColor;
+}
+
+.personArm,
+.personLeg {
+  position: absolute;
+  width: 2px;
+  border-radius: 999px;
+  background: currentColor;
+  transform-origin: top center;
+}
+
+.personArm {
+  top: 2px;
+  height: 8px;
+}
+
+.armLeft {
+  left: -1px;
+  animation: armSwing 240ms ease-in-out infinite alternate;
+}
+
+.armRight {
+  right: -1px;
+  animation: armSwing 240ms ease-in-out infinite alternate-reverse;
+}
+
+.personLeg {
+  top: 9px;
+  height: 9px;
+}
+
+.legLeft {
+  left: 0;
+  animation: legSwing 240ms ease-in-out infinite alternate;
+}
+
+.legRight {
+  right: 0;
+  animation: legSwing 240ms ease-in-out infinite alternate-reverse;
+}
+
+.doorFrame {
+  position: absolute;
+  right: 8px;
+  bottom: 1px;
+  width: 26px;
+  height: 30px;
+  box-sizing: border-box;
+  border: 2px solid rgba(246, 250, 255, 0.95);
+  border-bottom: 0;
+  border-radius: 2px 2px 0 0;
+  background: rgba(255, 255, 255, 0.06);
+  overflow: visible;
+  perspective: 120px;
+}
+
+.door {
+  position: absolute;
+  inset: 2px 2px 0;
+  background: linear-gradient(
+    180deg,
+    #173a62,
+    #0f2847 56%,
+    #0a1d34
+  );
+  box-shadow:
+    inset 0 0 0 1px rgba(255, 255, 255, 0.08),
+    0 0 0 1px rgba(12, 26, 46, 0.32);
+  transform-origin: left center;
+  animation: doorSequence 2.1s ease-in-out forwards;
+}
+
+.doorKnob {
+  position: absolute;
+  top: 50%;
+  right: 3px;
+  width: 3px;
+  height: 3px;
+  border-radius: 50%;
+  background: rgba(255, 235, 193, 0.9);
+  box-shadow: 0 0 4px rgba(255, 235, 193, 0.4);
+  transform: translateY(-50%);
+}
+
+.doorLight {
+  position: absolute;
+  right: 33px;
+  bottom: 3px;
+  width: 54px;
+  height: 34px;
+  background: linear-gradient(
+    180deg,
+    rgba(255, 250, 238, 0.92),
+    rgba(255, 243, 214, 0.68) 42%,
+    rgba(255, 233, 184, 0.22) 100%
+  );
+  clip-path: polygon(100% 8%, 12% 0, 0 100%, 100% 86%);
+  filter: blur(2px);
+  transform-origin: right center;
+  transform: perspective(120px) rotateY(18deg) skewX(-10deg) scaleX(0.05);
+  opacity: 0;
+  animation: doorLightSequence 2.1s ease-in-out forwards;
+  pointer-events: none;
+}
+
+.doorGlow {
+  position: absolute;
+  right: 14px;
+  bottom: -1px;
+  width: 34px;
+  height: 10px;
+  border-radius: 50%;
+  background: radial-gradient(
+    ellipse at center,
+    rgba(255, 241, 204, 0.42),
+    rgba(255, 241, 204, 0.16) 56%,
+    rgba(255, 241, 204, 0) 78%
+  );
+  filter: blur(3px);
+  opacity: 0;
+  animation: doorGlowSequence 2.1s ease-in-out forwards;
+  pointer-events: none;
+}
+
+.buttonLabel {
+  display: inline-block;
+  animation: buttonLabelEnter 220ms ease-out;
+}
+
+@keyframes walkToDoor {
+  0% {
+    transform: translateX(0);
+    opacity: 1;
+  }
+
+  52% {
+    transform: translateX(82px);
+    opacity: 1;
+  }
+
+  68% {
+    transform: translateX(96px);
+    opacity: 1;
+  }
+
+  80% {
+    transform: translateX(108px) scale(0.9);
+    opacity: 1;
+  }
+
+  88%,
+  100% {
+    transform: translateX(118px) scale(0.72);
+    opacity: 0;
+  }
+}
+
+@keyframes doorSequence {
+  0%,
+  40% {
+    transform: rotateY(0deg);
+  }
+
+  52%,
+  82% {
+    transform: rotateY(-70deg);
+  }
+
+  94%,
+  100% {
+    transform: rotateY(0deg);
+  }
+}
+
+@keyframes doorLightSequence {
+  0%,
+  44% {
+    opacity: 0;
+    transform: perspective(120px) rotateY(18deg) skewX(-10deg) scaleX(0.05);
+  }
+
+  56% {
+    opacity: 0.42;
+    transform: perspective(120px) rotateY(18deg) skewX(-10deg) scaleX(0.55);
+  }
+
+  66%,
+  82% {
+    opacity: 0.82;
+    transform: perspective(120px) rotateY(18deg) skewX(-10deg) scaleX(1);
+  }
+
+  94%,
+  100% {
+    opacity: 0;
+    transform: perspective(120px) rotateY(18deg) skewX(-10deg) scaleX(0.08);
+  }
+}
+
+@keyframes doorGlowSequence {
+  0%,
+  46% {
+    opacity: 0;
+    transform: scaleX(0.2);
+  }
+
+  60%,
+  82% {
+    opacity: 1;
+    transform: scaleX(1);
+  }
+
+  94%,
+  100% {
+    opacity: 0;
+    transform: scaleX(0.24);
+  }
+}
+
+@keyframes legSwing {
+  from {
+    transform: rotate(25deg);
+  }
+
+  to {
+    transform: rotate(-25deg);
+  }
+}
+
+@keyframes armSwing {
+  from {
+    transform: rotate(-28deg);
+  }
+
+  to {
+    transform: rotate(28deg);
+  }
+}
+
+@keyframes buttonLabelEnter {
+  from {
+    opacity: 0;
+    transform: translateY(3px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .submitButton,
+  .buttonLabel {
+    transition: none;
+    animation: none;
+  }
+
+  .walker,
+  .personArm,
+  .personLeg,
+  .door,
+  .doorLight,
+  .doorGlow {
+    animation-duration: 1ms;
+  }
+}
+
+/* Refined door scene */
+
+.entryScene {
+  position: relative;
+  width: 164px;
+  height: 34px;
+}
+
+/* Subtle shared ground plane */
+.entryScene::after {
+  content: '';
+  position: absolute;
+  left: 4px;
+  right: 5px;
+  bottom: 2px;
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.08) 25%,
+    rgba(255, 255, 255, 0.12) 70%,
+    transparent
+  );
+  pointer-events: none;
+}
+
+.walker {
+  bottom: 3px;
+  animation-duration: 2.4s;
+}
+
+/* Door frame stays fixed */
+.doorFrame {
+  right: 8px;
+  bottom: 2px;
+  width: 26px;
+  height: 30px;
+  perspective: 140px;
+}
+
+/*
+ * Hinge is now on the RIGHT.
+ */
+.door {
+  transform-origin: right center;
+  animation: doorSequence 2.4s
+    cubic-bezier(0.45, 0, 0.2, 1) forwards;
+}
+
+/*
+ * Floor-projected light.
+ * Narrow at the doorway, wider as it reaches outward.
+ */
+.doorLight {
+  position: absolute;
+
+  right: 29px;
+  bottom: 2px;
+
+  width: 82px;
+  height: 11px;
+
+  border-radius: 0;
+
+  background: linear-gradient(
+    90deg,
+    rgba(255, 232, 180, 0),
+    rgba(255, 235, 190, 0.08) 20%,
+    rgba(255, 239, 202, 0.23) 48%,
+    rgba(255, 244, 219, 0.52) 76%,
+    rgba(255, 248, 231, 0.78) 100%
+  );
+
+  /*
+   * The beam exists only on the floor.
+   * Its bottom edge never drops below the character's feet.
+   */
+  clip-path: polygon(
+    100% 28%,
+    100% 78%,
+    0 100%,
+    13% 4%
+  );
+
+  transform-origin: right bottom;
+  transform: scaleX(0.04);
+  opacity: 0;
+
+  filter: blur(1.2px);
+
+  animation: doorLightSequence 2.4s
+    cubic-bezier(0.45, 0, 0.2, 1) forwards;
+
+  pointer-events: none;
+}
+
+/*
+ * Small threshold reflection.
+ * This stays close to the door instead of becoming
+ * a generic glow around the entire scene.
+ */
+.doorGlow {
+  position: absolute;
+
+  right: 20px;
+  bottom: 2px;
+
+  width: 34px;
+  height: 7px;
+
+  border-radius: 50%;
+
+  background: radial-gradient(
+    ellipse at 75% 50%,
+    rgba(255, 246, 222, 0.5),
+    rgba(255, 238, 197, 0.18) 46%,
+    rgba(255, 238, 197, 0) 76%
+  );
+
+  filter: blur(1.8px);
+
+  transform-origin: right center;
+  transform: scaleX(0.1);
+
+  opacity: 0;
+
+  animation: doorGlowSequence 2.4s
+    cubic-bezier(0.45, 0, 0.2, 1) forwards;
+
+  pointer-events: none;
+}
+
+@keyframes doorSequence {
+  0%,
+  40% {
+    transform: rotateY(0deg);
+  }
+
+  57% {
+    transform: rotateY(74deg);
+  }
+
+  79% {
+    transform: rotateY(74deg);
+  }
+
+  94%,
+  100% {
+    transform: rotateY(0deg);
+  }
+}
+
+@keyframes doorLightSequence {
+  0%,
+  43% {
+    opacity: 0;
+    transform: scaleX(0.04);
+  }
+
+  /* Door begins opening */
+  50% {
+    opacity: 0.18;
+    transform: scaleX(0.28);
+  }
+
+  58% {
+    opacity: 0.58;
+    transform: scaleX(0.72);
+  }
+
+  /* Door fully open */
+  64%,
+  79% {
+    opacity: 0.86;
+    transform: scaleX(1);
+  }
+
+  /* Door starts closing */
+  87% {
+    opacity: 0.36;
+    transform: scaleX(0.48);
+  }
+
+  95%,
+  100% {
+    opacity: 0;
+    transform: scaleX(0.04);
+  }
+}
+
+@keyframes doorGlowSequence {
+  0%,
+  45% {
+    opacity: 0;
+    transform: scaleX(0.1);
+  }
+
+  56% {
+    opacity: 0.42;
+    transform: scaleX(0.65);
+  }
+
+  64%,
+  79% {
+    opacity: 0.72;
+    transform: scaleX(1);
+  }
+
+  89% {
+    opacity: 0.24;
+    transform: scaleX(0.42);
+  }
+
+  95%,
+  100% {
+    opacity: 0;
+    transform: scaleX(0.1);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .walker,
+  .door,
+  .doorLight,
+  .doorGlow {
+    animation-duration: 1ms;
+  }
+}
+
+.walker {
+  animation: walkToDoor 2.4s
+    cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+@keyframes walkToDoor {
+  0% {
+    transform: translateX(0);
+    opacity: 1;
+  }
+
+  /* Longer walk */
+  47% {
+    transform: translateX(82px);
+    opacity: 1;
+  }
+
+  /* Approaching the opening door */
+  60% {
+    transform: translateX(96px);
+    opacity: 1;
+  }
+
+  /* Entering */
+  74% {
+    transform: translateX(108px) scale(0.9);
+    opacity: 1;
+  }
+
+  84% {
+    transform: translateX(117px) scale(0.74);
+    opacity: 0;
+  }
+
+  100% {
+    transform: translateX(117px) scale(0.74);
+    opacity: 0;
+  }
+}
+
+/* Diagonal light beam from the open doorway */
+
+.doorLight {
+  position: absolute;
+
+  right: 17px;
+  bottom: -5px;
+
+  width: 86px;
+  height: 40px;
+
+  background: linear-gradient(
+    105deg,
+    rgba(255, 232, 181, 0.03) 0%,
+    rgba(255, 235, 190, 0.10) 28%,
+    rgba(255, 240, 207, 0.28) 58%,
+    rgba(255, 246, 224, 0.58) 82%,
+    rgba(255, 250, 238, 0.82) 100%
+  );
+
+  /*
+   * Light starts high at the doorway
+   * and projects diagonally downward.
+   */
+  clip-path: polygon(
+    100% 7%,
+    100% 70%,
+    0 100%,
+    17% 69%
+  );
+
+  transform-origin: right center;
+  transform: scaleX(0.04);
+
+  opacity: 0;
+  filter: blur(1.4px);
+
+  animation: doorLightSequence 2.4s
+    cubic-bezier(0.45, 0, 0.2, 1) forwards;
+
+  pointer-events: none;
+}

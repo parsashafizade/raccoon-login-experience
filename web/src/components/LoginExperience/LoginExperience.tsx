@@ -5,13 +5,51 @@ import { RaccoonMascot } from '../RaccoonMascot/RaccoonMascot';
 
 import styles from './LoginExperience.module.css';
 
+type SubmitState = 'idle' | 'submitting' | 'success';
+
 export function LoginExperience() {
   const [username, setUsername] = useState('');
-  const [usernameFocused, setUsernameFocused] = useState(false);
   const [password, setPassword] = useState('');
   const [rememberMe, setRememberMe] = useState(false);
-  const [passwordVisible, setPasswordVisible] = useState(false);
+
+  const [usernameFocused, setUsernameFocused] = useState(false);
   const [passwordFocused, setPasswordFocused] = useState(false);
+  const [passwordVisible, setPasswordVisible] = useState(false);
+
+  const [submitState, setSubmitState] =
+    useState<SubmitState>('idle');
+
+  const resetSuccess = () => {
+    if (submitState === 'success') {
+      setSubmitState('idle');
+    }
+  };
+
+  const handleUsernameChange = (value: string) => {
+    resetSuccess();
+    setUsername(value);
+  };
+
+  const handlePasswordChange = (value: string) => {
+    resetSuccess();
+    setPassword(value);
+  };
+
+  const handleSubmit = () => {
+    if (
+      submitState !== 'idle' ||
+      !username.trim() ||
+      !password
+    ) {
+      return;
+    }
+
+    setSubmitState('submitting');
+
+    window.setTimeout(() => {
+      setSubmitState('success');
+    }, 2400);
+  };
 
   return (
     <section className={styles.experience}>
@@ -36,15 +74,16 @@ export function LoginExperience() {
           password={password}
           rememberMe={rememberMe}
           passwordVisible={passwordVisible}
-          onUsernameChange={setUsername}
+          submitState={submitState}
+          onUsernameChange={handleUsernameChange}
           onUsernameFocusChange={setUsernameFocused}
-          onPasswordChange={setPassword}
+          onPasswordChange={handlePasswordChange}
           onRememberMeChange={setRememberMe}
-          onPasswordVisibilityToggle={() => {
-            setPasswordVisible((visible) => !visible);
-          }}
+          onPasswordVisibilityToggle={() =>
+            setPasswordVisible((visible) => !visible)
+          }
           onPasswordFocusChange={setPasswordFocused}
-          onSubmit={() => {}}
+          onSubmit={handleSubmit}
         />
       </div>
     </section>
