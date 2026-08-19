@@ -1622,3 +1622,269 @@
     transition: none;
   }
 }
+
+/* Compact final sizing */
+
+.form {
+  gap: 16px;
+}
+
+.field {
+  gap: 8px;
+}
+
+.field > span:first-child {
+  font-size: 0.9rem;
+}
+
+.field input {
+  min-height: 50px;
+}
+
+.passwordField input {
+  min-height: 50px;
+}
+
+.submitButton {
+  min-height: 44px;
+}
+
+.socialButton {
+  min-height: 44px;
+}
+
+.options {
+  font-size: 0.9rem;
+}
+
+.authDivider {
+  margin: 0;
+}
+
+.createAccount {
+  margin-top: 0;
+}
+
+/* Final compact form height */
+
+.form {
+  gap: 14px;
+}
+
+.field {
+  gap: 7px;
+}
+
+.socialRow {
+  gap: 10px;
+}
+
+.createAccount {
+  margin-top: -1px;
+}
+
+.googleLogo {
+  width: 21px;
+  height: 21px;
+  flex: 0 0 21px;
+  display: block;
+}
+
+/* Glass form controls */
+
+.field input {
+  border: 1px solid rgba(204, 222, 255, 0.13);
+
+  background:
+    linear-gradient(
+      180deg,
+      rgba(255, 255, 255, 0.055),
+      rgba(255, 255, 255, 0.025)
+    );
+
+  color: #f7faff;
+
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.055),
+    0 8px 22px rgba(0, 0, 0, 0.09);
+
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+
+  transition:
+    border-color 170ms ease,
+    background 170ms ease,
+    box-shadow 170ms ease;
+}
+
+.field input:hover {
+  border-color: rgba(190, 214, 255, 0.2);
+
+  background:
+    linear-gradient(
+      180deg,
+      rgba(255, 255, 255, 0.075),
+      rgba(255, 255, 255, 0.035)
+    );
+}
+
+.field input:focus {
+  border-color: rgba(121, 166, 255, 0.55);
+
+  background:
+    linear-gradient(
+      180deg,
+      rgba(93, 137, 215, 0.10),
+      rgba(255, 255, 255, 0.035)
+    );
+
+  box-shadow:
+    0 0 0 3px rgba(81, 136, 242, 0.10),
+    0 12px 26px rgba(3, 12, 28, 0.14),
+    inset 0 1px 0 rgba(255, 255, 255, 0.08);
+}
+
+.socialButton {
+  border: 1px solid rgba(210, 226, 255, 0.15);
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(255, 255, 255, 0.085),
+      rgba(255, 255, 255, 0.028)
+    );
+
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.09),
+    0 9px 24px rgba(0, 0, 0, 0.10);
+
+  backdrop-filter:
+    blur(18px)
+    saturate(135%);
+
+  -webkit-backdrop-filter:
+    blur(18px)
+    saturate(135%);
+}
+
+.socialButton:hover:not(:disabled) {
+  border-color: rgba(164, 193, 255, 0.3);
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(255, 255, 255, 0.13),
+      rgba(112, 157, 236, 0.055)
+    );
+
+  box-shadow:
+    0 12px 28px rgba(0, 0, 0, 0.14),
+    inset 0 1px 0 rgba(255, 255, 255, 0.13);
+}
+
+.visibilityButton {
+  border: 1px solid rgba(198, 218, 255, 0.12);
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(255, 255, 255, 0.085),
+      rgba(255, 255, 255, 0.035)
+    );
+
+  color: #9fc0ff;
+
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.07);
+
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
+.visibilityButton:hover {
+  background:
+    linear-gradient(
+      145deg,
+      rgba(255, 255, 255, 0.13),
+      rgba(109, 153, 230, 0.06)
+    );
+}
+
+/* Password visibility icon */
+
+.visibilityButton {
+  width: 36px;
+  min-width: 36px;
+  height: 36px;
+  padding: 0;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 11px;
+}
+
+.visibilityIcon {
+  width: 20px;
+  height: 20px;
+
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.8;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+
+  transition:
+    transform 160ms ease,
+    opacity 160ms ease;
+}
+
+.visibilityButton:hover .visibilityIcon {
+  transform: scale(1.08);
+}
+
+.visibilityButton:active .visibilityIcon {
+  transform: scale(0.94);
+}
+
+/* Minimal password visibility control */
+
+.visibilityButton,
+.visibilityButton:hover,
+.visibilityButton:active {
+  width: 34px;
+  min-width: 34px;
+  height: 34px;
+  padding: 0;
+
+  border: 0;
+  border-radius: 0;
+
+  background: transparent;
+  box-shadow: none;
+
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+}
+
+.visibilityButton {
+  color: rgba(183, 205, 241, 0.62);
+
+  transition:
+    color 160ms ease,
+    opacity 160ms ease;
+}
+
+.visibilityButton:hover {
+  color: rgba(217, 231, 255, 0.95);
+}
+
+.visibilityButton:active {
+  color: #ffffff;
+}
+
+.visibilityIcon {
+  width: 20px;
+  height: 20px;
+}

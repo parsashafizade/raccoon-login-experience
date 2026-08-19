@@ -141,7 +141,6 @@ export function LoginExperience({
       <div className={styles.card}>
         <header className={styles.header}>
           <h1>Welcome back</h1>
-          <p>Your raccoon is keeping watch.</p>
         </header>
 
         <LoginForm

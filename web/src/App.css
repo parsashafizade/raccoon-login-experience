@@ -13,75 +13,85 @@
 
   background:
     radial-gradient(
-      ellipse at 48% 13%,
-      rgba(78, 112, 170, 0.23),
-      transparent 33%
+      ellipse at 20% 18%,
+      rgba(67, 112, 238, 0.3),
+      transparent 38%
     ),
     radial-gradient(
-      ellipse at 10% 38%,
-      rgba(63, 86, 130, 0.1),
-      transparent 31%
-    ),
-    radial-gradient(
-      ellipse at 90% 72%,
-      rgba(52, 81, 126, 0.1),
-      transparent 30%
+      ellipse at 82% 76%,
+      rgba(42, 181, 204, 0.2),
+      transparent 38%
     ),
     linear-gradient(
       145deg,
-      #0a101a 0%,
-      #101827 43%,
-      #09111d 100%
+      #07101c 0%,
+      #0b1728 48%,
+      #07121f 100%
     );
 }
 
+/*
+ * Soft blue/cyan ambient layer.
+ * Enough variation for the glass card to react to,
+ * without making the background visually busy.
+ */
 .app::before {
   content: '';
 
   position: absolute;
   z-index: -2;
 
-  top: -24%;
+  width: min(90vw, 900px);
+  height: min(80vw, 720px);
+
+  top: 4%;
   left: 50%;
-
-  width: min(84vw, 850px);
-  aspect-ratio: 1;
-
-  border-radius: 50%;
 
   background:
     radial-gradient(
-      circle,
-      rgba(101, 139, 201, 0.13) 0%,
-      rgba(72, 102, 153, 0.055) 43%,
-      transparent 71%
+      ellipse at 35% 38%,
+      rgba(72, 120, 245, 0.18),
+      transparent 48%
+    ),
+    radial-gradient(
+      ellipse at 68% 60%,
+      rgba(44, 192, 211, 0.12),
+      transparent 45%
     );
 
-  filter: blur(36px);
+  filter: blur(52px);
 
   transform: translateX(-50%);
 
-  animation: ambientBackground 14s ease-in-out infinite alternate;
+  animation: ambientFlow 16s ease-in-out infinite alternate;
 
   pointer-events: none;
 }
 
+/*
+ * Very subtle central highlight behind the glass card.
+ */
 .app::after {
   content: '';
 
   position: absolute;
-  inset: 0;
-
   z-index: -1;
 
-  background:
-    linear-gradient(
-      115deg,
-      rgba(255, 255, 255, 0.018),
-      transparent 24%,
-      transparent 72%,
-      rgba(121, 157, 216, 0.016)
-    );
+  width: min(70vw, 650px);
+  height: min(70vw, 650px);
+
+  top: 50%;
+  left: 50%;
+
+  border-radius: 50%;
+
+  background: radial-gradient(
+    circle,
+    rgba(114, 161, 240, 0.055),
+    transparent 68%
+  );
+
+  transform: translate(-50%, -50%);
 
   pointer-events: none;
 }
@@ -91,19 +101,19 @@
   z-index: 1;
 }
 
-@keyframes ambientBackground {
+@keyframes ambientFlow {
   from {
     transform:
       translateX(-52%)
       translateY(-1%)
-      scale(0.97);
+      scale(0.98);
   }
 
   to {
     transform:
       translateX(-48%)
-      translateY(3%)
-      scale(1.04);
+      translateY(2%)
+      scale(1.03);
   }
 }
 
@@ -113,21 +123,26 @@
 
     background:
       radial-gradient(
-        ellipse at 50% 10%,
-        rgba(81, 116, 177, 0.2),
-        transparent 36%
+        ellipse at 18% 14%,
+        rgba(67, 112, 238, 0.27),
+        transparent 42%
+      ),
+      radial-gradient(
+        ellipse at 84% 80%,
+        rgba(42, 181, 204, 0.17),
+        transparent 42%
       ),
       linear-gradient(
-        160deg,
-        #09111d,
-        #101827 48%,
-        #08101b
+        155deg,
+        #07101c,
+        #0b1728 52%,
+        #07121f
       );
   }
 
   .app::before {
-    top: -14%;
-    width: 130vw;
+    width: 125vw;
+    height: 100vw;
   }
 }
 
