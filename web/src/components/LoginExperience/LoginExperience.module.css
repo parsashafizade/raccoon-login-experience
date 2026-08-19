@@ -21,124 +21,15 @@
 .card {
   position: relative;
   z-index: 1;
+
   width: 100%;
   box-sizing: border-box;
-  padding: 40px 28px 30px;
-  border-radius: 28px;
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  background: linear-gradient(180deg, rgba(18, 34, 56, 0.96), rgba(10, 24, 42, 0.96));
-  box-shadow:
-    0 24px 60px rgba(0, 0, 0, 0.35),
-    inset 0 1px 0 rgba(255, 255, 255, 0.04);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-}
 
-.header {
-  text-align: center;
-  margin-bottom: 28px;
-}
+  padding: 30px 28px 22px;
 
-.header h1 {
-  margin: 0;
-  color: #f5f7fb;
-  font-size: clamp(2rem, 4vw, 2.35rem);
-  font-weight: 800;
-  line-height: 1.05;
-  letter-spacing: -0.03em;
-}
-
-.header p {
-  margin: 10px 0 0;
-  color: #90a0b7;
-  font-size: 0.98rem;
-}
-
-.form {
-  display: grid;
-  gap: 18px;
-}
-
-@media (max-width: 520px) {
-  .experience {
-    --mascot-size: 220px;
-  }
-
-  .card {
-    padding: 34px 20px 24px;
-    border-radius: 24px;
-  }
-}
-
-
-.card {
-  border-color: rgba(162, 188, 225, 0.12);
-
-  background:
-    radial-gradient(
-      circle at 50% 0%,
-      rgba(92, 135, 205, 0.075),
-      transparent 34%
-    ),
-    linear-gradient(
-      180deg,
-      rgba(25, 40, 63, 0.94),
-      rgba(13, 27, 47, 0.96)
-    );
-
-  box-shadow:
-    0 34px 90px rgba(0, 0, 0, 0.42),
-    0 8px 24px rgba(0, 0, 0, 0.18),
-    inset 0 1px 0 rgba(255, 255, 255, 0.055);
-
-  backdrop-filter: blur(22px);
-  -webkit-backdrop-filter: blur(22px);
-}
-
-
-.card {
-  padding-top: 30px;
-  padding-bottom: 22px;
-}
-
-.header {
-  margin-bottom: 20px;
-}
-
-.header p {
-  margin-top: 7px;
-}
-
-/* Final glass surface */
-
-.card {
   border: 1px solid rgba(210, 226, 255, 0.16);
+  border-radius: 28px;
 
-  background:
-    linear-gradient(
-      145deg,
-      rgba(34, 52, 79, 0.58),
-      rgba(15, 29, 49, 0.38)
-    );
-
-  box-shadow:
-    0 36px 90px rgba(0, 0, 0, 0.4),
-    0 12px 34px rgba(2, 10, 24, 0.26),
-    inset 0 1px 0 rgba(255, 255, 255, 0.12),
-    inset 0 -1px 0 rgba(255, 255, 255, 0.025);
-
-  backdrop-filter:
-    blur(32px)
-    saturate(145%);
-
-  -webkit-backdrop-filter:
-    blur(32px)
-    saturate(145%);
-}
-
-/* Increase environmental visibility through glass */
-
-.card {
   background:
     radial-gradient(
       circle at 50% 0%,
@@ -151,6 +42,12 @@
       rgba(12, 25, 44, 0.34)
     );
 
+  box-shadow:
+    0 36px 90px rgba(0, 0, 0, 0.4),
+    0 12px 34px rgba(2, 10, 24, 0.26),
+    inset 0 1px 0 rgba(255, 255, 255, 0.12),
+    inset 0 -1px 0 rgba(255, 255, 255, 0.025);
+
   backdrop-filter:
     blur(30px)
     saturate(155%);
@@ -158,4 +55,40 @@
   -webkit-backdrop-filter:
     blur(30px)
     saturate(155%);
+}
+
+.header {
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.header h1 {
+  margin: 0;
+
+  color: #f5f7fb;
+
+  font-size: clamp(2rem, 4vw, 2.35rem);
+  font-weight: 800;
+  line-height: 1.05;
+  letter-spacing: -0.03em;
+}
+
+.header p {
+  margin: 7px 0 0;
+
+  color: #90a0b7;
+
+  font-size: 0.98rem;
+}
+
+@media (max-width: 520px) {
+  .experience {
+    --mascot-size: 220px;
+  }
+
+  .card {
+    padding-right: 20px;
+    padding-left: 20px;
+    border-radius: 24px;
+  }
 }

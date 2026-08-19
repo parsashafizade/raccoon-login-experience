@@ -1,6 +1,6 @@
 .form {
   display: grid;
-  gap: 16px;
+  gap: 14px;
   width: min(100%, 420px);
 }
 
@@ -14,21 +14,70 @@
   color: #a9b4c5;
 }
 
+.field > span:first-child {
+  font-size: 0.9rem;
+}
+
+
 .field input {
   box-sizing: border-box;
   width: 100%;
   height: 52px;
+  min-height: 50px;
   padding: 0 16px;
-  border: 1px solid rgba(255, 255, 255, 0.12);
+
+  border: 1px solid rgba(204, 222, 255, 0.13);
   border-radius: 14px;
   outline: none;
-  background: rgba(255, 255, 255, 0.055);
-  color: #f5f7fb;
+
+  background:
+    linear-gradient(
+      180deg,
+      rgba(255, 255, 255, 0.055),
+      rgba(255, 255, 255, 0.025)
+    );
+
+  color: #f7faff;
   font: inherit;
+
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.055),
+    0 8px 22px rgba(0, 0, 0, 0.09);
+
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+
+  transition:
+    border-color 170ms ease,
+    background 170ms ease,
+    box-shadow 170ms ease;
+}
+
+.field input:hover {
+  border-color: rgba(190, 214, 255, 0.2);
+
+  background:
+    linear-gradient(
+      180deg,
+      rgba(255, 255, 255, 0.075),
+      rgba(255, 255, 255, 0.035)
+    );
 }
 
 .field input:focus {
-  border-color: rgba(116, 170, 255, 0.75);
+  border-color: rgba(121, 166, 255, 0.55);
+
+  background:
+    linear-gradient(
+      180deg,
+      rgba(93, 137, 215, 0.10),
+      rgba(255, 255, 255, 0.035)
+    );
+
+  box-shadow:
+    0 0 0 3px rgba(81, 136, 242, 0.10),
+    0 12px 26px rgba(3, 12, 28, 0.14),
+    inset 0 1px 0 rgba(255, 255, 255, 0.08);
 }
 
 .passwordField {
@@ -36,6 +85,7 @@
 }
 
 .passwordField input {
+  min-height: 50px;
   padding-right: 72px;
 }
 
@@ -43,11 +93,65 @@
   position: absolute;
   top: 50%;
   right: 14px;
+
+  width: 34px;
+  min-width: 34px;
+  height: 34px;
+  padding: 0;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
   transform: translateY(-50%);
+
   border: 0;
+  border-radius: 0;
+
   background: transparent;
-  color: #9ebcf0;
+  color: rgba(183, 205, 241, 0.62);
+
+  box-shadow: none;
+
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+
   cursor: pointer;
+
+  transition:
+    color 160ms ease,
+    opacity 160ms ease;
+}
+
+.visibilityButton:hover {
+  color: rgba(217, 231, 255, 0.95);
+}
+
+.visibilityButton:active {
+  color: #ffffff;
+}
+
+.visibilityIcon {
+  width: 20px;
+  height: 20px;
+
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.8;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+
+  transition:
+    transform 160ms ease,
+    opacity 160ms ease;
+}
+
+.visibilityButton:hover .visibilityIcon {
+  transform: scale(1.08);
+}
+
+.visibilityButton:active .visibilityIcon {
+  transform: scale(0.94);
 }
 
 .options {
@@ -55,7 +159,8 @@
   align-items: center;
   justify-content: space-between;
   gap: 16px;
-  font-size: 0.86rem;
+
+  font-size: 0.9rem;
 }
 
 .remember {
@@ -74,14 +179,28 @@
 }
 
 .submitButton {
+  position: relative;
+  overflow: hidden;
+
   height: 54px;
+  min-height: 44px;
+
   border: 0;
   border-radius: 15px;
+
   background: #4d8df7;
   color: white;
+
   font: inherit;
   font-weight: 650;
+
   cursor: pointer;
+
+  transition:
+    transform 180ms ease,
+    filter 180ms ease,
+    background 220ms ease,
+    box-shadow 220ms ease;
 }
 
 
@@ -258,36 +377,6 @@
   animation: legSwing 240ms ease-in-out infinite alternate-reverse;
 }
 
-/* Failure walk */
-
-.entryScene[data-result='failure'] .walker {
-  animation: walkToDoorFailure 3.2s ease-in-out forwards;
-}
-
-.entryScene[data-result='failure'] .personHead {
-  animation: disappointedHead 3.2s ease-in-out forwards;
-}
-
-.entryScene[data-result='failure'] .personBody {
-  animation: disappointedBody 3.2s ease-in-out forwards;
-}
-
-.entryScene[data-result='failure'] .armLeft {
-  animation: failureLeftArm 3.2s ease-in-out forwards;
-}
-
-.entryScene[data-result='failure'] .armRight {
-  animation: failureScratch 3.2s ease-in-out forwards;
-}
-
-.entryScene[data-result='failure'] .legLeft {
-  animation: failureLegLeft 3.2s ease-in-out forwards;
-}
-
-.entryScene[data-result='failure'] .legRight {
-  animation: failureLegRight 3.2s ease-in-out forwards;
-}
-
 /* Door */
 
 .doorFrame {
@@ -324,9 +413,6 @@
     cubic-bezier(0.45, 0, 0.2, 1) forwards;
 }
 
-.entryScene[data-result='failure'] .door {
-  animation: lockedDoorSequence 3.2s ease-in-out forwards;
-}
 
 .doorKnob {
   position: absolute;
@@ -340,9 +426,6 @@
   transform: translateY(-50%);
 }
 
-.entryScene[data-result='failure'] .doorKnob {
-  animation: lockedKnobSequence 3.2s ease-in-out forwards;
-}
 
 /* Final success light values */
 
@@ -435,256 +518,6 @@
   100% {
     transform: translateX(117px) scale(0.74);
     opacity: 0;
-  }
-}
-
-@keyframes walkToDoorFailure {
-  0% {
-    transform: translateX(0) scaleX(1);
-  }
-
-  34% {
-    transform: translateX(91px) scaleX(1);
-  }
-
-  42% {
-    transform: translateX(101px) scaleX(1);
-  }
-
-  /* Tries the locked door */
-  50% {
-    transform: translateX(101px) scaleX(1);
-  }
-
-  /* Confused pause */
-  66% {
-    transform:
-      translateX(99px)
-      translateY(1px)
-      rotate(2deg)
-      scaleX(1);
-  }
-
-  /* Turns around */
-  74% {
-    transform:
-      translateX(91px)
-      translateY(1px)
-      scaleX(-1);
-  }
-
-  /* Walks back */
-  92% {
-    transform:
-      translateX(18px)
-      translateY(1px)
-      scaleX(-1);
-  }
-
-  100% {
-    transform:
-      translateX(0)
-      translateY(1px)
-      scaleX(-1);
-  }
-}
-
-@keyframes disappointedHead {
-  0%,
-  48% {
-    transform: rotate(0deg);
-  }
-
-  56% {
-    transform: rotate(8deg);
-  }
-
-  64% {
-    transform: rotate(-7deg);
-  }
-
-  70% {
-    transform: rotate(9deg) translateY(1px);
-  }
-
-  100% {
-    transform: rotate(5deg) translateY(1px);
-  }
-}
-
-@keyframes disappointedBody {
-  0%,
-  52% {
-    transform: rotate(0deg);
-  }
-
-  63%,
-  72% {
-    transform: rotate(8deg);
-  }
-
-  100% {
-    transform: rotate(3deg);
-  }
-}
-
-@keyframes failureScratch {
-  0%,
-  51% {
-    transform: rotate(0deg);
-  }
-
-  57% {
-    transform: rotate(-128deg);
-  }
-
-  61% {
-    transform: rotate(-147deg);
-  }
-
-  65% {
-    transform: rotate(-125deg);
-  }
-
-  69% {
-    transform: rotate(-148deg);
-  }
-
-  73% {
-    transform: rotate(-128deg);
-  }
-
-  80%,
-  100% {
-    transform: rotate(12deg);
-  }
-}
-
-@keyframes failureLeftArm {
-  0%,
-  38% {
-    transform: rotate(-24deg);
-  }
-
-  44%,
-  52% {
-    transform: rotate(58deg);
-  }
-
-  60%,
-  74% {
-    transform: rotate(18deg);
-  }
-
-  80%,
-  100% {
-    transform: rotate(-22deg);
-  }
-}
-
-@keyframes failureLegLeft {
-  0%,
-  38% {
-    transform: rotate(24deg);
-  }
-
-  42%,
-  74% {
-    transform: rotate(3deg);
-  }
-
-  80% {
-    transform: rotate(-24deg);
-  }
-
-  85% {
-    transform: rotate(24deg);
-  }
-
-  90% {
-    transform: rotate(-24deg);
-  }
-
-  95%,
-  100% {
-    transform: rotate(24deg);
-  }
-}
-
-@keyframes failureLegRight {
-  0%,
-  38% {
-    transform: rotate(-24deg);
-  }
-
-  42%,
-  74% {
-    transform: rotate(-3deg);
-  }
-
-  80% {
-    transform: rotate(24deg);
-  }
-
-  85% {
-    transform: rotate(-24deg);
-  }
-
-  90% {
-    transform: rotate(24deg);
-  }
-
-  95%,
-  100% {
-    transform: rotate(-24deg);
-  }
-}
-
-@keyframes lockedDoorSequence {
-  0%,
-  40% {
-    transform: rotateY(0deg);
-  }
-
-  45% {
-    transform: rotateY(4deg);
-  }
-
-  48% {
-    transform: rotateY(-2deg);
-  }
-
-  51% {
-    transform: rotateY(3deg);
-  }
-
-  55%,
-  100% {
-    transform: rotateY(0deg);
-  }
-}
-
-@keyframes lockedKnobSequence {
-  0%,
-  41% {
-    transform: translateY(-50%) rotate(0deg);
-  }
-
-  45% {
-    transform: translateY(-50%) rotate(25deg);
-  }
-
-  48% {
-    transform: translateY(-50%) rotate(-18deg);
-  }
-
-  52% {
-    transform: translateY(-50%) rotate(18deg);
-  }
-
-  56%,
-  100% {
-    transform: translateY(-50%) rotate(0deg);
   }
 }
 
@@ -1440,8 +1273,11 @@
   display: flex;
   align-items: center;
   gap: 12px;
-  margin: 2px 0;
+
+  margin: 0;
+
   color: rgba(190, 205, 229, 0.58);
+
   font-size: 0.78rem;
   white-space: nowrap;
 }
@@ -1469,11 +1305,11 @@
 .socialRow {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 12px;
+  gap: 10px;
 }
 
 .socialButton {
-  min-height: 48px;
+  min-height: 44px;
   padding: 0 16px;
 
   display: inline-flex;
@@ -1481,14 +1317,14 @@
   justify-content: center;
   gap: 10px;
 
-  border: 1px solid rgba(255, 255, 255, 0.11);
+  border: 1px solid rgba(210, 226, 255, 0.15);
   border-radius: 14px;
 
   background:
     linear-gradient(
-      180deg,
-      rgba(255, 255, 255, 0.055),
-      rgba(255, 255, 255, 0.025)
+      145deg,
+      rgba(255, 255, 255, 0.085),
+      rgba(255, 255, 255, 0.028)
     );
 
   color: rgba(247, 250, 255, 0.94);
@@ -1500,7 +1336,16 @@
   cursor: pointer;
 
   box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.035);
+    inset 0 1px 0 rgba(255, 255, 255, 0.09),
+    0 9px 24px rgba(0, 0, 0, 0.10);
+
+  backdrop-filter:
+    blur(18px)
+    saturate(135%);
+
+  -webkit-backdrop-filter:
+    blur(18px)
+    saturate(135%);
 
   transition:
     transform 160ms ease,
@@ -1512,18 +1357,18 @@
 .socialButton:hover:not(:disabled) {
   transform: translateY(-1px);
 
-  border-color: rgba(131, 172, 255, 0.3);
+  border-color: rgba(164, 193, 255, 0.3);
 
   background:
     linear-gradient(
-      180deg,
-      rgba(255, 255, 255, 0.085),
-      rgba(255, 255, 255, 0.04)
+      145deg,
+      rgba(255, 255, 255, 0.13),
+      rgba(112, 157, 236, 0.055)
     );
 
   box-shadow:
-    0 8px 20px rgba(0, 0, 0, 0.14),
-    inset 0 1px 0 rgba(255, 255, 255, 0.055);
+    0 12px 28px rgba(0, 0, 0, 0.14),
+    inset 0 1px 0 rgba(255, 255, 255, 0.13);
 }
 
 .socialButton:active:not(:disabled) {
@@ -1551,23 +1396,14 @@
   line-height: 1;
 }
 
-.googleMark {
-  border-radius: 50%;
-  background:
-    conic-gradient(
-      from -45deg,
-      #4285f4 0deg 90deg,
-      #34a853 90deg 180deg,
-      #fbbc05 180deg 270deg,
-      #ea4335 270deg 360deg
-    );
 
-  color: white;
+.googleLogo {
+  display: block;
 
-  box-shadow:
-    inset 0 0 0 4px rgba(16, 31, 53, 0.9);
+  width: 21px;
+  height: 21px;
 
-  font-size: 0.72rem;
+  flex: 0 0 21px;
 }
 
 .appleMark {
@@ -1582,7 +1418,7 @@
   justify-content: center;
   gap: 5px;
 
-  margin: 2px 0 0;
+  margin: -1px 0 0;
 
   color: rgba(195, 208, 230, 0.68);
 
@@ -1621,270 +1457,4 @@
   .socialButton {
     transition: none;
   }
-}
-
-/* Compact final sizing */
-
-.form {
-  gap: 16px;
-}
-
-.field {
-  gap: 8px;
-}
-
-.field > span:first-child {
-  font-size: 0.9rem;
-}
-
-.field input {
-  min-height: 50px;
-}
-
-.passwordField input {
-  min-height: 50px;
-}
-
-.submitButton {
-  min-height: 44px;
-}
-
-.socialButton {
-  min-height: 44px;
-}
-
-.options {
-  font-size: 0.9rem;
-}
-
-.authDivider {
-  margin: 0;
-}
-
-.createAccount {
-  margin-top: 0;
-}
-
-/* Final compact form height */
-
-.form {
-  gap: 14px;
-}
-
-.field {
-  gap: 7px;
-}
-
-.socialRow {
-  gap: 10px;
-}
-
-.createAccount {
-  margin-top: -1px;
-}
-
-.googleLogo {
-  width: 21px;
-  height: 21px;
-  flex: 0 0 21px;
-  display: block;
-}
-
-/* Glass form controls */
-
-.field input {
-  border: 1px solid rgba(204, 222, 255, 0.13);
-
-  background:
-    linear-gradient(
-      180deg,
-      rgba(255, 255, 255, 0.055),
-      rgba(255, 255, 255, 0.025)
-    );
-
-  color: #f7faff;
-
-  box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.055),
-    0 8px 22px rgba(0, 0, 0, 0.09);
-
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-
-  transition:
-    border-color 170ms ease,
-    background 170ms ease,
-    box-shadow 170ms ease;
-}
-
-.field input:hover {
-  border-color: rgba(190, 214, 255, 0.2);
-
-  background:
-    linear-gradient(
-      180deg,
-      rgba(255, 255, 255, 0.075),
-      rgba(255, 255, 255, 0.035)
-    );
-}
-
-.field input:focus {
-  border-color: rgba(121, 166, 255, 0.55);
-
-  background:
-    linear-gradient(
-      180deg,
-      rgba(93, 137, 215, 0.10),
-      rgba(255, 255, 255, 0.035)
-    );
-
-  box-shadow:
-    0 0 0 3px rgba(81, 136, 242, 0.10),
-    0 12px 26px rgba(3, 12, 28, 0.14),
-    inset 0 1px 0 rgba(255, 255, 255, 0.08);
-}
-
-.socialButton {
-  border: 1px solid rgba(210, 226, 255, 0.15);
-
-  background:
-    linear-gradient(
-      145deg,
-      rgba(255, 255, 255, 0.085),
-      rgba(255, 255, 255, 0.028)
-    );
-
-  box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.09),
-    0 9px 24px rgba(0, 0, 0, 0.10);
-
-  backdrop-filter:
-    blur(18px)
-    saturate(135%);
-
-  -webkit-backdrop-filter:
-    blur(18px)
-    saturate(135%);
-}
-
-.socialButton:hover:not(:disabled) {
-  border-color: rgba(164, 193, 255, 0.3);
-
-  background:
-    linear-gradient(
-      145deg,
-      rgba(255, 255, 255, 0.13),
-      rgba(112, 157, 236, 0.055)
-    );
-
-  box-shadow:
-    0 12px 28px rgba(0, 0, 0, 0.14),
-    inset 0 1px 0 rgba(255, 255, 255, 0.13);
-}
-
-.visibilityButton {
-  border: 1px solid rgba(198, 218, 255, 0.12);
-
-  background:
-    linear-gradient(
-      145deg,
-      rgba(255, 255, 255, 0.085),
-      rgba(255, 255, 255, 0.035)
-    );
-
-  color: #9fc0ff;
-
-  box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.07);
-
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-}
-
-.visibilityButton:hover {
-  background:
-    linear-gradient(
-      145deg,
-      rgba(255, 255, 255, 0.13),
-      rgba(109, 153, 230, 0.06)
-    );
-}
-
-/* Password visibility icon */
-
-.visibilityButton {
-  width: 36px;
-  min-width: 36px;
-  height: 36px;
-  padding: 0;
-
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-
-  border-radius: 11px;
-}
-
-.visibilityIcon {
-  width: 20px;
-  height: 20px;
-
-  fill: none;
-  stroke: currentColor;
-  stroke-width: 1.8;
-  stroke-linecap: round;
-  stroke-linejoin: round;
-
-  transition:
-    transform 160ms ease,
-    opacity 160ms ease;
-}
-
-.visibilityButton:hover .visibilityIcon {
-  transform: scale(1.08);
-}
-
-.visibilityButton:active .visibilityIcon {
-  transform: scale(0.94);
-}
-
-/* Minimal password visibility control */
-
-.visibilityButton,
-.visibilityButton:hover,
-.visibilityButton:active {
-  width: 34px;
-  min-width: 34px;
-  height: 34px;
-  padding: 0;
-
-  border: 0;
-  border-radius: 0;
-
-  background: transparent;
-  box-shadow: none;
-
-  backdrop-filter: none;
-  -webkit-backdrop-filter: none;
-}
-
-.visibilityButton {
-  color: rgba(183, 205, 241, 0.62);
-
-  transition:
-    color 160ms ease,
-    opacity 160ms ease;
-}
-
-.visibilityButton:hover {
-  color: rgba(217, 231, 255, 0.95);
-}
-
-.visibilityButton:active {
-  color: #ffffff;
-}
-
-.visibilityIcon {
-  width: 20px;
-  height: 20px;
 }
