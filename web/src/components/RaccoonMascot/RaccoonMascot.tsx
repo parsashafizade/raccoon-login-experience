@@ -1,4 +1,6 @@
 import leftPupil from '../../assets/raccoon/left-pupil.png';
+import pawsCoverLeft from '../../assets/raccoon/paws-cover-left.png';
+import pawsCoverRight from '../../assets/raccoon/paws-cover-right.png';
 import pawsRest from '../../assets/raccoon/paws-rest.png';
 import raccoonBase from '../../assets/raccoon/raccoon-base.png';
 import rightPupil from '../../assets/raccoon/right-pupil.png';
@@ -12,10 +14,13 @@ interface RaccoonMascotProps {
 }
 
 export function RaccoonMascot({
-  passwordFocused: _passwordFocused,
+  passwordFocused,
   passwordVisible: _passwordVisible,
 }: RaccoonMascotProps) {
   const mascotRef = usePointerGaze();
+
+  const showRest = !passwordFocused;
+  const showCover = passwordFocused;
 
   return (
     <div ref={mascotRef} className={styles.mascot} aria-hidden="true">
@@ -43,12 +48,32 @@ export function RaccoonMascot({
       </div>
 
       <div className={styles.pawsLayer}>
-        <img
-          className={styles.restPaws}
-          src={pawsRest}
-          alt=""
-          draggable={false}
-        />
+        {showRest && (
+          <img
+            className={styles.restPaws}
+            src={pawsRest}
+            alt=""
+            draggable={false}
+          />
+        )}
+
+        {showCover && (
+          <>
+            <img
+              className={`${styles.coverPaw} ${styles.coverLeft}`}
+              src={pawsCoverLeft}
+              alt=""
+              draggable={false}
+            />
+
+            <img
+              className={`${styles.coverPaw} ${styles.coverRight}`}
+              src={pawsCoverRight}
+              alt=""
+              draggable={false}
+            />
+          </>
+        )}
       </div>
     </div>
   );
