@@ -1,11 +1,11 @@
-import leftPupil from '../../assets/raccoon/left-pupil.png';
-import pawsCoverLeft from '../../assets/raccoon/paws-cover-left.png';
-import pawsCoverRight from '../../assets/raccoon/paws-cover-right.png';
-import pawsPeekLeft from '../../assets/raccoon/paws-peek-left.png';
-import pawsPeekRight from '../../assets/raccoon/paws-peek-right.png';
-import pawsRest from '../../assets/raccoon/paws-rest.png';
-import raccoonBase from '../../assets/raccoon/raccoon-base.png';
-import rightPupil from '../../assets/raccoon/right-pupil.png';
+import leftPupil from '../../assets/raccoon/left-pupil.webp';
+import pawsCoverLeft from '../../assets/raccoon/paws-cover-left.webp';
+import pawsCoverRight from '../../assets/raccoon/paws-cover-right.webp';
+import pawsPeekLeft from '../../assets/raccoon/paws-peek-left.webp';
+import pawsPeekRight from '../../assets/raccoon/paws-peek-right.webp';
+import pawsRest from '../../assets/raccoon/paws-rest.webp';
+import raccoonBase from '../../assets/raccoon/raccoon-base.webp';
+import rightPupil from '../../assets/raccoon/right-pupil.webp';
 
 import styles from './RaccoonMascot.module.css';
 import { usePointerGaze } from './usePointerGaze';
