@@ -11,16 +11,22 @@ export interface LoginFieldErrors {
   password?: string;
 }
 
+export type AuthFailureCode =
+  | 'VALIDATION_ERROR'
+  | 'INVALID_CREDENTIALS'
+  | 'NETWORK_ERROR';
+
 export type AuthResult =
   | {
       ok: true;
     }
   | {
       ok: false;
-      code:
-        | 'VALIDATION_ERROR'
-        | 'INVALID_CREDENTIALS'
-        | 'NETWORK_ERROR';
+      code: AuthFailureCode;
       message: string;
       fieldErrors?: LoginFieldErrors;
     };
+
+export type AuthenticateLogin = (
+  credentials: LoginCredentials,
+) => Promise<AuthResult>;

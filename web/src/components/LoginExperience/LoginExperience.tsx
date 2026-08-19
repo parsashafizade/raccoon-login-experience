@@ -2,7 +2,9 @@ import { useEffect, useRef, useState } from 'react';
 
 import { authenticateLogin } from '../../features/auth/auth.service';
 import type {
+  AuthenticateLogin,
   AuthProvider,
+  AuthResult,
   LoginFieldErrors,
 } from '../../features/auth/auth.types';
 import { LoginForm } from '../LoginForm/LoginForm';
@@ -18,17 +20,28 @@ export type SubmitState =
   | 'success';
 
 interface LoginExperienceProps {
-  onSocialLogin?: (provider: AuthProvider) => void;
+  authenticate?: AuthenticateLogin;
+  onSocialLogin?: (provider: AuthProvider) => void | Promise<void>;
   onCreateAccount?: () => void;
+  onForgotPassword?: () => void;
 }
 
 const SUCCESS_ANIMATION_DURATION = 2400;
 const FAILURE_ANIMATION_DURATION = 3800;
 const FAILURE_FEEDBACK_DELAY = 2050;
 
+const NETWORK_ERROR_RESULT: AuthResult = {
+  ok: false,
+  code: 'NETWORK_ERROR',
+  message:
+    'Unable to sign in right now. Check your connection and try again.',
+};
+
 export function LoginExperience({
+  authenticate = authenticateLogin,
   onSocialLogin = () => {},
   onCreateAccount = () => {},
+  onForgotPassword = () => {},
 }: LoginExperienceProps) {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
@@ -58,6 +71,7 @@ export function LoginExperience({
 
   const schedule = (callback: () => void, delay: number) => {
     const timer = window.setTimeout(callback, delay);
+
     timersRef.current.push(timer);
   };
 
@@ -84,6 +98,23 @@ export function LoginExperience({
     setPassword(value);
   };
 
+  const runFailureSequence = (result: AuthResult) => {
+    if (result.ok) {
+      return;
+    }
+
+    setSubmitState('failure-animation');
+
+    schedule(() => {
+      setFieldErrors(result.fieldErrors ?? {});
+      setAuthMessage(result.message);
+    }, FAILURE_FEEDBACK_DELAY);
+
+    schedule(() => {
+      setSubmitState('idle');
+    }, FAILURE_ANIMATION_DURATION);
+  };
+
   const handleSubmit = async () => {
     if (
       submitState !== 'idle' &&
@@ -98,32 +129,28 @@ export function LoginExperience({
     setAuthMessage('');
     setSubmitState('checking');
 
-    const result = await authenticateLogin({
-      username,
-      password,
-      rememberMe,
-    });
+    let result: AuthResult;
 
-    if (result.ok) {
-      setSubmitState('success-animation');
+    try {
+      result = await authenticate({
+        username,
+        password,
+        rememberMe,
+      });
+    } catch {
+      result = NETWORK_ERROR_RESULT;
+    }
 
-      schedule(() => {
-        setSubmitState('success');
-      }, SUCCESS_ANIMATION_DURATION);
-
+    if (!result.ok) {
+      runFailureSequence(result);
       return;
     }
 
-    setSubmitState('failure-animation');
+    setSubmitState('success-animation');
 
     schedule(() => {
-      setFieldErrors(result.fieldErrors ?? {});
-      setAuthMessage(result.message);
-    }, FAILURE_FEEDBACK_DELAY);
-
-    schedule(() => {
-      setSubmitState('idle');
-    }, FAILURE_ANIMATION_DURATION);
+      setSubmitState('success');
+    }, SUCCESS_ANIMATION_DURATION);
   };
 
   return (
@@ -140,7 +167,8 @@ export function LoginExperience({
 
       <div className={styles.card}>
         <header className={styles.header}>
-          <h1>Welcome</h1>
+          <h1>Welcome back</h1>
+          <p>Your raccoon is keeping watch.</p>
         </header>
 
         <LoginForm
@@ -161,6 +189,7 @@ export function LoginExperience({
           }
           onSocialLogin={onSocialLogin}
           onCreateAccount={onCreateAccount}
+          onForgotPassword={onForgotPassword}
           onSubmit={handleSubmit}
         />
       </div>

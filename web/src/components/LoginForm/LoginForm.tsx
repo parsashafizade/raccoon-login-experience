@@ -26,8 +26,11 @@ interface LoginFormProps {
   onRememberMeChange: (value: boolean) => void;
   onPasswordVisibilityToggle: () => void;
 
-  onSocialLogin: (provider: AuthProvider) => void;
+  onSocialLogin: (
+    provider: AuthProvider,
+  ) => void | Promise<void>;
   onCreateAccount: () => void;
+  onForgotPassword: () => void;
 
   onSubmit: () => void;
 }
@@ -48,6 +51,7 @@ export function LoginForm({
   onPasswordVisibilityToggle,
   onSocialLogin,
   onCreateAccount,
+  onForgotPassword,
   onSubmit,
 }: LoginFormProps) {
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
@@ -194,6 +198,7 @@ export function LoginForm({
         <button
           className={styles.forgotPassword}
           type="button"
+          onClick={onForgotPassword}
         >
           Forgot password?
         </button>

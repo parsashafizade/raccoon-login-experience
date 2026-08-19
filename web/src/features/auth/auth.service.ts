@@ -1,17 +1,17 @@
 import type {
+  AuthenticateLogin,
   AuthResult,
-  LoginCredentials,
 } from './auth.types';
 import { validateLoginCredentials } from './auth.validation';
 
 const wait = (duration: number) =>
   new Promise<void>((resolve) => {
-    window.setTimeout(resolve, duration);
+    globalThis.setTimeout(resolve, duration);
   });
 
-export async function authenticateLogin(
-  credentials: LoginCredentials,
-): Promise<AuthResult> {
+export const authenticateLogin: AuthenticateLogin = async (
+  credentials,
+): Promise<AuthResult> => {
   await wait(180);
 
   const fieldErrors = validateLoginCredentials(credentials);
@@ -28,4 +28,4 @@ export async function authenticateLogin(
   return {
     ok: true,
   };
-}
+};
