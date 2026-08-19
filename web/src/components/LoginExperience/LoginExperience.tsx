@@ -10,14 +10,8 @@ import type {
 import { LoginForm } from '../LoginForm/LoginForm';
 import { RaccoonMascot } from '../RaccoonMascot/RaccoonMascot';
 
+import type { SubmitState } from './loginExperience.types';
 import styles from './LoginExperience.module.css';
-
-export type SubmitState =
-  | 'idle'
-  | 'checking'
-  | 'success-animation'
-  | 'failure-animation'
-  | 'success';
 
 interface LoginExperienceProps {
   authenticate?: AuthenticateLogin;

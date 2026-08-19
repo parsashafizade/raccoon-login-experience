@@ -7,8 +7,16 @@ interface UsePointerGazeOptions {
   passwordLength: number;
 }
 
-const clamp = (value: number, min: number, max: number) =>
-  Math.min(Math.max(value, min), max);
+interface PointerPosition {
+  x: number;
+  y: number;
+}
+
+const clamp = (
+  value: number,
+  min: number,
+  max: number,
+) => Math.min(Math.max(value, min), max);
 
 export function usePointerGaze({
   usernameFocused,
@@ -18,12 +26,15 @@ export function usePointerGaze({
 }: UsePointerGazeOptions) {
   const mascotRef = useRef<HTMLDivElement>(null);
 
-  const latestPointer = useRef({
-    x: window.innerWidth / 2,
-    y: window.innerHeight / 2,
+  const latestPointer = useRef<PointerPosition>({
+    x: 0,
+    y: 0,
   });
 
-  const inputFocused = usernameFocused || passwordFocused;
+  const pointerInitialized = useRef(false);
+
+  const inputFocused =
+    usernameFocused || passwordFocused;
 
   useEffect(() => {
     const mascot = mascotRef.current;
@@ -34,20 +45,36 @@ export function usePointerGaze({
 
     let animationFrameId: number | null = null;
 
+    if (!pointerInitialized.current) {
+      latestPointer.current = {
+        x: window.innerWidth / 2,
+        y: window.innerHeight / 2,
+      };
+
+      pointerInitialized.current = true;
+    }
+
     const updatePointerGaze = () => {
       const bounds = mascot.getBoundingClientRect();
 
-      const centerX = bounds.left + bounds.width / 2;
-      const centerY = bounds.top + bounds.height * 0.43;
+      const centerX =
+        bounds.left + bounds.width / 2;
+
+      const centerY =
+        bounds.top + bounds.height * 0.43;
 
       const horizontal = clamp(
-        (latestPointer.current.x - centerX) / (window.innerWidth * 0.3),
+        (
+          latestPointer.current.x - centerX
+        ) / (window.innerWidth * 0.3),
         -1,
         1,
       );
 
       const vertical = clamp(
-        (latestPointer.current.y - centerY) / (window.innerHeight * 0.3),
+        (
+          latestPointer.current.y - centerY
+        ) / (window.innerHeight * 0.3),
         -1,
         1,
       );
@@ -65,7 +92,20 @@ export function usePointerGaze({
       animationFrameId = null;
     };
 
-    const handlePointerMove = (event: PointerEvent) => {
+    const requestGazeUpdate = () => {
+      if (animationFrameId !== null) {
+        return;
+      }
+
+      animationFrameId =
+        window.requestAnimationFrame(
+          updatePointerGaze,
+        );
+    };
+
+    const handlePointerMove = (
+      event: PointerEvent,
+    ) => {
       if (event.pointerType !== 'mouse') {
         return;
       }
@@ -75,28 +115,48 @@ export function usePointerGaze({
         y: event.clientY,
       };
 
-      if (inputFocused) {
-        return;
-      }
-
-      if (animationFrameId === null) {
-        animationFrameId = requestAnimationFrame(updatePointerGaze);
+      if (!inputFocused) {
+        requestGazeUpdate();
       }
     };
 
-    window.addEventListener('pointermove', handlePointerMove, {
-      passive: true,
-    });
+    const handleResize = () => {
+      if (!inputFocused) {
+        requestGazeUpdate();
+      }
+    };
+
+    window.addEventListener(
+      'pointermove',
+      handlePointerMove,
+      { passive: true },
+    );
+
+    window.addEventListener(
+      'resize',
+      handleResize,
+      { passive: true },
+    );
 
     if (!inputFocused) {
       updatePointerGaze();
     }
 
     return () => {
-      window.removeEventListener('pointermove', handlePointerMove);
+      window.removeEventListener(
+        'pointermove',
+        handlePointerMove,
+      );
+
+      window.removeEventListener(
+        'resize',
+        handleResize,
+      );
 
       if (animationFrameId !== null) {
-        cancelAnimationFrame(animationFrameId);
+        window.cancelAnimationFrame(
+          animationFrameId,
+        );
       }
     };
   }, [inputFocused]);
@@ -108,15 +168,21 @@ export function usePointerGaze({
       return;
     }
 
-    const bounds = mascot.getBoundingClientRect();
+    const bounds =
+      mascot.getBoundingClientRect();
 
     const textLength = passwordFocused
       ? passwordLength
       : usernameLength;
 
-    const progress = clamp(textLength / 14, 0, 1);
+    const progress = clamp(
+      textLength / 14,
+      0,
+      1,
+    );
 
-    const horizontal = -0.9 + progress * 1.8;
+    const horizontal =
+      -0.9 + progress * 1.8;
 
     mascot.style.setProperty(
       '--pupil-x',

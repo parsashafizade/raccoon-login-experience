@@ -14,9 +14,6 @@
   color: #a9b4c5;
 }
 
-.field > span:first-child {
-  font-size: 0.9rem;
-}
 
 
 .field input {
@@ -1457,4 +1454,9 @@
   .socialButton {
     transition: none;
   }
+}
+
+.fieldLabel {
+  color: inherit;
+  font-size: 0.9rem;
 }

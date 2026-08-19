@@ -4,7 +4,7 @@ import type {
   AuthProvider,
   LoginFieldErrors,
 } from '../../features/auth/auth.types';
-import type { SubmitState } from '../LoginExperience/LoginExperience';
+import type { SubmitState } from '../LoginExperience/loginExperience.types';
 
 import styles from './LoginForm.module.css';
 
@@ -93,30 +93,54 @@ export function LoginForm({
   const showSignInStatus = isBusy && !hasVisibleError;
 
   return (
-    <form className={styles.form} onSubmit={handleSubmit}>
-      <label className={styles.field}>
-        <span>Username</span>
+    <form
+      className={styles.form}
+      onSubmit={handleSubmit}
+      aria-busy={isBusy}
+    >
+      <div className={styles.field}>
+        <label
+          className={styles.fieldLabel}
+          htmlFor="username"
+        >
+          Username
+        </label>
 
         <input
+          id="username"
           type="text"
           name="username"
           autoComplete="username"
           value={username}
           aria-invalid={Boolean(fieldErrors.username)}
+          aria-describedby={
+            fieldErrors.username
+              ? 'username-error'
+              : undefined
+          }
           onChange={handleUsernameChange}
           onFocus={() => onUsernameFocusChange(true)}
           onBlur={() => onUsernameFocusChange(false)}
         />
 
         {fieldErrors.username && (
-          <span className={styles.fieldError}>
+          <span
+            id="username-error"
+            className={styles.fieldError}
+            role="alert"
+          >
             {fieldErrors.username}
           </span>
         )}
-      </label>
+      </div>
 
-      <label className={styles.field}>
-        <span>Password</span>
+      <div className={styles.field}>
+        <label
+          className={styles.fieldLabel}
+          htmlFor="password"
+        >
+          Password
+        </label>
 
         <div
           className={styles.passwordField}
@@ -132,11 +156,17 @@ export function LoginForm({
           }}
         >
           <input
+            id="password"
             type={passwordVisible ? 'text' : 'password'}
             name="password"
             autoComplete="current-password"
             value={password}
             aria-invalid={Boolean(fieldErrors.password)}
+            aria-describedby={
+              fieldErrors.password
+                ? 'password-error'
+                : undefined
+            }
             onChange={handlePasswordChange}
           />
 
@@ -150,6 +180,7 @@ export function LoginForm({
                 : 'Show password'
             }
             aria-pressed={passwordVisible}
+            aria-controls="password" 
           >
             {passwordVisible ? (
               <svg
@@ -176,11 +207,15 @@ export function LoginForm({
         </div>
 
         {fieldErrors.password && (
-          <span className={styles.fieldError}>
+          <span
+            id="password-error"
+            className={styles.fieldError}
+            role="alert"
+          >
             {fieldErrors.password}
           </span>
         )}
-      </label>
+      </div>
 
       <div className={styles.options}>
         <label className={styles.remember}>
@@ -269,7 +304,11 @@ export function LoginForm({
       </button>
 
       {showSignInStatus && (
-        <p className={styles.signInStatus} aria-live="polite">
+        <p
+          className={styles.signInStatus}
+          role="status"
+          aria-live="polite"
+        >
           Signing you in...
         </p>
       )}
