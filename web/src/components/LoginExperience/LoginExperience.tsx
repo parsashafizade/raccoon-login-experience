@@ -1,11 +1,27 @@
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
+import { authenticateLogin } from '../../features/auth/auth.service';
+import type { LoginFieldErrors } from '../../features/auth/auth.types';
 import { LoginForm } from '../LoginForm/LoginForm';
 import { RaccoonMascot } from '../RaccoonMascot/RaccoonMascot';
 
 import styles from './LoginExperience.module.css';
 
-type SubmitState = 'idle' | 'submitting' | 'success';
+export type SubmitState =
+  | 'idle'
+  | 'checking'
+  | 'success-animation'
+  | 'failure-animation'
+  | 'success';
+
+const SUCCESS_ANIMATION_DURATION = 2400;
+const FAILURE_ANIMATION_DURATION = 3800;
+
+/*
+ * The error is intentionally revealed only after
+ * the character reaches the door and fails to open it.
+ */
+const FAILURE_FEEDBACK_DELAY = 2050;
 
 export function LoginExperience() {
   const [username, setUsername] = useState('');
@@ -19,36 +35,93 @@ export function LoginExperience() {
   const [submitState, setSubmitState] =
     useState<SubmitState>('idle');
 
-  const resetSuccess = () => {
+  const [fieldErrors, setFieldErrors] =
+    useState<LoginFieldErrors>({});
+
+  const [authMessage, setAuthMessage] = useState('');
+
+  const timersRef = useRef<number[]>([]);
+
+  const clearScheduledTasks = () => {
+    timersRef.current.forEach((timer) => {
+      window.clearTimeout(timer);
+    });
+
+    timersRef.current = [];
+  };
+
+  const schedule = (callback: () => void, delay: number) => {
+    const timer = window.setTimeout(callback, delay);
+    timersRef.current.push(timer);
+  };
+
+  useEffect(() => {
+    return clearScheduledTasks;
+  }, []);
+
+  const resetFeedback = () => {
+    setFieldErrors({});
+    setAuthMessage('');
+
     if (submitState === 'success') {
       setSubmitState('idle');
     }
   };
 
   const handleUsernameChange = (value: string) => {
-    resetSuccess();
+    resetFeedback();
     setUsername(value);
   };
 
   const handlePasswordChange = (value: string) => {
-    resetSuccess();
+    resetFeedback();
     setPassword(value);
   };
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     if (
-      submitState !== 'idle' ||
-      !username.trim() ||
-      !password
+      submitState !== 'idle' &&
+      submitState !== 'success'
     ) {
       return;
     }
 
-    setSubmitState('submitting');
+    clearScheduledTasks();
 
-    window.setTimeout(() => {
-      setSubmitState('success');
-    }, 2400);
+    setFieldErrors({});
+    setAuthMessage('');
+    setSubmitState('checking');
+
+    const result = await authenticateLogin({
+      username,
+      password,
+      rememberMe,
+    });
+
+    if (result.ok) {
+      setSubmitState('success-animation');
+
+      schedule(() => {
+        setSubmitState('success');
+      }, SUCCESS_ANIMATION_DURATION);
+
+      return;
+    }
+
+    /*
+     * Start the failure animation first.
+     * Do NOT reveal validation/API feedback yet.
+     */
+    setSubmitState('failure-animation');
+
+    schedule(() => {
+      setFieldErrors(result.fieldErrors ?? {});
+      setAuthMessage(result.message);
+    }, FAILURE_FEEDBACK_DELAY);
+
+    schedule(() => {
+      setSubmitState('idle');
+    }, FAILURE_ANIMATION_DURATION);
   };
 
   return (
@@ -75,14 +148,16 @@ export function LoginExperience() {
           rememberMe={rememberMe}
           passwordVisible={passwordVisible}
           submitState={submitState}
+          fieldErrors={fieldErrors}
+          authMessage={authMessage}
           onUsernameChange={handleUsernameChange}
           onUsernameFocusChange={setUsernameFocused}
           onPasswordChange={handlePasswordChange}
+          onPasswordFocusChange={setPasswordFocused}
           onRememberMeChange={setRememberMe}
           onPasswordVisibilityToggle={() =>
             setPasswordVisible((visible) => !visible)
           }
-          onPasswordFocusChange={setPasswordFocused}
           onSubmit={handleSubmit}
         />
       </div>

@@ -1,8 +1,9 @@
 import type { ChangeEvent, FormEvent } from 'react';
 
-import styles from './LoginForm.module.css';
+import type { LoginFieldErrors } from '../../features/auth/auth.types';
+import type { SubmitState } from '../LoginExperience/LoginExperience';
 
-type SubmitState = 'idle' | 'submitting' | 'success';
+import styles from './LoginForm.module.css';
 
 interface LoginFormProps {
   username: string;
@@ -10,6 +11,8 @@ interface LoginFormProps {
   rememberMe: boolean;
   passwordVisible: boolean;
   submitState: SubmitState;
+  fieldErrors: LoginFieldErrors;
+  authMessage: string;
 
   onUsernameChange: (value: string) => void;
   onUsernameFocusChange: (focused: boolean) => void;
@@ -28,6 +31,8 @@ export function LoginForm({
   rememberMe,
   passwordVisible,
   submitState,
+  fieldErrors,
+  authMessage,
   onUsernameChange,
   onUsernameFocusChange,
   onPasswordChange,
@@ -53,6 +58,20 @@ export function LoginForm({
     onPasswordChange(event.target.value);
   };
 
+  const isBusy =
+    submitState === 'checking' ||
+    submitState === 'success-animation' ||
+    submitState === 'failure-animation';
+
+  const isAnimating =
+    submitState === 'success-animation' ||
+    submitState === 'failure-animation';
+
+  const animationResult =
+    submitState === 'failure-animation'
+      ? 'failure'
+      : 'success';
+
   return (
     <form className={styles.form} onSubmit={handleSubmit}>
       <label className={styles.field}>
@@ -63,11 +82,17 @@ export function LoginForm({
           name="username"
           autoComplete="username"
           value={username}
-          required
+          aria-invalid={Boolean(fieldErrors.username)}
           onChange={handleUsernameChange}
           onFocus={() => onUsernameFocusChange(true)}
           onBlur={() => onUsernameFocusChange(false)}
         />
+
+        {fieldErrors.username && (
+          <span className={styles.fieldError}>
+            {fieldErrors.username}
+          </span>
+        )}
       </label>
 
       <label className={styles.field}>
@@ -91,7 +116,7 @@ export function LoginForm({
             name="password"
             autoComplete="current-password"
             value={password}
-            required
+            aria-invalid={Boolean(fieldErrors.password)}
             onChange={handlePasswordChange}
           />
 
@@ -103,6 +128,12 @@ export function LoginForm({
             {passwordVisible ? 'Hide' : 'Show'}
           </button>
         </div>
+
+        {fieldErrors.password && (
+          <span className={styles.fieldError}>
+            {fieldErrors.password}
+          </span>
+        )}
       </label>
 
       <div className={styles.options}>
@@ -126,15 +157,27 @@ export function LoginForm({
         </button>
       </div>
 
+      {authMessage &&
+        !fieldErrors.username &&
+        !fieldErrors.password && (
+          <p className={styles.authMessage} role="alert">
+            {authMessage}
+          </p>
+        )}
+
       <button
         className={styles.submitButton}
         type="submit"
         data-state={submitState}
-        disabled={submitState !== 'idle'}
+        disabled={isBusy}
         aria-live="polite"
       >
-        {submitState === 'submitting' ? (
-          <span className={styles.entryScene} aria-hidden="true">
+        {isAnimating ? (
+          <span
+            className={styles.entryScene}
+            data-result={animationResult}
+            aria-hidden="true"
+          >
             <span className={styles.walker}>
               <span className={styles.personHead} />
 
@@ -142,6 +185,7 @@ export function LoginForm({
                 <span
                   className={`${styles.personArm} ${styles.armLeft}`}
                 />
+
                 <span
                   className={`${styles.personArm} ${styles.armRight}`}
                 />
@@ -149,14 +193,19 @@ export function LoginForm({
                 <span
                   className={`${styles.personLeg} ${styles.legLeft}`}
                 />
+
                 <span
                   className={`${styles.personLeg} ${styles.legRight}`}
                 />
               </span>
             </span>
 
-            <span className={styles.doorLight} />
-            <span className={styles.doorGlow} />
+            {animationResult === 'success' && (
+              <>
+                <span className={styles.doorLight} />
+                <span className={styles.doorGlow} />
+              </>
+            )}
 
             <span className={styles.doorFrame}>
               <span className={styles.door}>
@@ -166,9 +215,11 @@ export function LoginForm({
           </span>
         ) : (
           <span className={styles.buttonLabel}>
-            {submitState === 'success'
-              ? 'Welcome back!'
-              : 'Sign in'}
+            {submitState === 'checking'
+              ? 'Checking...'
+              : submitState === 'success'
+                ? 'Welcome back!'
+                : 'Sign in'}
           </span>
         )}
       </button>

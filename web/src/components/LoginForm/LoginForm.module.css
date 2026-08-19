@@ -90,6 +90,22 @@
 
 /* Sign-in door animation */
 
+.fieldError {
+  display: block;
+  margin-top: 7px;
+  color: #ff9a9a;
+  font-size: 0.78rem;
+  line-height: 1.35;
+}
+
+.authMessage {
+  margin: -4px 0 0;
+  color: #ffadad;
+  font-size: 0.82rem;
+  line-height: 1.4;
+  text-align: center;
+}
+
 .submitButton {
   position: relative;
   overflow: hidden;
@@ -105,16 +121,26 @@
   transform: scale(0.985);
 }
 
-.submitButton[data-state='submitting'] {
+.submitButton[data-state='checking'],
+.submitButton[data-state='success-animation'],
+.submitButton[data-state='failure-animation'] {
   cursor: wait;
+}
+
+.submitButton[data-state='success-animation'] {
   background: linear-gradient(
     180deg,
     rgba(82, 132, 224, 0.95),
     rgba(55, 102, 197, 0.95)
   );
-  box-shadow:
-    0 10px 24px rgba(56, 104, 201, 0.28),
-    inset 0 1px 0 rgba(255, 255, 255, 0.14);
+}
+
+.submitButton[data-state='failure-animation'] {
+  background: linear-gradient(
+    180deg,
+    rgba(92, 116, 160, 0.96),
+    rgba(61, 82, 123, 0.96)
+  );
 }
 
 .entryScene {
@@ -126,13 +152,30 @@
   color: #f7fbff;
 }
 
+.entryScene::after {
+  content: '';
+  position: absolute;
+  left: 4px;
+  right: 5px;
+  bottom: 2px;
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.07) 25%,
+    rgba(255, 255, 255, 0.11) 70%,
+    transparent
+  );
+  pointer-events: none;
+}
+
 .walker {
   position: absolute;
   left: 4px;
   bottom: 3px;
   width: 16px;
   height: 25px;
-  animation: walkToDoor 2.1s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+  transform-origin: 50% 100%;
 }
 
 .personHead {
@@ -143,7 +186,7 @@
   height: 7px;
   border-radius: 50%;
   background: currentColor;
-  box-shadow: 0 0 10px rgba(255, 255, 255, 0.12);
+  transform-origin: 50% 100%;
 }
 
 .personBody {
@@ -154,6 +197,7 @@
   height: 10px;
   border-radius: 999px;
   background: currentColor;
+  transform-origin: 50% 0;
 }
 
 .personArm,
@@ -172,12 +216,10 @@
 
 .armLeft {
   left: -1px;
-  animation: armSwing 240ms ease-in-out infinite alternate;
 }
 
 .armRight {
   right: -1px;
-  animation: armSwing 240ms ease-in-out infinite alternate-reverse;
 }
 
 .personLeg {
@@ -187,18 +229,71 @@
 
 .legLeft {
   left: 0;
-  animation: legSwing 240ms ease-in-out infinite alternate;
 }
 
 .legRight {
   right: 0;
+}
+
+/* Success walk */
+
+.entryScene[data-result='success'] .walker {
+  animation: walkToDoorSuccess 2.4s
+    cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+.entryScene[data-result='success'] .armLeft {
+  animation: armSwing 240ms ease-in-out infinite alternate;
+}
+
+.entryScene[data-result='success'] .armRight {
+  animation: armSwing 240ms ease-in-out infinite alternate-reverse;
+}
+
+.entryScene[data-result='success'] .legLeft {
+  animation: legSwing 240ms ease-in-out infinite alternate;
+}
+
+.entryScene[data-result='success'] .legRight {
   animation: legSwing 240ms ease-in-out infinite alternate-reverse;
 }
+
+/* Failure walk */
+
+.entryScene[data-result='failure'] .walker {
+  animation: walkToDoorFailure 3.2s ease-in-out forwards;
+}
+
+.entryScene[data-result='failure'] .personHead {
+  animation: disappointedHead 3.2s ease-in-out forwards;
+}
+
+.entryScene[data-result='failure'] .personBody {
+  animation: disappointedBody 3.2s ease-in-out forwards;
+}
+
+.entryScene[data-result='failure'] .armLeft {
+  animation: failureLeftArm 3.2s ease-in-out forwards;
+}
+
+.entryScene[data-result='failure'] .armRight {
+  animation: failureScratch 3.2s ease-in-out forwards;
+}
+
+.entryScene[data-result='failure'] .legLeft {
+  animation: failureLegLeft 3.2s ease-in-out forwards;
+}
+
+.entryScene[data-result='failure'] .legRight {
+  animation: failureLegRight 3.2s ease-in-out forwards;
+}
+
+/* Door */
 
 .doorFrame {
   position: absolute;
   right: 8px;
-  bottom: 1px;
+  bottom: 2px;
   width: 26px;
   height: 30px;
   box-sizing: border-box;
@@ -206,8 +301,7 @@
   border-bottom: 0;
   border-radius: 2px 2px 0 0;
   background: rgba(255, 255, 255, 0.06);
-  overflow: visible;
-  perspective: 120px;
+  perspective: 140px;
 }
 
 .door {
@@ -222,14 +316,22 @@
   box-shadow:
     inset 0 0 0 1px rgba(255, 255, 255, 0.08),
     0 0 0 1px rgba(12, 26, 46, 0.32);
-  transform-origin: left center;
-  animation: doorSequence 2.1s ease-in-out forwards;
+  transform-origin: right center;
+}
+
+.entryScene[data-result='success'] .door {
+  animation: doorSequence 2.4s
+    cubic-bezier(0.45, 0, 0.2, 1) forwards;
+}
+
+.entryScene[data-result='failure'] .door {
+  animation: lockedDoorSequence 3.2s ease-in-out forwards;
 }
 
 .doorKnob {
   position: absolute;
   top: 50%;
-  right: 3px;
+  left: 3px;
   width: 3px;
   height: 3px;
   border-radius: 50%;
@@ -238,43 +340,68 @@
   transform: translateY(-50%);
 }
 
+.entryScene[data-result='failure'] .doorKnob {
+  animation: lockedKnobSequence 3.2s ease-in-out forwards;
+}
+
+/* Final success light values */
+
 .doorLight {
   position: absolute;
-  right: 33px;
-  bottom: 3px;
-  width: 54px;
-  height: 34px;
+
+  right: 17px;
+  bottom: -5px;
+
+  width: 86px;
+  height: 40px;
+
   background: linear-gradient(
-    180deg,
-    rgba(255, 250, 238, 0.92),
-    rgba(255, 243, 214, 0.68) 42%,
-    rgba(255, 233, 184, 0.22) 100%
+    105deg,
+    rgba(255, 232, 181, 0.03) 0%,
+    rgba(255, 235, 190, 0.10) 28%,
+    rgba(255, 240, 207, 0.28) 58%,
+    rgba(255, 246, 224, 0.58) 82%,
+    rgba(255, 250, 238, 0.82) 100%
   );
-  clip-path: polygon(100% 8%, 12% 0, 0 100%, 100% 86%);
-  filter: blur(2px);
+
+  clip-path: polygon(
+    100% 7%,
+    100% 70%,
+    0 100%,
+    17% 69%
+  );
+
   transform-origin: right center;
-  transform: perspective(120px) rotateY(18deg) skewX(-10deg) scaleX(0.05);
+  transform: scaleX(0.04);
+
   opacity: 0;
-  animation: doorLightSequence 2.1s ease-in-out forwards;
+  filter: blur(1.4px);
+
+  animation: doorLightSequence 2.4s
+    cubic-bezier(0.45, 0, 0.2, 1) forwards;
+
   pointer-events: none;
 }
 
 .doorGlow {
   position: absolute;
-  right: 14px;
-  bottom: -1px;
+  right: 20px;
+  bottom: 2px;
   width: 34px;
-  height: 10px;
+  height: 7px;
   border-radius: 50%;
   background: radial-gradient(
-    ellipse at center,
-    rgba(255, 241, 204, 0.42),
-    rgba(255, 241, 204, 0.16) 56%,
-    rgba(255, 241, 204, 0) 78%
+    ellipse at 75% 50%,
+    rgba(255, 246, 222, 0.5),
+    rgba(255, 238, 197, 0.18) 46%,
+    rgba(255, 238, 197, 0) 76%
   );
-  filter: blur(3px);
+  filter: blur(1.8px);
+  transform-origin: right center;
+  transform: scaleX(0.1);
   opacity: 0;
-  animation: doorGlowSequence 2.1s ease-in-out forwards;
+  animation: doorGlowSequence 2.4s
+    cubic-bezier(0.45, 0, 0.2, 1) forwards;
   pointer-events: none;
 }
 
@@ -283,275 +410,282 @@
   animation: buttonLabelEnter 220ms ease-out;
 }
 
-@keyframes walkToDoor {
+@keyframes walkToDoorSuccess {
   0% {
     transform: translateX(0);
     opacity: 1;
   }
 
-  52% {
+  47% {
     transform: translateX(82px);
     opacity: 1;
   }
 
-  68% {
+  60% {
     transform: translateX(96px);
     opacity: 1;
   }
 
-  80% {
+  74% {
     transform: translateX(108px) scale(0.9);
     opacity: 1;
   }
 
-  88%,
+  84%,
   100% {
-    transform: translateX(118px) scale(0.72);
+    transform: translateX(117px) scale(0.74);
     opacity: 0;
   }
 }
 
-@keyframes doorSequence {
+@keyframes walkToDoorFailure {
+  0% {
+    transform: translateX(0) scaleX(1);
+  }
+
+  34% {
+    transform: translateX(91px) scaleX(1);
+  }
+
+  42% {
+    transform: translateX(101px) scaleX(1);
+  }
+
+  /* Tries the locked door */
+  50% {
+    transform: translateX(101px) scaleX(1);
+  }
+
+  /* Confused pause */
+  66% {
+    transform:
+      translateX(99px)
+      translateY(1px)
+      rotate(2deg)
+      scaleX(1);
+  }
+
+  /* Turns around */
+  74% {
+    transform:
+      translateX(91px)
+      translateY(1px)
+      scaleX(-1);
+  }
+
+  /* Walks back */
+  92% {
+    transform:
+      translateX(18px)
+      translateY(1px)
+      scaleX(-1);
+  }
+
+  100% {
+    transform:
+      translateX(0)
+      translateY(1px)
+      scaleX(-1);
+  }
+}
+
+@keyframes disappointedHead {
+  0%,
+  48% {
+    transform: rotate(0deg);
+  }
+
+  56% {
+    transform: rotate(8deg);
+  }
+
+  64% {
+    transform: rotate(-7deg);
+  }
+
+  70% {
+    transform: rotate(9deg) translateY(1px);
+  }
+
+  100% {
+    transform: rotate(5deg) translateY(1px);
+  }
+}
+
+@keyframes disappointedBody {
+  0%,
+  52% {
+    transform: rotate(0deg);
+  }
+
+  63%,
+  72% {
+    transform: rotate(8deg);
+  }
+
+  100% {
+    transform: rotate(3deg);
+  }
+}
+
+@keyframes failureScratch {
+  0%,
+  51% {
+    transform: rotate(0deg);
+  }
+
+  57% {
+    transform: rotate(-128deg);
+  }
+
+  61% {
+    transform: rotate(-147deg);
+  }
+
+  65% {
+    transform: rotate(-125deg);
+  }
+
+  69% {
+    transform: rotate(-148deg);
+  }
+
+  73% {
+    transform: rotate(-128deg);
+  }
+
+  80%,
+  100% {
+    transform: rotate(12deg);
+  }
+}
+
+@keyframes failureLeftArm {
+  0%,
+  38% {
+    transform: rotate(-24deg);
+  }
+
+  44%,
+  52% {
+    transform: rotate(58deg);
+  }
+
+  60%,
+  74% {
+    transform: rotate(18deg);
+  }
+
+  80%,
+  100% {
+    transform: rotate(-22deg);
+  }
+}
+
+@keyframes failureLegLeft {
+  0%,
+  38% {
+    transform: rotate(24deg);
+  }
+
+  42%,
+  74% {
+    transform: rotate(3deg);
+  }
+
+  80% {
+    transform: rotate(-24deg);
+  }
+
+  85% {
+    transform: rotate(24deg);
+  }
+
+  90% {
+    transform: rotate(-24deg);
+  }
+
+  95%,
+  100% {
+    transform: rotate(24deg);
+  }
+}
+
+@keyframes failureLegRight {
+  0%,
+  38% {
+    transform: rotate(-24deg);
+  }
+
+  42%,
+  74% {
+    transform: rotate(-3deg);
+  }
+
+  80% {
+    transform: rotate(24deg);
+  }
+
+  85% {
+    transform: rotate(-24deg);
+  }
+
+  90% {
+    transform: rotate(24deg);
+  }
+
+  95%,
+  100% {
+    transform: rotate(-24deg);
+  }
+}
+
+@keyframes lockedDoorSequence {
   0%,
   40% {
     transform: rotateY(0deg);
   }
 
-  52%,
-  82% {
-    transform: rotateY(-70deg);
+  45% {
+    transform: rotateY(4deg);
   }
 
-  94%,
+  48% {
+    transform: rotateY(-2deg);
+  }
+
+  51% {
+    transform: rotateY(3deg);
+  }
+
+  55%,
   100% {
     transform: rotateY(0deg);
   }
 }
 
-@keyframes doorLightSequence {
+@keyframes lockedKnobSequence {
   0%,
-  44% {
-    opacity: 0;
-    transform: perspective(120px) rotateY(18deg) skewX(-10deg) scaleX(0.05);
+  41% {
+    transform: translateY(-50%) rotate(0deg);
   }
 
-  56% {
-    opacity: 0.42;
-    transform: perspective(120px) rotateY(18deg) skewX(-10deg) scaleX(0.55);
+  45% {
+    transform: translateY(-50%) rotate(25deg);
   }
 
-  66%,
-  82% {
-    opacity: 0.82;
-    transform: perspective(120px) rotateY(18deg) skewX(-10deg) scaleX(1);
+  48% {
+    transform: translateY(-50%) rotate(-18deg);
   }
 
-  94%,
+  52% {
+    transform: translateY(-50%) rotate(18deg);
+  }
+
+  56%,
   100% {
-    opacity: 0;
-    transform: perspective(120px) rotateY(18deg) skewX(-10deg) scaleX(0.08);
+    transform: translateY(-50%) rotate(0deg);
   }
-}
-
-@keyframes doorGlowSequence {
-  0%,
-  46% {
-    opacity: 0;
-    transform: scaleX(0.2);
-  }
-
-  60%,
-  82% {
-    opacity: 1;
-    transform: scaleX(1);
-  }
-
-  94%,
-  100% {
-    opacity: 0;
-    transform: scaleX(0.24);
-  }
-}
-
-@keyframes legSwing {
-  from {
-    transform: rotate(25deg);
-  }
-
-  to {
-    transform: rotate(-25deg);
-  }
-}
-
-@keyframes armSwing {
-  from {
-    transform: rotate(-28deg);
-  }
-
-  to {
-    transform: rotate(28deg);
-  }
-}
-
-@keyframes buttonLabelEnter {
-  from {
-    opacity: 0;
-    transform: translateY(3px);
-  }
-
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .submitButton,
-  .buttonLabel {
-    transition: none;
-    animation: none;
-  }
-
-  .walker,
-  .personArm,
-  .personLeg,
-  .door,
-  .doorLight,
-  .doorGlow {
-    animation-duration: 1ms;
-  }
-}
-
-/* Refined door scene */
-
-.entryScene {
-  position: relative;
-  width: 164px;
-  height: 34px;
-}
-
-/* Subtle shared ground plane */
-.entryScene::after {
-  content: '';
-  position: absolute;
-  left: 4px;
-  right: 5px;
-  bottom: 2px;
-  height: 1px;
-  background: linear-gradient(
-    90deg,
-    transparent,
-    rgba(255, 255, 255, 0.08) 25%,
-    rgba(255, 255, 255, 0.12) 70%,
-    transparent
-  );
-  pointer-events: none;
-}
-
-.walker {
-  bottom: 3px;
-  animation-duration: 2.4s;
-}
-
-/* Door frame stays fixed */
-.doorFrame {
-  right: 8px;
-  bottom: 2px;
-  width: 26px;
-  height: 30px;
-  perspective: 140px;
-}
-
-/*
- * Hinge is now on the RIGHT.
- */
-.door {
-  transform-origin: right center;
-  animation: doorSequence 2.4s
-    cubic-bezier(0.45, 0, 0.2, 1) forwards;
-}
-
-/*
- * Floor-projected light.
- * Narrow at the doorway, wider as it reaches outward.
- */
-.doorLight {
-  position: absolute;
-
-  right: 29px;
-  bottom: 2px;
-
-  width: 82px;
-  height: 11px;
-
-  border-radius: 0;
-
-  background: linear-gradient(
-    90deg,
-    rgba(255, 232, 180, 0),
-    rgba(255, 235, 190, 0.08) 20%,
-    rgba(255, 239, 202, 0.23) 48%,
-    rgba(255, 244, 219, 0.52) 76%,
-    rgba(255, 248, 231, 0.78) 100%
-  );
-
-  /*
-   * The beam exists only on the floor.
-   * Its bottom edge never drops below the character's feet.
-   */
-  clip-path: polygon(
-    100% 28%,
-    100% 78%,
-    0 100%,
-    13% 4%
-  );
-
-  transform-origin: right bottom;
-  transform: scaleX(0.04);
-  opacity: 0;
-
-  filter: blur(1.2px);
-
-  animation: doorLightSequence 2.4s
-    cubic-bezier(0.45, 0, 0.2, 1) forwards;
-
-  pointer-events: none;
-}
-
-/*
- * Small threshold reflection.
- * This stays close to the door instead of becoming
- * a generic glow around the entire scene.
- */
-.doorGlow {
-  position: absolute;
-
-  right: 20px;
-  bottom: 2px;
-
-  width: 34px;
-  height: 7px;
-
-  border-radius: 50%;
-
-  background: radial-gradient(
-    ellipse at 75% 50%,
-    rgba(255, 246, 222, 0.5),
-    rgba(255, 238, 197, 0.18) 46%,
-    rgba(255, 238, 197, 0) 76%
-  );
-
-  filter: blur(1.8px);
-
-  transform-origin: right center;
-  transform: scaleX(0.1);
-
-  opacity: 0;
-
-  animation: doorGlowSequence 2.4s
-    cubic-bezier(0.45, 0, 0.2, 1) forwards;
-
-  pointer-events: none;
 }
 
 @keyframes doorSequence {
@@ -581,7 +715,6 @@
     transform: scaleX(0.04);
   }
 
-  /* Door begins opening */
   50% {
     opacity: 0.18;
     transform: scaleX(0.28);
@@ -592,14 +725,12 @@
     transform: scaleX(0.72);
   }
 
-  /* Door fully open */
   64%,
   79% {
     opacity: 0.86;
     transform: scaleX(1);
   }
 
-  /* Door starts closing */
   87% {
     opacity: 0.36;
     transform: scaleX(0.48);
@@ -642,94 +773,653 @@
   }
 }
 
-@media (prefers-reduced-motion: reduce) {
-  .walker,
-  .door,
-  .doorLight,
-  .doorGlow {
-    animation-duration: 1ms;
+@keyframes legSwing {
+  from {
+    transform: rotate(25deg);
+  }
+
+  to {
+    transform: rotate(-25deg);
   }
 }
 
-.walker {
-  animation: walkToDoor 2.4s
+@keyframes armSwing {
+  from {
+    transform: rotate(-28deg);
+  }
+
+  to {
+    transform: rotate(28deg);
+  }
+}
+
+@keyframes buttonLabelEnter {
+  from {
+    opacity: 0;
+    transform: translateY(3px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .walker,
+  .personHead,
+  .personBody,
+  .personArm,
+  .personLeg,
+  .door,
+  .doorKnob,
+  .doorLight,
+  .doorGlow {
+    animation-duration: 1ms !important;
+  }
+}
+
+/* Enhanced failed sign-in sequence */
+
+.entryScene[data-result='failure'] .walker {
+  animation: failedEntryCharacter 3.8s
     cubic-bezier(0.4, 0, 0.2, 1) forwards;
 }
 
-@keyframes walkToDoor {
+/*
+ * Right arm:
+ * walk -> reach handle -> pull/push -> recoil
+ * -> scratch head -> return to walking pose
+ */
+.entryScene[data-result='failure'] .armRight {
+  animation: failedEntryRightArm 3.8s ease-in-out forwards;
+}
+
+/*
+ * Left arm adds a second push so the attempt
+ * feels intentional rather than decorative.
+ */
+.entryScene[data-result='failure'] .armLeft {
+  animation: failedEntryLeftArm 3.8s ease-in-out forwards;
+}
+
+.entryScene[data-result='failure'] .personHead {
+  animation: failedEntryHead 3.8s ease-in-out forwards;
+}
+
+.entryScene[data-result='failure'] .personBody {
+  animation: failedEntryBody 3.8s ease-in-out forwards;
+}
+
+.entryScene[data-result='failure'] .legLeft {
+  animation: failedEntryLeftLeg 3.8s ease-in-out forwards;
+}
+
+.entryScene[data-result='failure'] .legRight {
+  animation: failedEntryRightLeg 3.8s ease-in-out forwards;
+}
+
+/*
+ * The whole frame reacts to the character's attempts.
+ */
+.entryScene[data-result='failure'] .doorFrame {
+  animation: lockedFrameReaction 3.8s ease-in-out forwards;
+}
+
+/*
+ * Door remains locked.
+ * It gives slightly under pressure, shakes,
+ * and briefly flashes red.
+ */
+.entryScene[data-result='failure'] .door {
+  animation: lockedDoorReaction 3.8s ease-in-out forwards;
+}
+
+.entryScene[data-result='failure'] .doorKnob {
+  animation: lockedKnobReaction 3.8s ease-in-out forwards;
+}
+
+
+/* Character path */
+
+@keyframes failedEntryCharacter {
+  /* Walk toward door */
   0% {
-    transform: translateX(0);
-    opacity: 1;
+    transform: translateX(0) scaleX(1);
   }
 
-  /* Longer walk */
-  47% {
-    transform: translateX(82px);
-    opacity: 1;
+  15% {
+    transform: translateX(43px) scaleX(1);
   }
 
-  /* Approaching the opening door */
-  60% {
-    transform: translateX(96px);
-    opacity: 1;
+  30% {
+    transform: translateX(91px) scaleX(1);
   }
 
-  /* Entering */
-  74% {
-    transform: translateX(108px) scale(0.9);
-    opacity: 1;
+  /* Actually reaches the door */
+  36% {
+    transform: translateX(111px) scaleX(1);
   }
 
-  84% {
-    transform: translateX(117px) scale(0.74);
-    opacity: 0;
+  /* First attempt */
+  42% {
+    transform:
+      translateX(114px)
+      rotate(-3deg)
+      scaleX(1);
+  }
+
+  /* Pushes harder */
+  49% {
+    transform:
+      translateX(116px)
+      translateY(1px)
+      rotate(-7deg)
+      scaleX(1);
+  }
+
+  /* Door wins — small recoil */
+  56% {
+    transform:
+      translateX(108px)
+      translateY(1px)
+      rotate(3deg)
+      scaleX(1);
+  }
+
+  /* Disappointed pause */
+  63%,
+  72% {
+    transform:
+      translateX(106px)
+      translateY(2px)
+      rotate(2deg)
+      scaleX(1);
+  }
+
+  /* Turn around */
+  77% {
+    transform:
+      translateX(100px)
+      translateY(2px)
+      scaleX(-1);
+  }
+
+  /* Walk back */
+  88% {
+    transform:
+      translateX(53px)
+      translateY(2px)
+      scaleX(-1);
   }
 
   100% {
-    transform: translateX(117px) scale(0.74);
-    opacity: 0;
+    transform:
+      translateX(0)
+      translateY(2px)
+      scaleX(-1);
   }
 }
 
-/* Diagonal light beam from the open doorway */
 
-.doorLight {
-  position: absolute;
+/* Character reaches and tries the handle */
 
-  right: 17px;
-  bottom: -5px;
+@keyframes failedEntryRightArm {
+  0%,
+  30% {
+    transform: rotate(24deg);
+  }
 
-  width: 86px;
-  height: 40px;
+  /* Reach toward knob */
+  36% {
+    transform: rotate(-64deg);
+  }
 
-  background: linear-gradient(
-    105deg,
-    rgba(255, 232, 181, 0.03) 0%,
-    rgba(255, 235, 190, 0.10) 28%,
-    rgba(255, 240, 207, 0.28) 58%,
-    rgba(255, 246, 224, 0.58) 82%,
-    rgba(255, 250, 238, 0.82) 100%
-  );
+  41% {
+    transform: rotate(-83deg);
+  }
+
+  /* Pull / push */
+  46% {
+    transform: rotate(-72deg);
+  }
+
+  50% {
+    transform: rotate(-91deg);
+  }
+
+  54% {
+    transform: rotate(-76deg);
+  }
+
+  /* Recoil */
+  58% {
+    transform: rotate(10deg);
+  }
+
+  /* Hand goes to head */
+  63% {
+    transform: rotate(-126deg);
+  }
+
+  66% {
+    transform: rotate(-148deg);
+  }
+
+  /* Cute scratch */
+  69% {
+    transform: rotate(-126deg);
+  }
+
+  72% {
+    transform: rotate(-149deg);
+  }
+
+  75% {
+    transform: rotate(-128deg);
+  }
+
+  /* Prepare to walk back */
+  79%,
+  100% {
+    transform: rotate(22deg);
+  }
+}
+
+@keyframes failedEntryLeftArm {
+  0%,
+  30% {
+    transform: rotate(-24deg);
+  }
+
+  37% {
+    transform: rotate(-40deg);
+  }
 
   /*
-   * Light starts high at the doorway
-   * and projects diagonally downward.
+   * Second hand joins the effort.
    */
-  clip-path: polygon(
-    100% 7%,
-    100% 70%,
-    0 100%,
-    17% 69%
-  );
+  44% {
+    transform: rotate(-62deg);
+  }
 
-  transform-origin: right center;
-  transform: scaleX(0.04);
+  50% {
+    transform: rotate(-75deg);
+  }
 
-  opacity: 0;
-  filter: blur(1.4px);
+  54% {
+    transform: rotate(-56deg);
+  }
 
-  animation: doorLightSequence 2.4s
-    cubic-bezier(0.45, 0, 0.2, 1) forwards;
+  59% {
+    transform: rotate(18deg);
+  }
 
-  pointer-events: none;
+  63%,
+  75% {
+    transform: rotate(8deg);
+  }
+
+  79%,
+  100% {
+    transform: rotate(-22deg);
+  }
+}
+
+
+/* Facial/body emotion */
+
+@keyframes failedEntryHead {
+  0%,
+  39% {
+    transform: rotate(0deg);
+  }
+
+  /* Effort */
+  46% {
+    transform: rotate(-7deg) translateY(-1px);
+  }
+
+  52% {
+    transform: rotate(5deg);
+  }
+
+  /* "Why didn't that work?" */
+  59% {
+    transform: rotate(-6deg);
+  }
+
+  64% {
+    transform: rotate(10deg) translateY(1px);
+  }
+
+  68% {
+    transform: rotate(4deg) translateY(1px);
+  }
+
+  72% {
+    transform: rotate(11deg) translateY(1px);
+  }
+
+  100% {
+    transform: rotate(5deg) translateY(1px);
+  }
+}
+
+@keyframes failedEntryBody {
+  0%,
+  37% {
+    transform: rotate(0deg);
+  }
+
+  /* Lean into the door */
+  44% {
+    transform: rotate(-8deg);
+  }
+
+  50% {
+    transform: rotate(-12deg);
+  }
+
+  /* Recoil */
+  57% {
+    transform: rotate(6deg);
+  }
+
+  /* Shoulders drop */
+  63%,
+  74% {
+    transform: rotate(8deg) translateY(1px);
+  }
+
+  80%,
+  100% {
+    transform: rotate(3deg);
+  }
+}
+
+
+/* Legs stop and brace during the failed attempt */
+
+@keyframes failedEntryLeftLeg {
+  0% {
+    transform: rotate(25deg);
+  }
+
+  8% {
+    transform: rotate(-25deg);
+  }
+
+  16% {
+    transform: rotate(25deg);
+  }
+
+  24% {
+    transform: rotate(-25deg);
+  }
+
+  32% {
+    transform: rotate(18deg);
+  }
+
+  38%,
+  55% {
+    transform: rotate(7deg);
+  }
+
+  /* Braced against the door */
+  49% {
+    transform: rotate(30deg);
+  }
+
+  60%,
+  76% {
+    transform: rotate(3deg);
+  }
+
+  82% {
+    transform: rotate(-25deg);
+  }
+
+  88% {
+    transform: rotate(25deg);
+  }
+
+  94% {
+    transform: rotate(-25deg);
+  }
+
+  100% {
+    transform: rotate(25deg);
+  }
+}
+
+@keyframes failedEntryRightLeg {
+  0% {
+    transform: rotate(-25deg);
+  }
+
+  8% {
+    transform: rotate(25deg);
+  }
+
+  16% {
+    transform: rotate(-25deg);
+  }
+
+  24% {
+    transform: rotate(25deg);
+  }
+
+  32% {
+    transform: rotate(-18deg);
+  }
+
+  38%,
+  55% {
+    transform: rotate(-7deg);
+  }
+
+  49% {
+    transform: rotate(-24deg);
+  }
+
+  60%,
+  76% {
+    transform: rotate(-3deg);
+  }
+
+  82% {
+    transform: rotate(25deg);
+  }
+
+  88% {
+    transform: rotate(-25deg);
+  }
+
+  94% {
+    transform: rotate(25deg);
+  }
+
+  100% {
+    transform: rotate(-25deg);
+  }
+}
+
+
+/* Locked door reaction */
+
+@keyframes lockedFrameReaction {
+  0%,
+  37% {
+    transform: translateX(0);
+    border-color: rgba(246, 250, 255, 0.95);
+    box-shadow: none;
+  }
+
+  /* First attempt */
+  42% {
+    transform: translateX(1px);
+  }
+
+  44% {
+    transform: translateX(-1px);
+  }
+
+  46% {
+    transform: translateX(0);
+  }
+
+  /* Stronger second attempt + red warning */
+  49% {
+    transform: translateX(2px);
+    border-color: rgba(255, 124, 124, 0.95);
+    box-shadow:
+      0 0 7px rgba(255, 78, 78, 0.34);
+  }
+
+  51% {
+    transform: translateX(-2px);
+    border-color: rgba(255, 102, 102, 1);
+    box-shadow:
+      0 0 10px rgba(255, 66, 66, 0.44);
+  }
+
+  53% {
+    transform: translateX(1px);
+    border-color: rgba(255, 126, 126, 0.95);
+  }
+
+  56% {
+    transform: translateX(0);
+    border-color: rgba(246, 250, 255, 0.95);
+    box-shadow: none;
+  }
+
+  100% {
+    transform: translateX(0);
+    border-color: rgba(246, 250, 255, 0.95);
+    box-shadow: none;
+  }
+}
+
+@keyframes lockedDoorReaction {
+  0%,
+  37% {
+    transform: rotateY(0deg);
+    background: linear-gradient(
+      180deg,
+      #173a62,
+      #0f2847 56%,
+      #0a1d34
+    );
+  }
+
+  /*
+   * The door gives only a few degrees.
+   * Enough to communicate effort,
+   * never enough to look unlocked.
+   */
+  42% {
+    transform: rotateY(4deg);
+  }
+
+  45% {
+    transform: rotateY(1deg);
+  }
+
+  49% {
+    transform: rotateY(5deg);
+    background: linear-gradient(
+      180deg,
+      #7b2936,
+      #591f2c 56%,
+      #361522
+    );
+    box-shadow:
+      inset 0 0 0 1px rgba(255, 184, 184, 0.18),
+      0 0 9px rgba(255, 66, 66, 0.36);
+  }
+
+  51% {
+    transform: rotateY(-2deg);
+  }
+
+  53% {
+    transform: rotateY(3deg);
+  }
+
+  56% {
+    transform: rotateY(0deg);
+    background: linear-gradient(
+      180deg,
+      #173a62,
+      #0f2847 56%,
+      #0a1d34
+    );
+    box-shadow:
+      inset 0 0 0 1px rgba(255, 255, 255, 0.08),
+      0 0 0 1px rgba(12, 26, 46, 0.32);
+  }
+
+  100% {
+    transform: rotateY(0deg);
+    background: linear-gradient(
+      180deg,
+      #173a62,
+      #0f2847 56%,
+      #0a1d34
+    );
+  }
+}
+
+@keyframes lockedKnobReaction {
+  0%,
+  37% {
+    transform:
+      translateY(-50%)
+      translateX(0)
+      scale(1);
+    background: rgba(255, 235, 193, 0.9);
+  }
+
+  41% {
+    transform:
+      translateY(-50%)
+      translateX(-1px)
+      scale(1.15);
+  }
+
+  45% {
+    transform:
+      translateY(-50%)
+      translateX(1px)
+      scale(1.05);
+  }
+
+  49% {
+    transform:
+      translateY(-50%)
+      translateX(-1px)
+      scale(1.2);
+    background: #ff8f8f;
+    box-shadow: 0 0 6px rgba(255, 82, 82, 0.7);
+  }
+
+  52% {
+    transform:
+      translateY(-50%)
+      translateX(1px)
+      scale(1.12);
+  }
+
+  56%,
+  100% {
+    transform:
+      translateY(-50%)
+      translateX(0)
+      scale(1);
+    background: rgba(255, 235, 193, 0.9);
+    box-shadow: 0 0 4px rgba(255, 235, 193, 0.4);
+  }
 }
