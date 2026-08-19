@@ -7,6 +7,7 @@ import styles from './LoginExperience.module.css';
 
 export function LoginExperience() {
   const [username, setUsername] = useState('');
+  const [usernameFocused, setUsernameFocused] = useState(false);
   const [password, setPassword] = useState('');
   const [rememberMe, setRememberMe] = useState(false);
   const [passwordVisible, setPasswordVisible] = useState(false);
@@ -16,6 +17,9 @@ export function LoginExperience() {
     <section className={styles.experience}>
       <div className={styles.mascot}>
         <RaccoonMascot
+          usernameFocused={usernameFocused}
+          usernameLength={username.length}
+          passwordLength={password.length}
           passwordFocused={passwordFocused}
           passwordVisible={passwordVisible}
         />
@@ -33,6 +37,7 @@ export function LoginExperience() {
           rememberMe={rememberMe}
           passwordVisible={passwordVisible}
           onUsernameChange={setUsername}
+          onUsernameFocusChange={setUsernameFocused}
           onPasswordChange={setPassword}
           onRememberMeChange={setRememberMe}
           onPasswordVisibilityToggle={() => {

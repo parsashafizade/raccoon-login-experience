@@ -3,6 +3,8 @@ import { useEffect, useRef } from 'react';
 interface UsePointerGazeOptions {
   usernameFocused: boolean;
   usernameLength: number;
+  passwordFocused: boolean;
+  passwordLength: number;
 }
 
 const clamp = (value: number, min: number, max: number) =>
@@ -11,9 +13,17 @@ const clamp = (value: number, min: number, max: number) =>
 export function usePointerGaze({
   usernameFocused,
   usernameLength,
+  passwordFocused,
+  passwordLength,
 }: UsePointerGazeOptions) {
   const mascotRef = useRef<HTMLDivElement>(null);
-  const latestPointer = useRef({ x: 0, y: 0 });
+
+  const latestPointer = useRef({
+    x: window.innerWidth / 2,
+    y: window.innerHeight / 2,
+  });
+
+  const inputFocused = usernameFocused || passwordFocused;
 
   useEffect(() => {
     const mascot = mascotRef.current;
@@ -24,21 +34,7 @@ export function usePointerGaze({
 
     let animationFrameId: number | null = null;
 
-    const applyGaze = (horizontal: number, vertical: number) => {
-      const bounds = mascot.getBoundingClientRect();
-
-      mascot.style.setProperty(
-        '--pupil-x',
-        `${horizontal * bounds.width * 0.019}px`,
-      );
-
-      mascot.style.setProperty(
-        '--pupil-y',
-        `${vertical * bounds.width * 0.014}px`,
-      );
-    };
-
-    const updateFromPointer = () => {
+    const updatePointerGaze = () => {
       const bounds = mascot.getBoundingClientRect();
 
       const centerX = bounds.left + bounds.width / 2;
@@ -56,27 +52,35 @@ export function usePointerGaze({
         1,
       );
 
-      applyGaze(horizontal, vertical);
+      mascot.style.setProperty(
+        '--pupil-x',
+        `${horizontal * bounds.width * 0.019}px`,
+      );
+
+      mascot.style.setProperty(
+        '--pupil-y',
+        `${vertical * bounds.width * 0.014}px`,
+      );
+
       animationFrameId = null;
     };
 
-    latestPointer.current = {
-      x: window.innerWidth / 2,
-      y: window.innerHeight / 2,
-    };
-
     const handlePointerMove = (event: PointerEvent) => {
+      if (event.pointerType !== 'mouse') {
+        return;
+      }
+
       latestPointer.current = {
         x: event.clientX,
         y: event.clientY,
       };
 
-      if (usernameFocused || event.pointerType !== 'mouse') {
+      if (inputFocused) {
         return;
       }
 
       if (animationFrameId === null) {
-        animationFrameId = requestAnimationFrame(updateFromPointer);
+        animationFrameId = requestAnimationFrame(updatePointerGaze);
       }
     };
 
@@ -84,8 +88,8 @@ export function usePointerGaze({
       passive: true,
     });
 
-    if (!usernameFocused) {
-      updateFromPointer();
+    if (!inputFocused) {
+      updatePointerGaze();
     }
 
     return () => {
@@ -95,32 +99,41 @@ export function usePointerGaze({
         cancelAnimationFrame(animationFrameId);
       }
     };
-  }, [usernameFocused]);
+  }, [inputFocused]);
 
   useEffect(() => {
     const mascot = mascotRef.current;
 
-    if (!mascot || !usernameFocused) {
+    if (!mascot || !inputFocused) {
       return;
     }
 
     const bounds = mascot.getBoundingClientRect();
 
-    const progress = clamp(usernameLength / 18, 0, 1);
+    const textLength = passwordFocused
+      ? passwordLength
+      : usernameLength;
 
-    const horizontal = -0.72 + progress * 1.44;
-    const vertical = 0.78;
+    const progress = clamp(textLength / 14, 0, 1);
+
+    const horizontal = -0.9 + progress * 1.8;
 
     mascot.style.setProperty(
       '--pupil-x',
-      `${horizontal * bounds.width * 0.019}px`,
+      `${horizontal * bounds.width * 0.028}px`,
     );
 
     mascot.style.setProperty(
       '--pupil-y',
-      `${vertical * bounds.width * 0.014}px`,
+      `${bounds.width * 0.027}px`,
     );
-  }, [usernameFocused, usernameLength]);
+  }, [
+    inputFocused,
+    usernameFocused,
+    usernameLength,
+    passwordFocused,
+    passwordLength,
+  ]);
 
   return mascotRef;
 }

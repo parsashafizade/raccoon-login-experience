@@ -13,6 +13,7 @@ import { usePointerGaze } from './usePointerGaze';
 interface RaccoonMascotProps {
   usernameFocused: boolean;
   usernameLength: number;
+  passwordLength: number;
   passwordFocused: boolean;
   passwordVisible: boolean;
 }
@@ -20,12 +21,15 @@ interface RaccoonMascotProps {
 export function RaccoonMascot({
   usernameFocused,
   usernameLength,
+  passwordLength,
   passwordFocused,
   passwordVisible,
 }: RaccoonMascotProps) {
   const mascotRef = usePointerGaze({
     usernameFocused,
     usernameLength,
+    passwordFocused,
+    passwordLength,
   });
 
   const showRest = !passwordFocused;

@@ -8,6 +8,7 @@ interface LoginFormProps {
   rememberMe: boolean;
   passwordVisible: boolean;
   onUsernameChange: (value: string) => void;
+  onUsernameFocusChange: (focused: boolean) => void;
   onPasswordChange: (value: string) => void;
   onRememberMeChange: (value: boolean) => void;
   onPasswordVisibilityToggle: () => void;
@@ -21,6 +22,7 @@ export function LoginForm({
   rememberMe,
   passwordVisible,
   onUsernameChange,
+  onUsernameFocusChange,
   onPasswordChange,
   onRememberMeChange,
   onPasswordVisibilityToggle,
@@ -51,6 +53,8 @@ export function LoginForm({
           autoComplete="username"
           value={username}
           onChange={handleUsernameChange}
+          onFocus={() => onUsernameFocusChange(true)}
+          onBlur={() => onUsernameFocusChange(false)}
         />
       </div>
 
