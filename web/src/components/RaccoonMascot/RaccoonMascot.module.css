@@ -118,3 +118,22 @@
 .coverRight {
   right: 2%;
 }
+
+.peekPaw {
+  position: absolute;
+  top: 46%;
+  z-index: 4;
+  width: 52%;
+  height: auto;
+  object-fit: contain;
+  pointer-events: none;
+  user-select: none;
+}
+
+.peekLeft {
+  left: 1%;
+}
+
+.peekRight {
+  right: 1%;
+}

@@ -57,7 +57,15 @@ export function LoginForm({
       <div className={styles.field}>
         <label htmlFor="password">Password</label>
 
-        <div className={styles.passwordField}>
+        <div
+          className={styles.passwordField}
+          onFocusCapture={() => onPasswordFocusChange(true)}
+          onBlurCapture={(event) => {
+            if (!event.currentTarget.contains(event.relatedTarget as Node | null)) {
+              onPasswordFocusChange(false);
+            }
+          }}
+        >
           <input
             id="password"
             name="password"
@@ -65,8 +73,6 @@ export function LoginForm({
             autoComplete="current-password"
             value={password}
             onChange={handlePasswordChange}
-            onFocus={() => onPasswordFocusChange(true)}
-            onBlur={() => onPasswordFocusChange(false)}
           />
 
           <button

@@ -1,6 +1,8 @@
 import leftPupil from '../../assets/raccoon/left-pupil.png';
 import pawsCoverLeft from '../../assets/raccoon/paws-cover-left.png';
 import pawsCoverRight from '../../assets/raccoon/paws-cover-right.png';
+import pawsPeekLeft from '../../assets/raccoon/paws-peek-left.png';
+import pawsPeekRight from '../../assets/raccoon/paws-peek-right.png';
 import pawsRest from '../../assets/raccoon/paws-rest.png';
 import raccoonBase from '../../assets/raccoon/raccoon-base.png';
 import rightPupil from '../../assets/raccoon/right-pupil.png';
@@ -9,18 +11,26 @@ import styles from './RaccoonMascot.module.css';
 import { usePointerGaze } from './usePointerGaze';
 
 interface RaccoonMascotProps {
+  usernameFocused: boolean;
+  usernameLength: number;
   passwordFocused: boolean;
   passwordVisible: boolean;
 }
 
 export function RaccoonMascot({
+  usernameFocused,
+  usernameLength,
   passwordFocused,
-  passwordVisible: _passwordVisible,
+  passwordVisible,
 }: RaccoonMascotProps) {
-  const mascotRef = usePointerGaze();
+  const mascotRef = usePointerGaze({
+    usernameFocused,
+    usernameLength,
+  });
 
   const showRest = !passwordFocused;
-  const showCover = passwordFocused;
+  const showCover = passwordFocused && !passwordVisible;
+  const showPeek = passwordFocused && passwordVisible;
 
   return (
     <div ref={mascotRef} className={styles.mascot} aria-hidden="true">
@@ -65,10 +75,26 @@ export function RaccoonMascot({
               alt=""
               draggable={false}
             />
-
             <img
               className={`${styles.coverPaw} ${styles.coverRight}`}
               src={pawsCoverRight}
+              alt=""
+              draggable={false}
+            />
+          </>
+        )}
+
+        {showPeek && (
+          <>
+            <img
+              className={`${styles.peekPaw} ${styles.peekLeft}`}
+              src={pawsPeekLeft}
+              alt=""
+              draggable={false}
+            />
+            <img
+              className={`${styles.peekPaw} ${styles.peekRight}`}
+              src={pawsPeekRight}
               alt=""
               draggable={false}
             />
