@@ -1,7 +1,10 @@
 import { useEffect, useRef, useState } from 'react';
 
 import { authenticateLogin } from '../../features/auth/auth.service';
-import type { LoginFieldErrors } from '../../features/auth/auth.types';
+import type {
+  AuthProvider,
+  LoginFieldErrors,
+} from '../../features/auth/auth.types';
 import { LoginForm } from '../LoginForm/LoginForm';
 import { RaccoonMascot } from '../RaccoonMascot/RaccoonMascot';
 
@@ -14,16 +17,19 @@ export type SubmitState =
   | 'failure-animation'
   | 'success';
 
+interface LoginExperienceProps {
+  onSocialLogin?: (provider: AuthProvider) => void;
+  onCreateAccount?: () => void;
+}
+
 const SUCCESS_ANIMATION_DURATION = 2400;
 const FAILURE_ANIMATION_DURATION = 3800;
-
-/*
- * The error is intentionally revealed only after
- * the character reaches the door and fails to open it.
- */
 const FAILURE_FEEDBACK_DELAY = 2050;
 
-export function LoginExperience() {
+export function LoginExperience({
+  onSocialLogin = () => {},
+  onCreateAccount = () => {},
+}: LoginExperienceProps) {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [rememberMe, setRememberMe] = useState(false);
@@ -108,10 +114,6 @@ export function LoginExperience() {
       return;
     }
 
-    /*
-     * Start the failure animation first.
-     * Do NOT reveal validation/API feedback yet.
-     */
     setSubmitState('failure-animation');
 
     schedule(() => {
@@ -139,7 +141,7 @@ export function LoginExperience() {
       <div className={styles.card}>
         <header className={styles.header}>
           <h1>Welcome back</h1>
-          <p>Sign in to continue</p>
+          <p>Your raccoon is keeping watch.</p>
         </header>
 
         <LoginForm
@@ -158,6 +160,8 @@ export function LoginExperience() {
           onPasswordVisibilityToggle={() =>
             setPasswordVisible((visible) => !visible)
           }
+          onSocialLogin={onSocialLogin}
+          onCreateAccount={onCreateAccount}
           onSubmit={handleSubmit}
         />
       </div>

@@ -1,6 +1,9 @@
 import type { ChangeEvent, FormEvent } from 'react';
 
-import type { LoginFieldErrors } from '../../features/auth/auth.types';
+import type {
+  AuthProvider,
+  LoginFieldErrors,
+} from '../../features/auth/auth.types';
 import type { SubmitState } from '../LoginExperience/LoginExperience';
 
 import styles from './LoginForm.module.css';
@@ -22,6 +25,10 @@ interface LoginFormProps {
 
   onRememberMeChange: (value: boolean) => void;
   onPasswordVisibilityToggle: () => void;
+
+  onSocialLogin: (provider: AuthProvider) => void;
+  onCreateAccount: () => void;
+
   onSubmit: () => void;
 }
 
@@ -39,6 +46,8 @@ export function LoginForm({
   onPasswordFocusChange,
   onRememberMeChange,
   onPasswordVisibilityToggle,
+  onSocialLogin,
+  onCreateAccount,
   onSubmit,
 }: LoginFormProps) {
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
@@ -71,6 +80,13 @@ export function LoginForm({
     submitState === 'failure-animation'
       ? 'failure'
       : 'success';
+
+  const hasVisibleError =
+    Boolean(fieldErrors.username) ||
+    Boolean(fieldErrors.password) ||
+    Boolean(authMessage);
+
+  const showSignInStatus = isBusy && !hasVisibleError;
 
   return (
     <form className={styles.form} onSubmit={handleSubmit}>
@@ -185,15 +201,12 @@ export function LoginForm({
                 <span
                   className={`${styles.personArm} ${styles.armLeft}`}
                 />
-
                 <span
                   className={`${styles.personArm} ${styles.armRight}`}
                 />
-
                 <span
                   className={`${styles.personLeg} ${styles.legLeft}`}
                 />
-
                 <span
                   className={`${styles.personLeg} ${styles.legRight}`}
                 />
@@ -223,6 +236,62 @@ export function LoginForm({
           </span>
         )}
       </button>
+
+      {showSignInStatus && (
+        <p className={styles.signInStatus} aria-live="polite">
+          Signing you in...
+        </p>
+      )}
+
+      <div className={styles.authDivider}>
+        <span>or continue with</span>
+      </div>
+
+      <div className={styles.socialRow}>
+        <button
+          className={styles.socialButton}
+          type="button"
+          disabled={isBusy}
+          onClick={() => onSocialLogin('google')}
+        >
+          <span
+            className={`${styles.providerMark} ${styles.googleMark}`}
+            aria-hidden="true"
+          >
+            G
+          </span>
+
+          <span>Google</span>
+        </button>
+
+        <button
+          className={styles.socialButton}
+          type="button"
+          disabled={isBusy}
+          onClick={() => onSocialLogin('apple')}
+        >
+          <span
+            className={`${styles.providerMark} ${styles.appleMark}`}
+            aria-hidden="true"
+          >
+            
+          </span>
+
+          <span>Apple</span>
+        </button>
+      </div>
+
+      <p className={styles.createAccount}>
+        <span>New here?</span>
+
+        <button
+          type="button"
+          disabled={isBusy}
+          onClick={onCreateAccount}
+        >
+          Create account
+        </button>
+      </p>
     </form>
   );
 }

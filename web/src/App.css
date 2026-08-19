@@ -1,15 +1,138 @@
 .app {
+  position: relative;
+  isolation: isolate;
+
   min-height: 100dvh;
   box-sizing: border-box;
+
   display: grid;
   place-items: center;
+
   padding: 32px 20px;
   overflow: hidden;
+
   background:
     radial-gradient(
-      circle at 50% 20%,
-      rgba(49, 103, 169, 0.22),
-      transparent 36%
+      ellipse at 48% 13%,
+      rgba(78, 112, 170, 0.23),
+      transparent 33%
     ),
-    #09111c;
+    radial-gradient(
+      ellipse at 10% 38%,
+      rgba(63, 86, 130, 0.1),
+      transparent 31%
+    ),
+    radial-gradient(
+      ellipse at 90% 72%,
+      rgba(52, 81, 126, 0.1),
+      transparent 30%
+    ),
+    linear-gradient(
+      145deg,
+      #0a101a 0%,
+      #101827 43%,
+      #09111d 100%
+    );
+}
+
+.app::before {
+  content: '';
+
+  position: absolute;
+  z-index: -2;
+
+  top: -24%;
+  left: 50%;
+
+  width: min(84vw, 850px);
+  aspect-ratio: 1;
+
+  border-radius: 50%;
+
+  background:
+    radial-gradient(
+      circle,
+      rgba(101, 139, 201, 0.13) 0%,
+      rgba(72, 102, 153, 0.055) 43%,
+      transparent 71%
+    );
+
+  filter: blur(36px);
+
+  transform: translateX(-50%);
+
+  animation: ambientBackground 14s ease-in-out infinite alternate;
+
+  pointer-events: none;
+}
+
+.app::after {
+  content: '';
+
+  position: absolute;
+  inset: 0;
+
+  z-index: -1;
+
+  background:
+    linear-gradient(
+      115deg,
+      rgba(255, 255, 255, 0.018),
+      transparent 24%,
+      transparent 72%,
+      rgba(121, 157, 216, 0.016)
+    );
+
+  pointer-events: none;
+}
+
+.app > * {
+  position: relative;
+  z-index: 1;
+}
+
+@keyframes ambientBackground {
+  from {
+    transform:
+      translateX(-52%)
+      translateY(-1%)
+      scale(0.97);
+  }
+
+  to {
+    transform:
+      translateX(-48%)
+      translateY(3%)
+      scale(1.04);
+  }
+}
+
+@media (max-width: 600px) {
+  .app {
+    padding: 24px 16px;
+
+    background:
+      radial-gradient(
+        ellipse at 50% 10%,
+        rgba(81, 116, 177, 0.2),
+        transparent 36%
+      ),
+      linear-gradient(
+        160deg,
+        #09111d,
+        #101827 48%,
+        #08101b
+      );
+  }
+
+  .app::before {
+    top: -14%;
+    width: 130vw;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .app::before {
+    animation: none;
+  }
 }

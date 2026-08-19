@@ -1,3 +1,5 @@
+export type AuthProvider = 'google' | 'apple';
+
 export interface LoginCredentials {
   username: string;
   password: string;
