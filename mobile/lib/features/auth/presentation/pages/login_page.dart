@@ -4,10 +4,12 @@ import '../widgets/glass_card.dart';
 import '../widgets/login_background.dart';
 import '../widgets/login_header.dart';
 import '../widgets/login_field.dart';
+import '../widgets/login_options.dart';
+import '../widgets/primary_button.dart';
+import '../widgets/social_button.dart';
 
 
 class LoginPage extends StatefulWidget {
-
   const LoginPage({
     super.key,
   });
@@ -17,6 +19,7 @@ class LoginPage extends StatefulWidget {
   State<LoginPage> createState() =>
       _LoginPageState();
 }
+
 
 
 class _LoginPageState
@@ -31,11 +34,15 @@ class _LoginPageState
       TextEditingController();
 
 
+  bool passwordVisible = false;
+
+
 
   @override
   void dispose() {
 
     usernameController.dispose();
+
     passwordController.dispose();
 
     super.dispose();
@@ -52,65 +59,266 @@ class _LoginPageState
 
         child: SafeArea(
 
-          child: Center(
+          child: LayoutBuilder(
 
-            child: SingleChildScrollView(
+            builder: (
+              context,
+              constraints,
+            ) {
 
-              padding:
-                  const EdgeInsets.all(24),
+              return SingleChildScrollView(
 
-              child: ConstrainedBox(
-
-                constraints:
-                    const BoxConstraints(
-                  maxWidth: 430,
-                ),
+                padding:
+                    const EdgeInsets.all(24),
 
 
-                child: GlassCard(
+                child: ConstrainedBox(
 
-                  child: Column(
-
-                    mainAxisSize:
-                        MainAxisSize.min,
-
-
-                    children: [
-
-                      const LoginHeader(),
+                  constraints:
+                      BoxConstraints(
+                    minHeight:
+                        constraints.maxHeight -
+                        48,
+                  ),
 
 
-                      const SizedBox(
-                        height: 28,
-                      ),
+                  child: Center(
+
+                    child: Stack(
+
+                      clipBehavior:
+                          Clip.none,
 
 
-                      LoginField(
-                        label: 'Username',
-                        hint: 'Enter username',
-                        controller:
-                            usernameController,
-                      ),
+                      alignment:
+                          Alignment.center,
 
 
-                      const SizedBox(
-                        height: 16,
-                      ),
+                      children: [
 
 
-                      LoginField(
-                        label: 'Password',
-                        hint: 'Enter password',
-                        controller:
-                            passwordController,
+                        /*
+                         * Raccoon anchor.
+                         *
+                         * Phase 3 will place the mascot here.
+                         *
+                         * Keeping this layer separated prevents
+                         * layout breaking when animation is added.
+                         */
 
-                        obscureText: true,
-                      ),
-                    ],
+
+                        const SizedBox(
+                          width: 0,
+                          height: 0,
+                        ),
+
+
+
+                        ConstrainedBox(
+
+                          constraints:
+                              const BoxConstraints(
+                            maxWidth: 430,
+                          ),
+
+
+                          child: GlassCard(
+
+                            child: Column(
+
+                              mainAxisSize:
+                                  MainAxisSize.min,
+
+
+                              children: [
+
+
+                                const LoginHeader(),
+
+
+
+                                const SizedBox(
+                                  height: 28,
+                                ),
+
+
+
+                                LoginField(
+
+                                  label:
+                                      'Username',
+
+                                  hint:
+                                      'Enter username',
+
+                                  controller:
+                                      usernameController,
+                                ),
+
+
+
+                                const SizedBox(
+                                  height: 16,
+                                ),
+
+
+
+                                LoginField(
+
+                                  label:
+                                      'Password',
+
+                                  hint:
+                                      'Enter password',
+
+
+                                  controller:
+                                      passwordController,
+
+
+                                  obscureText:
+                                      !passwordVisible,
+
+
+                                  showVisibilityIcon:
+                                      true,
+
+
+                                  onVisibilityPressed:
+                                      () {
+
+                                    setState(() {
+
+                                      passwordVisible =
+                                          !passwordVisible;
+
+                                    });
+
+                                  },
+
+                                ),
+
+
+
+                                const SizedBox(
+                                  height: 12,
+                                ),
+
+
+
+                                const LoginOptions(),
+
+
+
+                                const SizedBox(
+                                  height: 20,
+                                ),
+
+
+
+                                PrimaryButton(
+
+                                  text:
+                                      'Sign in',
+
+
+                                  onPressed:
+                                      () {},
+
+                                ),
+
+
+
+                                const SizedBox(
+                                  height: 20,
+                                ),
+
+
+
+                                const Divider(),
+
+
+
+                                const SizedBox(
+                                  height: 20,
+                                ),
+
+
+
+                                SocialButton(
+
+                                  text:
+                                      'Continue with Google',
+
+
+                                  icon:
+                                      const Icon(
+                                    Icons.g_mobiledata,
+                                  ),
+
+
+                                  onPressed:
+                                      () {},
+
+                                ),
+
+
+
+                                const SizedBox(
+                                  height: 12,
+                                ),
+
+
+
+                                SocialButton(
+
+                                  text:
+                                      'Continue with Apple',
+
+
+                                  icon:
+                                      const Icon(
+                                    Icons.apple,
+                                  ),
+
+
+                                  onPressed:
+                                      () {},
+
+                                ),
+
+
+
+                                const SizedBox(
+                                  height: 24,
+                                ),
+
+
+
+                                TextButton(
+
+                                  onPressed:
+                                      () {},
+
+
+                                  child:
+                                      const Text(
+                                    "Don't have an account? Create account",
+                                  ),
+
+                                ),
+
+
+                              ],
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
                 ),
-              ),
-            ),
+              );
+            },
           ),
         ),
       ),
