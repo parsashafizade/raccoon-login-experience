@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-
+import '../features/auth/presentation/pages/login_page.dart';
 import 'theme/app_theme.dart';
 
 class RaccoonLoginApp extends StatelessWidget {
@@ -9,18 +9,9 @@ class RaccoonLoginApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Raccoon Login',
-
       debugShowCheckedModeBanner: false,
-
       theme: AppTheme.dark(),
-
-      home: const Scaffold(
-        body: Center(
-          child: Text(
-            'Raccoon Login',
-          ),
-        ),
-      ),
+      home: const LoginPage(),
     );
   }
 }
