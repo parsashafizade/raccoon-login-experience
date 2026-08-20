@@ -1,46 +1,31 @@
 import 'package:flutter/material.dart';
 
-import '../widgets/glass_card.dart';
 import '../widgets/login_background.dart';
 import '../widgets/login_header.dart';
 import '../widgets/login_field.dart';
 import '../widgets/login_options.dart';
 import '../widgets/primary_button.dart';
 import '../widgets/social_button.dart';
-
+import '../widgets/login_layout.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({
     super.key,
   });
 
-
   @override
-  State<LoginPage> createState() =>
-      _LoginPageState();
+  State<LoginPage> createState() => _LoginPageState();
 }
 
+class _LoginPageState extends State<LoginPage> {
+  final usernameController = TextEditingController();
 
-
-class _LoginPageState
-    extends State<LoginPage> {
-
-
-  final usernameController =
-      TextEditingController();
-
-
-  final passwordController =
-      TextEditingController();
-
+  final passwordController = TextEditingController();
 
   bool passwordVisible = false;
 
-
-
   @override
   void dispose() {
-
     usernameController.dispose();
 
     passwordController.dispose();
@@ -48,55 +33,27 @@ class _LoginPageState
     super.dispose();
   }
 
-
-
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
-
       body: LoginBackground(
-
         child: SafeArea(
-
           child: LayoutBuilder(
-
             builder: (
               context,
               constraints,
             ) {
-
               return SingleChildScrollView(
-
-                padding:
-                    const EdgeInsets.all(24),
-
-
+                padding: const EdgeInsets.all(24),
                 child: ConstrainedBox(
-
-                  constraints:
-                      BoxConstraints(
-                    minHeight:
-                        constraints.maxHeight -
-                        48,
+                  constraints: BoxConstraints(
+                    minHeight: constraints.maxHeight,
                   ),
-
-
                   child: Center(
-
                     child: Stack(
-
-                      clipBehavior:
-                          Clip.none,
-
-
-                      alignment:
-                          Alignment.center,
-
-
+                      clipBehavior: Clip.none,
+                      alignment: Alignment.center,
                       children: [
-
-
                         /*
                          * Raccoon anchor.
                          *
@@ -106,209 +63,90 @@ class _LoginPageState
                          * layout breaking when animation is added.
                          */
 
-
-                        const SizedBox(
-                          width: 0,
-                          height: 0,
-                        ),
-
-
-
                         ConstrainedBox(
-
-                          constraints:
-                              const BoxConstraints(
+                          constraints: const BoxConstraints(
                             maxWidth: 430,
                           ),
-
-
-                          child: GlassCard(
-
+                          child: LoginLayout(
                             child: Column(
-
-                              mainAxisSize:
-                                  MainAxisSize.min,
-
-
+                              mainAxisSize: MainAxisSize.min,
                               children: [
-
-
                                 const LoginHeader(),
-
-
-
                                 const SizedBox(
-                                  height: 28,
+                                  height: 18,
                                 ),
-
-
-
                                 LoginField(
-
-                                  label:
-                                      'Username',
-
-                                  hint:
-                                      'Enter username',
-
-                                  controller:
-                                      usernameController,
+                                  label: 'Username',
+                                  hint: 'Enter username',
+                                  controller: usernameController,
                                 ),
-
-
-
                                 const SizedBox(
-                                  height: 16,
+                                  height: 10,
                                 ),
-
-
-
                                 LoginField(
-
-                                  label:
-                                      'Password',
-
-                                  hint:
-                                      'Enter password',
-
-
-                                  controller:
-                                      passwordController,
-
-
-                                  obscureText:
-                                      !passwordVisible,
-
-
-                                  showVisibilityIcon:
-                                      true,
-
-
-                                  onVisibilityPressed:
-                                      () {
-
+                                  label: 'Password',
+                                  hint: 'Enter password',
+                                  controller: passwordController,
+                                  obscureText: !passwordVisible,
+                                  showVisibilityIcon: true,
+                                  onVisibilityPressed: () {
                                     setState(() {
-
-                                      passwordVisible =
-                                          !passwordVisible;
-
+                                      passwordVisible = !passwordVisible;
                                     });
-
                                   },
-
                                 ),
-
-
-
                                 const SizedBox(
-                                  height: 12,
+                                  height: 10,
                                 ),
-
-
-
                                 const LoginOptions(),
-
-
-
                                 const SizedBox(
-                                  height: 20,
+                                  height: 14,
                                 ),
-
-
-
                                 PrimaryButton(
-
-                                  text:
-                                      'Sign in',
-
-
-                                  onPressed:
-                                      () {},
-
+                                  text: 'Sign in',
+                                  onPressed: () {},
                                 ),
-
-
-
                                 const SizedBox(
-                                  height: 20,
+                                  height: 14,
                                 ),
-
-
-
                                 const Divider(),
-
-
-
                                 const SizedBox(
-                                  height: 20,
+                                  height: 14,
                                 ),
-
-
-
-                                SocialButton(
-
-                                  text:
-                                      'Continue with Google',
-
-
-                                  icon:
-                                      const Icon(
-                                    Icons.g_mobiledata,
-                                  ),
-
-
-                                  onPressed:
-                                      () {},
-
+                                Row(
+                                  children: [
+                                    Expanded(
+                                      child: SocialButton(
+                                        text: 'Google',
+                                        icon: const Icon(
+                                          Icons.g_mobiledata,
+                                        ),
+                                        onPressed: () {},
+                                      ),
+                                    ),
+                                    const SizedBox(
+                                      width: 12,
+                                    ),
+                                    Expanded(
+                                      child: SocialButton(
+                                        text: 'Apple',
+                                        icon: const Icon(
+                                          Icons.apple,
+                                        ),
+                                        onPressed: () {},
+                                      ),
+                                    ),
+                                  ],
                                 ),
-
-
-
                                 const SizedBox(
-                                  height: 12,
+                                  height: 18,
                                 ),
-
-
-
-                                SocialButton(
-
-                                  text:
-                                      'Continue with Apple',
-
-
-                                  icon:
-                                      const Icon(
-                                    Icons.apple,
-                                  ),
-
-
-                                  onPressed:
-                                      () {},
-
-                                ),
-
-
-
-                                const SizedBox(
-                                  height: 24,
-                                ),
-
-
-
                                 TextButton(
-
-                                  onPressed:
-                                      () {},
-
-
-                                  child:
-                                      const Text(
+                                  onPressed: () {},
+                                  child: const Text(
                                     "Don't have an account? Create account",
                                   ),
-
                                 ),
-
-
                               ],
                             ),
                           ),
