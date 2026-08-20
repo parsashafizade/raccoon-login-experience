@@ -7,6 +7,7 @@ import '../widgets/login_options.dart';
 import '../widgets/primary_button.dart';
 import '../widgets/social_button.dart';
 import '../widgets/login_layout.dart';
+import '../widgets/raccoon/models/raccoon_eye_state.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({
@@ -21,14 +22,71 @@ class _LoginPageState extends State<LoginPage> {
   final usernameController = TextEditingController();
 
   final passwordController = TextEditingController();
+  final usernameFocusNode = FocusNode();
+  final passwordFocusNode = FocusNode();
+  RaccoonEyeState eyeState = RaccoonEyeState.idle;
+  int usernameLength = 0;
+  int passwordLength = 0;
 
   bool passwordVisible = false;
+  @override
+  void initState() {
+    super.initState();
+
+    usernameFocusNode.addListener(() {
+      if (usernameFocusNode.hasFocus) {
+        setState(() {
+          eyeState = RaccoonEyeState.username;
+        });
+      }
+    });
+
+    passwordFocusNode.addListener(() {
+      if (passwordFocusNode.hasFocus) {
+        setState(() {
+          eyeState = RaccoonEyeState.password;
+        });
+      }
+    });
+    usernameController.addListener(() {
+      if (usernameFocusNode.hasFocus) {
+        setState(() {
+          usernameLength = usernameController.text.length;
+
+          if (usernameLength > 8) {
+            eyeState = RaccoonEyeState.usernameLongTyping;
+          } else if (usernameLength > 0) {
+            eyeState = RaccoonEyeState.usernameTyping;
+          } else {
+            eyeState = RaccoonEyeState.username;
+          }
+        });
+      }
+    });
+
+    passwordController.addListener(() {
+      if (passwordFocusNode.hasFocus) {
+        setState(() {
+          passwordLength = passwordController.text.length;
+          if (passwordLength > 8) {
+            eyeState = RaccoonEyeState.passwordLongTyping;
+          } else if (passwordLength > 0) {
+            eyeState = RaccoonEyeState.passwordTyping;
+          } else {
+            eyeState = RaccoonEyeState.password;
+          }
+        });
+      }
+    });
+  }
 
   @override
   void dispose() {
     usernameController.dispose();
-
     passwordController.dispose();
+
+    usernameFocusNode.dispose();
+    passwordFocusNode.dispose();
 
     super.dispose();
   }
@@ -68,6 +126,7 @@ class _LoginPageState extends State<LoginPage> {
                             maxWidth: 430,
                           ),
                           child: LoginLayout(
+                            eyeState: eyeState,
                             child: Column(
                               mainAxisSize: MainAxisSize.min,
                               children: [
@@ -79,6 +138,7 @@ class _LoginPageState extends State<LoginPage> {
                                   label: 'Username',
                                   hint: 'Enter username',
                                   controller: usernameController,
+                                  focusNode: usernameFocusNode,
                                 ),
                                 const SizedBox(
                                   height: 10,
@@ -87,6 +147,7 @@ class _LoginPageState extends State<LoginPage> {
                                   label: 'Password',
                                   hint: 'Enter password',
                                   controller: passwordController,
+                                  focusNode: passwordFocusNode,
                                   obscureText: !passwordVisible,
                                   showVisibilityIcon: true,
                                   onVisibilityPressed: () {
