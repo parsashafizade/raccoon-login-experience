@@ -14,13 +14,16 @@ import '../widgets/raccoon/models/raccoon_paw_state.dart';
 import '../models/login_submit_state.dart';
 import '../models/entry_result.dart';
 
-import '../../data/auth_repository_impl.dart';
 import '../../domain/login_credentials.dart';
 import '../../domain/auth_result.dart';
+import '../../domain/auth_repository.dart';
 
 class LoginPage extends StatefulWidget {
+  final AuthRepository authRepository;
+
   const LoginPage({
     super.key,
+    required this.authRepository,
   });
 
   @override
@@ -36,8 +39,6 @@ class _LoginPageState extends State<LoginPage> {
 
   final passwordFocusNode = FocusNode();
 
-  final authRepository = AuthRepositoryImpl();
-
   LoginSubmitState submitState = LoginSubmitState.idle;
 
   EntryResult? animationResult;
@@ -47,7 +48,6 @@ class _LoginPageState extends State<LoginPage> {
   RaccoonPawState pawState = RaccoonPawState.rest;
 
   int usernameLength = 0;
-
   int passwordLength = 0;
 
   bool passwordVisible = false;
@@ -59,7 +59,7 @@ class _LoginPageState extends State<LoginPage> {
       animationResult = null;
     });
 
-    final result = await authRepository.login(
+    final result = await widget.authRepository.login(
       LoginCredentials(
         username: usernameController.text,
         password: passwordController.text,
@@ -90,26 +90,28 @@ class _LoginPageState extends State<LoginPage> {
           });
         },
       );
-    } else {
-      setState(() {
-        submitState = LoginSubmitState.successAnimation;
 
-        animationResult = EntryResult.success;
-      });
-
-      Future.delayed(
-        const Duration(
-          milliseconds: 2400,
-        ),
-        () {
-          if (!mounted) return;
-
-          setState(() {
-            submitState = LoginSubmitState.success;
-          });
-        },
-      );
+      return;
     }
+
+    setState(() {
+      submitState = LoginSubmitState.successAnimation;
+
+      animationResult = EntryResult.success;
+    });
+
+    Future.delayed(
+      const Duration(
+        milliseconds: 2400,
+      ),
+      () {
+        if (!mounted) return;
+
+        setState(() {
+          submitState = LoginSubmitState.success;
+        });
+      },
+    );
   }
 
   @override
@@ -199,109 +201,103 @@ class _LoginPageState extends State<LoginPage> {
                     minHeight: constraints.maxHeight,
                   ),
                   child: Center(
-                    child: Stack(
-                      clipBehavior: Clip.none,
-                      alignment: Alignment.center,
-                      children: [
-                        ConstrainedBox(
-                          constraints: const BoxConstraints(
-                            maxWidth: 430,
-                          ),
-                          child: LoginLayout(
-                            eyeState: eyeState,
-                            pawState: pawState,
-                            child: Column(
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                const LoginHeader(),
-                                const SizedBox(
-                                  height: 18,
-                                ),
-                                LoginField(
-                                  label: 'Username',
-                                  hint: 'Enter username',
-                                  controller: usernameController,
-                                  focusNode: usernameFocusNode,
-                                ),
-                                const SizedBox(
-                                  height: 10,
-                                ),
-                                LoginField(
-                                  label: 'Password',
-                                  hint: 'Enter password',
-                                  controller: passwordController,
-                                  focusNode: passwordFocusNode,
-                                  obscureText: !passwordVisible,
-                                  showVisibilityIcon: true,
-                                  onVisibilityPressed: () {
-                                    setState(() {
-                                      passwordVisible = !passwordVisible;
+                    child: ConstrainedBox(
+                      constraints: const BoxConstraints(
+                        maxWidth: 430,
+                      ),
+                      child: LoginLayout(
+                        eyeState: eyeState,
+                        pawState: pawState,
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            const LoginHeader(),
+                            const SizedBox(
+                              height: 18,
+                            ),
+                            LoginField(
+                              label: 'Username',
+                              hint: 'Enter username',
+                              controller: usernameController,
+                              focusNode: usernameFocusNode,
+                            ),
+                            const SizedBox(
+                              height: 10,
+                            ),
+                            LoginField(
+                              label: 'Password',
+                              hint: 'Enter password',
+                              controller: passwordController,
+                              focusNode: passwordFocusNode,
+                              obscureText: !passwordVisible,
+                              showVisibilityIcon: true,
+                              onVisibilityPressed: () {
+                                setState(() {
+                                  passwordVisible = !passwordVisible;
 
-                                      pawState = passwordVisible
-                                          ? RaccoonPawState.peek
-                                          : RaccoonPawState.cover;
-                                    });
-                                  },
-                                ),
-                                const SizedBox(
-                                  height: 10,
-                                ),
-                                const LoginOptions(),
-                                const SizedBox(
-                                  height: 14,
-                                ),
-                                PrimaryButton(
-                                  text: 'Sign in',
-                                  state: submitState,
-                                  animationResult: animationResult,
-                                  onPressed: _handleLogin,
-                                ),
-                                const SizedBox(
-                                  height: 14,
-                                ),
-                                const Divider(),
-                                const SizedBox(
-                                  height: 14,
-                                ),
-                                Row(
-                                  children: [
-                                    Expanded(
-                                      child: SocialButton(
-                                        text: 'Google',
-                                        icon: const Icon(
-                                          Icons.g_mobiledata,
-                                        ),
-                                        onPressed: () {},
-                                      ),
+                                  pawState = passwordVisible
+                                      ? RaccoonPawState.peek
+                                      : RaccoonPawState.cover;
+                                });
+                              },
+                            ),
+                            const SizedBox(
+                              height: 10,
+                            ),
+                            const LoginOptions(),
+                            const SizedBox(
+                              height: 14,
+                            ),
+                            PrimaryButton(
+                              text: 'Sign in',
+                              state: submitState,
+                              animationResult: animationResult,
+                              onPressed: _handleLogin,
+                            ),
+                            const SizedBox(
+                              height: 14,
+                            ),
+                            const Divider(),
+                            const SizedBox(
+                              height: 14,
+                            ),
+                            Row(
+                              children: [
+                                Expanded(
+                                  child: SocialButton(
+                                    text: 'Google',
+                                    icon: const Icon(
+                                      Icons.g_mobiledata,
                                     ),
-                                    const SizedBox(
-                                      width: 12,
-                                    ),
-                                    Expanded(
-                                      child: SocialButton(
-                                        text: 'Apple',
-                                        icon: const Icon(
-                                          Icons.apple,
-                                        ),
-                                        onPressed: () {},
-                                      ),
-                                    ),
-                                  ],
+                                    onPressed: () {},
+                                  ),
                                 ),
                                 const SizedBox(
-                                  height: 18,
+                                  width: 12,
                                 ),
-                                TextButton(
-                                  onPressed: () {},
-                                  child: const Text(
-                                    "Don't have an account? Create account",
+                                Expanded(
+                                  child: SocialButton(
+                                    text: 'Apple',
+                                    icon: const Icon(
+                                      Icons.apple,
+                                    ),
+                                    onPressed: () {},
                                   ),
                                 ),
                               ],
                             ),
-                          ),
+                            const SizedBox(
+                              height: 18,
+                            ),
+                            TextButton(
+                              onPressed: () {},
+                              child: const Text(
+                                "Don't have an account? Create account",
+                              ),
+                            ),
+                          ],
                         ),
-                      ],
+                      ),
                     ),
                   ),
                 ),
