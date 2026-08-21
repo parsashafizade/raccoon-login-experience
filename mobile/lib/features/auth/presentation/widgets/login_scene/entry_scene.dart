@@ -4,10 +4,8 @@ import 'walker.dart';
 import 'door.dart';
 import '../../models/entry_result.dart';
 
-
 class EntryScene extends StatefulWidget {
   final EntryResult result;
-
   final VoidCallback? onCompleted;
 
   const EntryScene({
@@ -25,22 +23,20 @@ class _EntrySceneState extends State<EntryScene>
   late AnimationController controller;
 
   late Animation<double> walkerPosition;
-
   late Animation<double> doorRotation;
-
   late Animation<double> doorLight;
 
   @override
   void initState() {
     super.initState();
 
-    final duration = widget.result == EntryResult.success
-        ? const Duration(milliseconds: 2400)
-        : const Duration(milliseconds: 3800);
+    final isSuccess = widget.result == EntryResult.success;
 
     controller = AnimationController(
       vsync: this,
-      duration: duration,
+      duration: isSuccess
+          ? const Duration(milliseconds: 2400)
+          : const Duration(milliseconds: 3800),
     );
 
     walkerPosition = Tween<double>(
@@ -49,7 +45,7 @@ class _EntrySceneState extends State<EntryScene>
     ).animate(
       CurvedAnimation(
         parent: controller,
-        curve: widget.result == EntryResult.success
+        curve: isSuccess
             ? const Interval(
                 0,
                 0.84,
@@ -69,7 +65,7 @@ class _EntrySceneState extends State<EntryScene>
     ).animate(
       CurvedAnimation(
         parent: controller,
-        curve: widget.result == EntryResult.success
+        curve: isSuccess
             ? const Interval(
                 0.40,
                 0.75,
@@ -89,16 +85,16 @@ class _EntrySceneState extends State<EntryScene>
     ).animate(
       CurvedAnimation(
         parent: controller,
-        curve: widget.result == EntryResult.success
+        curve: isSuccess
             ? const Interval(
                 0.48,
                 0.82,
                 curve: Curves.easeInOut,
               )
             : const Interval(
-                0,
-                0,
-                curve: Curves.linear,
+                0.35,
+                0.65,
+                curve: Curves.easeInOut,
               ),
       ),
     );
@@ -115,7 +111,6 @@ class _EntrySceneState extends State<EntryScene>
   @override
   void dispose() {
     controller.dispose();
-
     super.dispose();
   }
 
@@ -134,6 +129,7 @@ class _EntrySceneState extends State<EntryScene>
           Door(
             rotation: doorRotation,
             light: doorLight,
+            result: widget.result,
           ),
         ],
       ),

@@ -1,17 +1,23 @@
 import 'package:flutter/material.dart';
 
+import '../../models/entry_result.dart';
+
 class Door extends StatelessWidget {
   final Animation<double> rotation;
   final Animation<double> light;
+  final EntryResult result;
 
   const Door({
     super.key,
     required this.rotation,
     required this.light,
+    required this.result,
   });
 
   @override
   Widget build(BuildContext context) {
+    final isFailure = result == EntryResult.failure;
+
     return Positioned(
       right: 8,
       bottom: 3,
@@ -20,17 +26,6 @@ class Door extends StatelessWidget {
         height: 32,
         child: Stack(
           children: [
-            Container(
-              decoration: BoxDecoration(
-                border: Border.all(
-                  color: Colors.white,
-                  width: 2,
-                ),
-                borderRadius: const BorderRadius.vertical(
-                  top: Radius.circular(2),
-                ),
-              ),
-            ),
             AnimatedBuilder(
               animation: rotation,
               builder: (
@@ -48,14 +43,22 @@ class Door extends StatelessWidget {
                     ..rotateY(
                       rotation.value,
                     ),
-                  child: Container(
+                  child: AnimatedContainer(
+                    duration: const Duration(
+                      milliseconds: 200,
+                    ),
                     margin: const EdgeInsets.all(3),
-                    decoration: const BoxDecoration(
+                    decoration: BoxDecoration(
                       gradient: LinearGradient(
-                        colors: [
-                          Color(0xff173a62),
-                          Color(0xff0a1d34),
-                        ],
+                        colors: isFailure
+                            ? const [
+                                Color(0xff7b2936),
+                                Color(0xff361522),
+                              ]
+                            : const [
+                                Color(0xff173a62),
+                                Color(0xff0a1d34),
+                              ],
                       ),
                     ),
                   ),
@@ -72,12 +75,17 @@ class Door extends StatelessWidget {
                   child: Opacity(
                     opacity: light.value,
                     child: Container(
-                      decoration: const BoxDecoration(
+                      decoration: BoxDecoration(
                         gradient: LinearGradient(
-                          colors: [
-                            Colors.transparent,
-                            Color(0xffffefc8),
-                          ],
+                          colors: isFailure
+                              ? const [
+                                  Colors.transparent,
+                                  Color(0xffff5555),
+                                ]
+                              : const [
+                                  Colors.transparent,
+                                  Color(0xffffefc8),
+                                ],
                         ),
                       ),
                     ),
