@@ -51,6 +51,19 @@ class _LoginPageState extends State<LoginPage> {
   int passwordLength = 0;
 
   bool passwordVisible = false;
+  void _onAnimationComplete() {
+    if (!mounted) return;
+
+    setState(() {
+      if (animationResult == EntryResult.success) {
+        submitState = LoginSubmitState.success;
+      } else {
+        submitState = LoginSubmitState.idle;
+
+        animationResult = null;
+      }
+    });
+  }
 
   Future<void> _handleLogin() async {
     setState(() {
@@ -76,21 +89,6 @@ class _LoginPageState extends State<LoginPage> {
         animationResult = EntryResult.failure;
       });
 
-      Future.delayed(
-        const Duration(
-          milliseconds: 3800,
-        ),
-        () {
-          if (!mounted) return;
-
-          setState(() {
-            submitState = LoginSubmitState.idle;
-
-            animationResult = null;
-          });
-        },
-      );
-
       return;
     }
 
@@ -99,19 +97,6 @@ class _LoginPageState extends State<LoginPage> {
 
       animationResult = EntryResult.success;
     });
-
-    Future.delayed(
-      const Duration(
-        milliseconds: 2400,
-      ),
-      () {
-        if (!mounted) return;
-
-        setState(() {
-          submitState = LoginSubmitState.success;
-        });
-      },
-    );
   }
 
   @override
@@ -253,6 +238,7 @@ class _LoginPageState extends State<LoginPage> {
                               state: submitState,
                               animationResult: animationResult,
                               onPressed: _handleLogin,
+                              onAnimationComplete: _onAnimationComplete,
                             ),
                             const SizedBox(
                               height: 14,
