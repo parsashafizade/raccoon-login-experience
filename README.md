@@ -1,6 +1,15 @@
-# Raccoon Login Experience
+<div align="center">
 
-### Interactive Cross-Platform Login Experience
+<h1>
+<img src="shared-assets/raccoon/raccoon-icon.webp" width="55" />
+Raccoon Login Experience
+</h1>
+
+<p>
+Interactive Cross-Platform Login Experience
+</p>
+
+</div>
 
 A modern authentication experience built with **React + TypeScript** and **Flutter**.
 
