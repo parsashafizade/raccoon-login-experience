@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import '../models/raccoon_paw_state.dart';
 import '../raccoon_position.dart';
 
-class RaccoonPaws extends StatelessWidget {
+class RaccoonPaws extends StatefulWidget {
   final RaccoonPawState pawState;
 
   final double size;
@@ -15,13 +15,18 @@ class RaccoonPaws extends StatelessWidget {
   });
 
   @override
+  State<RaccoonPaws> createState() => _RaccoonPawsState();
+}
+
+class _RaccoonPawsState extends State<RaccoonPaws> {
+  @override
   Widget build(BuildContext context) {
-    switch (pawState) {
+    switch (widget.pawState) {
       case RaccoonPawState.rest:
         return Positioned(
-          bottom: size * RaccoonPosition.restPawsBottom,
-          left: size * RaccoonPosition.restPawsLeft,
-          width: size * RaccoonPosition.restPawsWidth,
+          bottom: widget.size * RaccoonPosition.restPawsBottom,
+          left: widget.size * RaccoonPosition.restPawsLeft,
+          width: widget.size * RaccoonPosition.restPawsWidth,
           child: Image.asset(
             'assets/raccoon/paws-rest.webp',
             fit: BoxFit.contain,
@@ -34,10 +39,14 @@ class RaccoonPaws extends StatelessWidget {
           children: [
             // Left paw
 
-            Positioned(
-              bottom: size * RaccoonPosition.coverPawsBottom,
-              left: size * RaccoonPosition.coverPawsLeft,
-              width: size * (RaccoonPosition.coverPawsWidth / 2),
+            AnimatedPositioned(
+              duration: const Duration(
+                milliseconds: 300,
+              ),
+              curve: Curves.easeInOut,
+              bottom: widget.size * RaccoonPosition.coverPawsBottom,
+              left: widget.size * RaccoonPosition.coverPawsLeft,
+              width: widget.size * (RaccoonPosition.coverPawsWidth / 2),
               child: Image.asset(
                 'assets/raccoon/paws-cover-left.webp',
                 fit: BoxFit.contain,
@@ -46,12 +55,40 @@ class RaccoonPaws extends StatelessWidget {
 
             // Right paw
 
-            Positioned(
-              bottom: size * RaccoonPosition.coverPawsBottom,
-              right: size * RaccoonPosition.coverPawsLeft,
-              width: size * (RaccoonPosition.coverPawsWidth / 2),
+            AnimatedPositioned(
+              duration: const Duration(
+                milliseconds: 300,
+              ),
+              curve: Curves.easeInOut,
+              bottom: widget.size * RaccoonPosition.coverPawsBottom,
+              right: widget.size * RaccoonPosition.coverPawsLeft,
+              width: widget.size * (RaccoonPosition.coverPawsWidth / 2),
               child: Image.asset(
                 'assets/raccoon/paws-cover-right.webp',
+                fit: BoxFit.contain,
+              ),
+            ),
+          ],
+        );
+      case RaccoonPawState.peek:
+        return Stack(
+          clipBehavior: Clip.none,
+          children: [
+            Positioned(
+              bottom: widget.size * RaccoonPosition.coverPawsBottom,
+              left: widget.size * RaccoonPosition.coverPawsLeft,
+              width: widget.size * (RaccoonPosition.coverPawsWidth / 2),
+              child: Image.asset(
+                'assets/raccoon/paws-peek-left.webp',
+                fit: BoxFit.contain,
+              ),
+            ),
+            Positioned(
+              bottom: widget.size * RaccoonPosition.coverPawsBottom,
+              right: widget.size * RaccoonPosition.coverPawsLeft,
+              width: widget.size * (RaccoonPosition.coverPawsWidth / 2),
+              child: Image.asset(
+                'assets/raccoon/paws-peek-right.webp',
                 fit: BoxFit.contain,
               ),
             ),

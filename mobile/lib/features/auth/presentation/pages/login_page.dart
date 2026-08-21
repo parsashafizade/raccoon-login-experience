@@ -159,6 +159,12 @@ class _LoginPageState extends State<LoginPage> {
                                   onVisibilityPressed: () {
                                     setState(() {
                                       passwordVisible = !passwordVisible;
+
+                                      if (passwordVisible) {
+                                        pawState = RaccoonPawState.peek;
+                                      } else {
+                                        pawState = RaccoonPawState.cover;
+                                      }
                                     });
                                   },
                                 ),
