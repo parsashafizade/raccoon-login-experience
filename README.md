@@ -19,6 +19,7 @@ This project demonstrates how a traditional login screen can become a more engag
 
 Designed as a reusable developer-friendly implementation for modern applications.
 
+
 <br>
 
 <div align="center">
@@ -40,6 +41,13 @@ Designed as a reusable developer-friendly implementation for modern applications
 
 ---
 
+## Demo
+
+Watch the interactive login experience:
+
+[![LinkedIn](https://img.shields.io/badge/LinkedIn-Showcase-0A66C2?style=flat-square&logo=linkedin)](https://www.linkedin.com/in/parsa-shafizade/)
+
+---
 ## Architecture
 
 The project contains two independent implementations sharing the same product concept.
@@ -111,7 +119,17 @@ flutter pub get
 
 flutter run
 ```
+---
 
+## Contributing
+
+Contributions are welcome.
+
+You can contribute by:
+
+- Reporting bugs
+- Suggesting improvements
+- Submitting pull requests
 ---
 
 ## Future Improvements
