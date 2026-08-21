@@ -1,32 +1,33 @@
 # Raccoon Login Experience
 
-![Raccoon Login Experience](shared-assets/banner/RaccoonـCharacterـReference.png)
+### Interactive Cross-Platform Login Experience
 
-A cross-platform interactive login experience built with **React + TypeScript** and **Flutter**.
+A modern authentication experience built with **React + TypeScript** and **Flutter**.
 
-This project explores how a simple authentication screen can become a memorable user experience through micro-interactions, animations, and a reactive mascot.
+This project demonstrates how a traditional login screen can become a more engaging product experience through micro-interactions, animations, and a reactive mascot.
 
-The goal is to provide a reusable, developer-friendly implementation of an engaging login flow.
+Designed as a reusable developer-friendly implementation for modern applications.
+
+<br>
+
+![Raccoon Login Experience](shared-assets/banner/main-banner.webp)
+
+<br>
+
+<img src="https://skillicons.dev/icons?i=react,ts,vite,flutter,dart" alt="Technology Stack" />
+
+<br><br>
+
+![Top Language](https://img.shields.io/github/languages/top/parsashafizade/raccoon-login-experience?style=flat-square)
+![Languages](https://img.shields.io/github/languages/count/parsashafizade/raccoon-login-experience?style=flat-square)
+![Last Commit](https://img.shields.io/github/last-commit/parsashafizade/raccoon-login-experience?style=flat-square)
+![License](https://img.shields.io/github/license/parsashafizade/raccoon-login-experience?style=flat-square)
 
 ---
 
-## ✨ Features
+## Architecture
 
-- 🦝 Interactive raccoon mascot
-- 👀 Context-aware eye movement
-- 🐾 Password protection reactions
-- 🚪 Animated login entry experience
-- ✅ Success and failure authentication states
-- 🔐 Password validation flow
-- 📱 Cross-platform implementation
-  - Web
-  - Mobile
-
----
-
-## 🏗️ Architecture
-
-The project contains two independent implementations sharing the same visual concept.
+The project contains two independent implementations sharing the same product concept.
 
 ```mermaid
 graph TD
@@ -37,45 +38,23 @@ A --> B[Web Application]
 A --> C[Mobile Application]
 
 B --> D[React + TypeScript]
-D --> E[Components]
-D --> F[Auth Layer]
+D --> E[UI Components]
+D --> F[Authentication Layer]
 
 C --> G[Flutter]
 G --> H[Presentation Layer]
 G --> I[Domain/Data Layer]
 ```
 
-<details>
-<summary>Project Structure</summary>
+<br>
 
-```
-raccoon-login-experience/
-
-├── web/
-│   ├── React application
-│   ├── Interactive UI components
-│   └── Authentication flow
-
-├── mobile/
-│   ├── Flutter application
-│   ├── Clean feature structure
-│   └── Authentication flow
-
-└── shared-assets/
-    └── Shared raccoon assets
-```
-
-</details>
+<img src="shared-assets/banner/raccoon-character-reference.webp" alt="Raccoon Character Reference" width="700"/>
 
 ---
 
-## 🛠️ Tech Stack
+## Tech Stack
 
 ### Web
-
-![React](https://img.shields.io/badge/React-19-blue)
-![TypeScript](https://img.shields.io/badge/TypeScript-5-blue)
-![Vite](https://img.shields.io/badge/Vite-modern-purple)
 
 - React
 - TypeScript
@@ -84,18 +63,15 @@ raccoon-login-experience/
 
 ### Mobile
 
-![Flutter](https://img.shields.io/badge/Flutter-3-blue)
-![Dart](https://img.shields.io/badge/Dart-3-blue)
-
 - Flutter
 - Dart
 - Feature-based architecture
 
 ---
 
-## 🚀 Getting Started
+## Getting Started
 
-## Web
+### Web
 
 ```bash
 cd web
@@ -107,7 +83,7 @@ npm run dev
 
 ---
 
-## Mobile
+### Mobile
 
 ```bash
 cd mobile
@@ -119,27 +95,37 @@ flutter run
 
 ---
 
-## 📂 Development Notes
+## Project Structure
 
-The project is designed to be easily extended:
+```text
+raccoon-login-experience/
 
-- Replace the mock authentication layer with a real backend
-- Add custom authentication providers
-- Reuse the mascot interaction system in other products
-- Extend animations and states
+├── web/
+│   ├── React application
+│   ├── Interactive UI components
+│   └── Authentication flow
+
+├── mobile/
+│   ├── Flutter application
+│   ├── Feature-based structure
+│   └── Authentication flow
+
+└── shared-assets/
+    └── Shared raccoon assets
+```
 
 ---
 
-## 🔮 Future Improvements
+## Future Improvements
 
-- Real authentication integration
-- More mascot interaction states
-- Additional themes
+- Real authentication backend integration
+- Additional mascot interaction states
+- More themes and customization options
 - Production-ready authentication services
 
 ---
 
-## 📄 License
+## License
 
 This project is licensed under the MIT License.
 
@@ -147,8 +133,8 @@ You are free to use, modify, and distribute this project while keeping the origi
 
 ---
 
-## 👤 Author
+## Author
 
 **Parsa Shafizade**
 
-GitHub: [@parsashafizade](https://github.com/parsashafizade)
+GitHub: https://github.com/parsashafizade
