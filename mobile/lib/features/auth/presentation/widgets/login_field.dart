@@ -4,6 +4,7 @@ import '../../../../app/theme/app_colors.dart';
 
 class LoginField extends StatelessWidget {
   final String label;
+
   final String hint;
 
   final bool obscureText;
@@ -16,6 +17,8 @@ class LoginField extends StatelessWidget {
 
   final bool showVisibilityIcon;
 
+  final String? errorText;
+
   const LoginField({
     super.key,
     required this.label,
@@ -25,6 +28,7 @@ class LoginField extends StatelessWidget {
     this.obscureText = false,
     this.showVisibilityIcon = false,
     this.onVisibilityPressed,
+    this.errorText,
   });
 
   @override
@@ -73,6 +77,11 @@ class LoginField extends StatelessWidget {
             border: OutlineInputBorder(
               borderRadius: BorderRadius.circular(14),
               borderSide: BorderSide.none,
+            ),
+            errorText: errorText,
+            errorStyle: const TextStyle(
+              color: Color(0xFFFF9A9A),
+              fontSize: 12,
             ),
           ),
         ),

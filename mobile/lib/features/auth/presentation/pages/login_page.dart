@@ -17,6 +17,7 @@ import '../models/entry_result.dart';
 import '../../domain/login_credentials.dart';
 import '../../domain/auth_result.dart';
 import '../../domain/auth_repository.dart';
+import '../../domain/validators/login_validator.dart';
 
 class LoginPage extends StatefulWidget {
   final AuthRepository authRepository;
@@ -32,16 +33,17 @@ class LoginPage extends StatefulWidget {
 
 class _LoginPageState extends State<LoginPage> {
   final usernameController = TextEditingController();
-
   final passwordController = TextEditingController();
 
   final usernameFocusNode = FocusNode();
-
   final passwordFocusNode = FocusNode();
 
   LoginSubmitState submitState = LoginSubmitState.idle;
 
   EntryResult? animationResult;
+
+  String? usernameError;
+  String? passwordError;
 
   RaccoonEyeState eyeState = RaccoonEyeState.idle;
 
@@ -51,24 +53,44 @@ class _LoginPageState extends State<LoginPage> {
   int passwordLength = 0;
 
   bool passwordVisible = false;
-  void _onAnimationComplete() {
+
+  void _resetStateOnInput() {
     if (!mounted) return;
 
     setState(() {
-      if (animationResult == EntryResult.success) {
-        submitState = LoginSubmitState.success;
-      } else {
-        submitState = LoginSubmitState.idle;
+      usernameError = null;
+      passwordError = null;
 
+      if (submitState != LoginSubmitState.idle &&
+          submitState != LoginSubmitState.success) {
+        submitState = LoginSubmitState.idle;
         animationResult = null;
       }
     });
   }
 
   Future<void> _handleLogin() async {
-    setState(() {
-      submitState = LoginSubmitState.checking;
+    final validation = LoginValidator.validate(
+      username: usernameController.text,
+      password: passwordController.text,
+    );
 
+    if (validation.hasError) {
+      setState(() {
+        usernameError = validation.usernameError;
+        passwordError = validation.passwordError;
+        submitState = LoginSubmitState.failureAnimation;
+        animationResult = EntryResult.failure;
+      });
+
+      return;
+    }
+
+    setState(() {
+      usernameError = null;
+      passwordError = null;
+
+      submitState = LoginSubmitState.checking;
       animationResult = null;
     });
 
@@ -85,7 +107,6 @@ class _LoginPageState extends State<LoginPage> {
     if (result is AuthFailure) {
       setState(() {
         submitState = LoginSubmitState.failureAnimation;
-
         animationResult = EntryResult.failure;
       });
 
@@ -94,8 +115,20 @@ class _LoginPageState extends State<LoginPage> {
 
     setState(() {
       submitState = LoginSubmitState.successAnimation;
-
       animationResult = EntryResult.success;
+    });
+  }
+
+  void _onAnimationComplete() {
+    if (!mounted) return;
+
+    setState(() {
+      if (animationResult == EntryResult.success) {
+        submitState = LoginSubmitState.success;
+      } else {
+        submitState = LoginSubmitState.idle;
+        animationResult = null;
+      }
     });
   }
 
@@ -103,27 +136,9 @@ class _LoginPageState extends State<LoginPage> {
   void initState() {
     super.initState();
 
-    usernameFocusNode.addListener(() {
-      if (usernameFocusNode.hasFocus) {
-        setState(() {
-          eyeState = RaccoonEyeState.username;
-
-          pawState = RaccoonPawState.rest;
-        });
-      }
-    });
-
-    passwordFocusNode.addListener(() {
-      if (passwordFocusNode.hasFocus) {
-        setState(() {
-          eyeState = RaccoonEyeState.password;
-
-          pawState = RaccoonPawState.cover;
-        });
-      }
-    });
-
     usernameController.addListener(() {
+      _resetStateOnInput();
+
       if (usernameFocusNode.hasFocus) {
         setState(() {
           usernameLength = usernameController.text.length;
@@ -140,6 +155,8 @@ class _LoginPageState extends State<LoginPage> {
     });
 
     passwordController.addListener(() {
+      _resetStateOnInput();
+
       if (passwordFocusNode.hasFocus) {
         setState(() {
           passwordLength = passwordController.text.length;
@@ -154,16 +171,32 @@ class _LoginPageState extends State<LoginPage> {
         });
       }
     });
+
+    usernameFocusNode.addListener(() {
+      if (usernameFocusNode.hasFocus) {
+        setState(() {
+          eyeState = RaccoonEyeState.username;
+          pawState = RaccoonPawState.rest;
+        });
+      }
+    });
+
+    passwordFocusNode.addListener(() {
+      if (passwordFocusNode.hasFocus) {
+        setState(() {
+          eyeState = RaccoonEyeState.password;
+          pawState = RaccoonPawState.cover;
+        });
+      }
+    });
   }
 
   @override
   void dispose() {
     usernameController.dispose();
-
     passwordController.dispose();
 
     usernameFocusNode.dispose();
-
     passwordFocusNode.dispose();
 
     super.dispose();
@@ -197,24 +230,22 @@ class _LoginPageState extends State<LoginPage> {
                           mainAxisSize: MainAxisSize.min,
                           children: [
                             const LoginHeader(),
-                            const SizedBox(
-                              height: 18,
-                            ),
+                            const SizedBox(height: 18),
                             LoginField(
                               label: 'Username',
                               hint: 'Enter username',
                               controller: usernameController,
                               focusNode: usernameFocusNode,
+                              errorText: usernameError,
                             ),
-                            const SizedBox(
-                              height: 10,
-                            ),
+                            const SizedBox(height: 10),
                             LoginField(
                               label: 'Password',
                               hint: 'Enter password',
                               controller: passwordController,
                               focusNode: passwordFocusNode,
                               obscureText: !passwordVisible,
+                              errorText: passwordError,
                               showVisibilityIcon: true,
                               onVisibilityPressed: () {
                                 setState(() {
@@ -226,13 +257,9 @@ class _LoginPageState extends State<LoginPage> {
                                 });
                               },
                             ),
-                            const SizedBox(
-                              height: 10,
-                            ),
+                            const SizedBox(height: 10),
                             const LoginOptions(),
-                            const SizedBox(
-                              height: 14,
-                            ),
+                            const SizedBox(height: 14),
                             PrimaryButton(
                               text: 'Sign in',
                               state: submitState,
@@ -240,13 +267,9 @@ class _LoginPageState extends State<LoginPage> {
                               onPressed: _handleLogin,
                               onAnimationComplete: _onAnimationComplete,
                             ),
-                            const SizedBox(
-                              height: 14,
-                            ),
+                            const SizedBox(height: 14),
                             const Divider(),
-                            const SizedBox(
-                              height: 14,
-                            ),
+                            const SizedBox(height: 14),
                             Row(
                               children: [
                                 Expanded(
@@ -258,9 +281,7 @@ class _LoginPageState extends State<LoginPage> {
                                     onPressed: () {},
                                   ),
                                 ),
-                                const SizedBox(
-                                  width: 12,
-                                ),
+                                const SizedBox(width: 12),
                                 Expanded(
                                   child: SocialButton(
                                     text: 'Apple',
@@ -272,9 +293,7 @@ class _LoginPageState extends State<LoginPage> {
                                 ),
                               ],
                             ),
-                            const SizedBox(
-                              height: 18,
-                            ),
+                            const SizedBox(height: 18),
                             TextButton(
                               onPressed: () {},
                               child: const Text(
