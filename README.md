@@ -11,6 +11,8 @@ Interactive Cross-Platform Login Experience
 
 </div>
 
+<h1></h1>
+
 A modern authentication experience built with **React + TypeScript** and **Flutter**.
 
 This project demonstrates how a traditional login screen can become a more engaging product experience through micro-interactions, animations, and a reactive mascot.
