@@ -8,6 +8,7 @@ import '../widgets/primary_button.dart';
 import '../widgets/social_button.dart';
 import '../widgets/login_layout.dart';
 import '../widgets/raccoon/models/raccoon_eye_state.dart';
+import '../widgets/raccoon/models/raccoon_paw_state.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({
@@ -27,6 +28,7 @@ class _LoginPageState extends State<LoginPage> {
   RaccoonEyeState eyeState = RaccoonEyeState.idle;
   int usernameLength = 0;
   int passwordLength = 0;
+  RaccoonPawState pawState = RaccoonPawState.rest;
 
   bool passwordVisible = false;
   @override
@@ -37,6 +39,7 @@ class _LoginPageState extends State<LoginPage> {
       if (usernameFocusNode.hasFocus) {
         setState(() {
           eyeState = RaccoonEyeState.username;
+          pawState = RaccoonPawState.rest;
         });
       }
     });
@@ -45,6 +48,8 @@ class _LoginPageState extends State<LoginPage> {
       if (passwordFocusNode.hasFocus) {
         setState(() {
           eyeState = RaccoonEyeState.password;
+
+          pawState = RaccoonPawState.cover;
         });
       }
     });
@@ -127,6 +132,7 @@ class _LoginPageState extends State<LoginPage> {
                           ),
                           child: LoginLayout(
                             eyeState: eyeState,
+                            pawState: pawState,
                             child: Column(
                               mainAxisSize: MainAxisSize.min,
                               children: [

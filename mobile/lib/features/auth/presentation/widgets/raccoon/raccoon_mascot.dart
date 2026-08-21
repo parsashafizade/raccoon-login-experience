@@ -1,14 +1,17 @@
 import 'package:flutter/material.dart';
-
+import 'models/raccoon_paw_state.dart';
 import 'models/raccoon_eye_state.dart';
+import 'paws/raccoon_paws.dart';
 import 'raccoon_position.dart';
 
 class RaccoonMascot extends StatelessWidget {
   final RaccoonEyeState eyeState;
+  final RaccoonPawState pawState;
 
   const RaccoonMascot({
     super.key,
     required this.eyeState,
+    required this.pawState,
   });
 
   Offset _eyeOffset() {
@@ -113,14 +116,9 @@ class RaccoonMascot extends StatelessWidget {
 
             // Rest paws
 
-            Positioned(
-              bottom: size * RaccoonPosition.pawsBottom,
-              left: size * RaccoonPosition.pawsLeft,
-              width: size * RaccoonPosition.pawsWidth,
-              child: Image.asset(
-                'assets/raccoon/paws-rest.webp',
-                fit: BoxFit.contain,
-              ),
+            RaccoonPaws(
+              pawState: pawState,
+              size: size,
             ),
           ],
         );

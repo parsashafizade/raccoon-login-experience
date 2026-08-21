@@ -9,8 +9,19 @@ class RaccoonPosition {
   static const double leftEyeLeft = 0.425;
   static const double rightEyeRight = 0.425;
 
-  // Resting paws overlay
-  static const double pawsBottom = -0.07;
-  static const double pawsWidth = 0.55;
-  static const double pawsLeft = 0.225;
+  // Rest paws
+
+  static const double restPawsBottom = -0.07;
+
+  static const double restPawsWidth = 0.55;
+
+  static const double restPawsLeft = 0.225;
+
+// Cover paws
+
+  static const double coverPawsBottom = 0;
+
+  static const double coverPawsWidth = 0.42;
+
+  static const double coverPawsLeft = 0.285;
 }

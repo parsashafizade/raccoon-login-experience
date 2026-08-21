@@ -3,15 +3,18 @@ import 'package:flutter/material.dart';
 import 'glass_card.dart';
 import 'raccoon/raccoon_layer.dart';
 import 'raccoon/models/raccoon_eye_state.dart';
+import 'raccoon/models/raccoon_paw_state.dart';
 
 class LoginLayout extends StatelessWidget {
   final Widget child;
   final RaccoonEyeState eyeState;
+  final RaccoonPawState pawState;
 
   const LoginLayout({
     super.key,
     required this.child,
     required this.eyeState,
+    required this.pawState,
   });
 
   @override
@@ -37,13 +40,15 @@ class LoginLayout extends StatelessWidget {
                 child: child,
               ),
               Positioned(
-                  top: raccoonTop,
-                  left: 0,
-                  right: 0,
-                  child: RaccoonLayer(
-                    size: raccoonSize,
-                    eyeState: eyeState,
-                  )),
+                top: raccoonTop,
+                left: 0,
+                right: 0,
+                child: RaccoonLayer(
+                  size: raccoonSize,
+                  eyeState: eyeState,
+                  pawState: pawState,
+                ),
+              ),
             ],
           ),
         );
