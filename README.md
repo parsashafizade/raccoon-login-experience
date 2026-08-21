@@ -14,6 +14,8 @@ Designed as a reusable developer-friendly implementation for modern applications
 
 <br>
 
+<div align="center">
+
 <img src="https://skillicons.dev/icons?i=react,ts,vite,flutter,dart" alt="Technology Stack" />
 
 <br><br>
@@ -22,6 +24,8 @@ Designed as a reusable developer-friendly implementation for modern applications
 ![Languages](https://img.shields.io/github/languages/count/parsashafizade/raccoon-login-experience?style=flat-square)
 ![Last Commit](https://img.shields.io/github/last-commit/parsashafizade/raccoon-login-experience?style=flat-square)
 ![License](https://img.shields.io/github/license/parsashafizade/raccoon-login-experience?style=flat-square)
+
+</div>
 
 ---
 
@@ -48,24 +52,38 @@ G --> I[Domain/Data Layer]
 
 <br>
 
+<div align="center">
+
 <img src="shared-assets/banner/raccoon-character-reference.webp" alt="Raccoon Character Reference" width="700"/>
+
+</div>
 
 ---
 
+<div align="center">
+
 ## Tech Stack
+
+</div>
+
+<div align="center">
 
 ### Web
 
-- React
-- TypeScript
-- Vite
-- CSS Modules
+React  
+TypeScript  
+Vite  
+CSS Modules
+
+<br>
 
 ### Mobile
 
-- Flutter
-- Dart
-- Feature-based architecture
+Flutter  
+Dart  
+Feature-based Architecture
+
+</div>
 
 ---
 
@@ -91,27 +109,6 @@ cd mobile
 flutter pub get
 
 flutter run
-```
-
----
-
-## Project Structure
-
-```text
-raccoon-login-experience/
-
-├── web/
-│   ├── React application
-│   ├── Interactive UI components
-│   └── Authentication flow
-
-├── mobile/
-│   ├── Flutter application
-│   ├── Feature-based structure
-│   └── Authentication flow
-
-└── shared-assets/
-    └── Shared raccoon assets
 ```
 
 ---
