@@ -1,4 +1,4 @@
-# 🦝 Raccoon Login Experience
+# ![Raccoon Login Experience](shared-assets/raccoon/raccoon-base-with-eye.png) Raccoon Login Experience
 
 ![Raccoon Login Experience](shared-assets/banner/669f7edc-b58e-4d64-8637-6d634ac10fac.png)
 
