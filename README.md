@@ -29,7 +29,7 @@ Designed as a reusable developer-friendly implementation for modern applications
 
 ---
 
-## ◈ Architecture
+## Architecture
 
 The project contains two independent implementations sharing the same product concept.
 
@@ -50,17 +50,9 @@ G --> H[Presentation Layer]
 G --> I[Domain/Data Layer]
 ```
 
-<br>
-
-<div align="center">
-
-<img src="shared-assets/banner/raccoon-character-reference.webp" alt="Raccoon Character Reference" width="700"/>
-
-</div>
-
 ---
 
-## ◇ Tech Stack
+## Tech Stack
 
 ### Web
 
@@ -77,7 +69,15 @@ G --> I[Domain/Data Layer]
 
 ---
 
-## ▷ Getting Started
+<br>
+
+<div align="center">
+
+<img src="shared-assets/banner/raccoon-character-reference.webp" alt="Raccoon Character Reference" width="700"/>
+
+## </div>
+
+## Getting Started
 
 ### Web
 
@@ -103,7 +103,7 @@ flutter run
 
 ---
 
-## ✦ Future Improvements
+## Future Improvements
 
 - Real authentication backend integration
 - Additional mascot interaction states
@@ -112,7 +112,7 @@ flutter run
 
 ---
 
-## ⌘ License
+## License
 
 This project is licensed under the MIT License.
 
@@ -120,7 +120,7 @@ You are free to use, modify, and distribute this project while keeping the origi
 
 ---
 
-## ◎ Author
+## Author
 
 **Parsa Shafizade**
 
