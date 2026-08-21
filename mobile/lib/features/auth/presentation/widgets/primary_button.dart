@@ -1,15 +1,29 @@
 import 'package:flutter/material.dart';
 
+import '../models/login_submit_state.dart';
+import 'login_scene/entry_scene.dart';
+
 class PrimaryButton extends StatelessWidget {
   final String text;
 
   final VoidCallback onPressed;
 
+  final LoginSubmitState state;
+
+  final EntryResult? animationResult;
+
   const PrimaryButton({
     super.key,
     required this.text,
     required this.onPressed,
+    this.state = LoginSubmitState.idle,
+    this.animationResult,
   });
+
+  bool get isAnimating {
+    return state == LoginSubmitState.successAnimation ||
+        state == LoginSubmitState.failureAnimation;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -27,7 +41,7 @@ class PrimaryButton extends StatelessWidget {
           ),
         ),
         child: FilledButton(
-          onPressed: onPressed,
+          onPressed: state == LoginSubmitState.idle ? onPressed : null,
           style: FilledButton.styleFrom(
             backgroundColor: Colors.transparent,
             shadowColor: Colors.transparent,
@@ -35,13 +49,21 @@ class PrimaryButton extends StatelessWidget {
               borderRadius: BorderRadius.circular(16),
             ),
           ),
-          child: Text(
-            text,
-            style: const TextStyle(
-              color: Colors.white,
-              fontWeight: FontWeight.w600,
-            ),
-          ),
+          child: isAnimating
+              ? EntryScene(
+                  result: animationResult!,
+                )
+              : Text(
+                  state == LoginSubmitState.checking
+                      ? 'Checking...'
+                      : state == LoginSubmitState.success
+                          ? 'Welcome back!'
+                          : text,
+                  style: const TextStyle(
+                    color: Colors.white,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
         ),
       ),
     );

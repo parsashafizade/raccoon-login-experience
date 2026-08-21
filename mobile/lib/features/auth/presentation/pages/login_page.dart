@@ -9,6 +9,7 @@ import '../widgets/social_button.dart';
 import '../widgets/login_layout.dart';
 import '../widgets/raccoon/models/raccoon_eye_state.dart';
 import '../widgets/raccoon/models/raccoon_paw_state.dart';
+import '../models/login_submit_state.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({
@@ -23,14 +24,28 @@ class _LoginPageState extends State<LoginPage> {
   final usernameController = TextEditingController();
 
   final passwordController = TextEditingController();
+
   final usernameFocusNode = FocusNode();
+
   final passwordFocusNode = FocusNode();
+
+  LoginSubmitState submitState = LoginSubmitState.idle;
+
   RaccoonEyeState eyeState = RaccoonEyeState.idle;
-  int usernameLength = 0;
-  int passwordLength = 0;
+
   RaccoonPawState pawState = RaccoonPawState.rest;
 
+  int usernameLength = 0;
+
+  int passwordLength = 0;
+
   bool passwordVisible = false;
+
+  Future<void> _handleLogin() async {
+    // Will be implemented with:
+    // validation + auth + animation flow
+  }
+
   @override
   void initState() {
     super.initState();
@@ -39,6 +54,7 @@ class _LoginPageState extends State<LoginPage> {
       if (usernameFocusNode.hasFocus) {
         setState(() {
           eyeState = RaccoonEyeState.username;
+
           pawState = RaccoonPawState.rest;
         });
       }
@@ -53,6 +69,7 @@ class _LoginPageState extends State<LoginPage> {
         });
       }
     });
+
     usernameController.addListener(() {
       if (usernameFocusNode.hasFocus) {
         setState(() {
@@ -73,6 +90,7 @@ class _LoginPageState extends State<LoginPage> {
       if (passwordFocusNode.hasFocus) {
         setState(() {
           passwordLength = passwordController.text.length;
+
           if (passwordLength > 8) {
             eyeState = RaccoonEyeState.passwordLongTyping;
           } else if (passwordLength > 0) {
@@ -88,9 +106,11 @@ class _LoginPageState extends State<LoginPage> {
   @override
   void dispose() {
     usernameController.dispose();
+
     passwordController.dispose();
 
     usernameFocusNode.dispose();
+
     passwordFocusNode.dispose();
 
     super.dispose();
@@ -117,15 +137,6 @@ class _LoginPageState extends State<LoginPage> {
                       clipBehavior: Clip.none,
                       alignment: Alignment.center,
                       children: [
-                        /*
-                         * Raccoon anchor.
-                         *
-                         * Phase 3 will place the mascot here.
-                         *
-                         * Keeping this layer separated prevents
-                         * layout breaking when animation is added.
-                         */
-
                         ConstrainedBox(
                           constraints: const BoxConstraints(
                             maxWidth: 430,
@@ -160,11 +171,9 @@ class _LoginPageState extends State<LoginPage> {
                                     setState(() {
                                       passwordVisible = !passwordVisible;
 
-                                      if (passwordVisible) {
-                                        pawState = RaccoonPawState.peek;
-                                      } else {
-                                        pawState = RaccoonPawState.cover;
-                                      }
+                                      pawState = passwordVisible
+                                          ? RaccoonPawState.peek
+                                          : RaccoonPawState.cover;
                                     });
                                   },
                                 ),
@@ -177,7 +186,8 @@ class _LoginPageState extends State<LoginPage> {
                                 ),
                                 PrimaryButton(
                                   text: 'Sign in',
-                                  onPressed: () {},
+                                  state: submitState,
+                                  onPressed: _handleLogin,
                                 ),
                                 const SizedBox(
                                   height: 14,
