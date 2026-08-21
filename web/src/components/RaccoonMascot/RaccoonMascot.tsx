@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import leftPupil from '../../assets/raccoon/left-pupil.webp';
 import pawsCoverLeft from '../../assets/raccoon/paws-cover-left.webp';
 import pawsCoverRight from '../../assets/raccoon/paws-cover-right.webp';
@@ -6,7 +7,6 @@ import pawsPeekRight from '../../assets/raccoon/paws-peek-right.webp';
 import pawsRest from '../../assets/raccoon/paws-rest.webp';
 import raccoonBase from '../../assets/raccoon/raccoon-base.webp';
 import rightPupil from '../../assets/raccoon/right-pupil.webp';
-
 import styles from './RaccoonMascot.module.css';
 import { usePointerGaze } from './usePointerGaze';
 
@@ -32,6 +32,39 @@ export function RaccoonMascot({
     passwordLength,
   });
 
+  useEffect(() => {
+    let preloadTimer: number | undefined;
+
+    const preloadSecondaryAssets = () => {
+      preloadTimer = window.setTimeout(() => {
+        [
+          pawsCoverLeft,
+          pawsCoverRight,
+          pawsPeekLeft,
+          pawsPeekRight,
+        ].forEach((src) => {
+          const image = new Image();
+          image.decoding = 'async';
+          image.src = src;
+        });
+      }, 1000);
+    };
+
+    if (document.readyState === 'complete') {
+      preloadSecondaryAssets();
+    } else {
+      window.addEventListener('load', preloadSecondaryAssets, { once: true });
+    }
+
+    return () => {
+      window.removeEventListener('load', preloadSecondaryAssets);
+
+      if (preloadTimer !== undefined) {
+        window.clearTimeout(preloadTimer);
+      }
+    };
+  }, []);
+
   const showRest = !passwordFocused;
   const showCover = passwordFocused && !passwordVisible;
   const showPeek = passwordFocused && passwordVisible;
@@ -44,6 +77,7 @@ export function RaccoonMascot({
           src={raccoonBase}
           alt=""
           draggable={false}
+          fetchPriority="high"
         />
 
         <img
@@ -79,6 +113,7 @@ export function RaccoonMascot({
               alt=""
               draggable={false}
             />
+
             <img
               className={`${styles.coverPaw} ${styles.coverRight}`}
               src={pawsCoverRight}
@@ -96,6 +131,7 @@ export function RaccoonMascot({
               alt=""
               draggable={false}
             />
+
             <img
               className={`${styles.peekPaw} ${styles.peekRight}`}
               src={pawsPeekRight}
