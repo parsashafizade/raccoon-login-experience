@@ -2,11 +2,8 @@ import 'package:flutter/material.dart';
 
 import 'walker.dart';
 import 'door.dart';
+import '../../models/entry_result.dart';
 
-enum EntryResult {
-  success,
-  failure,
-}
 
 class EntryScene extends StatefulWidget {
   final EntryResult result;

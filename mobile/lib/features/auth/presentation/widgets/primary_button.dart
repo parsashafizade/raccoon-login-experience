@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
+import '../models/entry_result.dart';
+import 'login_scene/entry_scene.dart';
 
 import '../models/login_submit_state.dart';
-import 'login_scene/entry_scene.dart';
 
 class PrimaryButton extends StatelessWidget {
   final String text;

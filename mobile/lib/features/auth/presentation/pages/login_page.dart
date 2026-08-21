@@ -7,9 +7,16 @@ import '../widgets/login_options.dart';
 import '../widgets/primary_button.dart';
 import '../widgets/social_button.dart';
 import '../widgets/login_layout.dart';
+
 import '../widgets/raccoon/models/raccoon_eye_state.dart';
 import '../widgets/raccoon/models/raccoon_paw_state.dart';
+
 import '../models/login_submit_state.dart';
+import '../models/entry_result.dart';
+
+import '../../data/auth_repository_impl.dart';
+import '../../domain/login_credentials.dart';
+import '../../domain/auth_result.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({
@@ -29,7 +36,11 @@ class _LoginPageState extends State<LoginPage> {
 
   final passwordFocusNode = FocusNode();
 
+  final authRepository = AuthRepositoryImpl();
+
   LoginSubmitState submitState = LoginSubmitState.idle;
+
+  EntryResult? animationResult;
 
   RaccoonEyeState eyeState = RaccoonEyeState.idle;
 
@@ -42,8 +53,63 @@ class _LoginPageState extends State<LoginPage> {
   bool passwordVisible = false;
 
   Future<void> _handleLogin() async {
-    // Will be implemented with:
-    // validation + auth + animation flow
+    setState(() {
+      submitState = LoginSubmitState.checking;
+
+      animationResult = null;
+    });
+
+    final result = await authRepository.login(
+      LoginCredentials(
+        username: usernameController.text,
+        password: passwordController.text,
+        rememberMe: false,
+      ),
+    );
+
+    if (!mounted) return;
+
+    if (result is AuthFailure) {
+      setState(() {
+        submitState = LoginSubmitState.failureAnimation;
+
+        animationResult = EntryResult.failure;
+      });
+
+      Future.delayed(
+        const Duration(
+          milliseconds: 3800,
+        ),
+        () {
+          if (!mounted) return;
+
+          setState(() {
+            submitState = LoginSubmitState.idle;
+
+            animationResult = null;
+          });
+        },
+      );
+    } else {
+      setState(() {
+        submitState = LoginSubmitState.successAnimation;
+
+        animationResult = EntryResult.success;
+      });
+
+      Future.delayed(
+        const Duration(
+          milliseconds: 2400,
+        ),
+        () {
+          if (!mounted) return;
+
+          setState(() {
+            submitState = LoginSubmitState.success;
+          });
+        },
+      );
+    }
   }
 
   @override
@@ -187,6 +253,7 @@ class _LoginPageState extends State<LoginPage> {
                                 PrimaryButton(
                                   text: 'Sign in',
                                   state: submitState,
+                                  animationResult: animationResult,
                                   onPressed: _handleLogin,
                                 ),
                                 const SizedBox(
