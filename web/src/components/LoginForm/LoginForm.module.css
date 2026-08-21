@@ -14,8 +14,6 @@
   color: #a9b4c5;
 }
 
-
-
 .field input {
   box-sizing: border-box;
   width: 100%;
@@ -27,12 +25,11 @@
   border-radius: 14px;
   outline: none;
 
-  background:
-    linear-gradient(
-      180deg,
-      rgba(255, 255, 255, 0.055),
-      rgba(255, 255, 255, 0.025)
-    );
+  background: linear-gradient(
+    180deg,
+    rgba(255, 255, 255, 0.055),
+    rgba(255, 255, 255, 0.025)
+  );
 
   color: #f7faff;
   font: inherit;
@@ -53,26 +50,24 @@
 .field input:hover {
   border-color: rgba(190, 214, 255, 0.2);
 
-  background:
-    linear-gradient(
-      180deg,
-      rgba(255, 255, 255, 0.075),
-      rgba(255, 255, 255, 0.035)
-    );
+  background: linear-gradient(
+    180deg,
+    rgba(255, 255, 255, 0.075),
+    rgba(255, 255, 255, 0.035)
+  );
 }
 
 .field input:focus {
   border-color: rgba(121, 166, 255, 0.55);
 
-  background:
-    linear-gradient(
-      180deg,
-      rgba(93, 137, 215, 0.10),
-      rgba(255, 255, 255, 0.035)
-    );
+  background: linear-gradient(
+    180deg,
+    rgba(93, 137, 215, 0.1),
+    rgba(255, 255, 255, 0.035)
+  );
 
   box-shadow:
-    0 0 0 3px rgba(81, 136, 242, 0.10),
+    0 0 0 3px rgba(81, 136, 242, 0.1),
     0 12px 26px rgba(3, 12, 28, 0.14),
     inset 0 1px 0 rgba(255, 255, 255, 0.08);
 }
@@ -200,10 +195,6 @@
     box-shadow 220ms ease;
 }
 
-
-
-
-
 /* Sign-in door animation */
 
 .fieldError {
@@ -237,13 +228,13 @@
   transform: scale(0.985);
 }
 
-.submitButton[data-state='checking'],
-.submitButton[data-state='success-animation'],
-.submitButton[data-state='failure-animation'] {
+.submitButton[data-state="checking"],
+.submitButton[data-state="success-animation"],
+.submitButton[data-state="failure-animation"] {
   cursor: wait;
 }
 
-.submitButton[data-state='success-animation'] {
+.submitButton[data-state="success-animation"] {
   background: linear-gradient(
     180deg,
     rgba(82, 132, 224, 0.95),
@@ -251,7 +242,7 @@
   );
 }
 
-.submitButton[data-state='failure-animation'] {
+.submitButton[data-state="failure-animation"] {
   background: linear-gradient(
     180deg,
     rgba(92, 116, 160, 0.96),
@@ -269,7 +260,7 @@
 }
 
 .entryScene::after {
-  content: '';
+  content: "";
   position: absolute;
   left: 4px;
   right: 5px;
@@ -353,24 +344,23 @@
 
 /* Success walk */
 
-.entryScene[data-result='success'] .walker {
-  animation: walkToDoorSuccess 2.4s
-    cubic-bezier(0.4, 0, 0.2, 1) forwards;
+.entryScene[data-result="success"] .walker {
+  animation: walkToDoorSuccess 2.4s cubic-bezier(0.4, 0, 0.2, 1) forwards;
 }
 
-.entryScene[data-result='success'] .armLeft {
+.entryScene[data-result="success"] .armLeft {
   animation: armSwing 240ms ease-in-out infinite alternate;
 }
 
-.entryScene[data-result='success'] .armRight {
+.entryScene[data-result="success"] .armRight {
   animation: armSwing 240ms ease-in-out infinite alternate-reverse;
 }
 
-.entryScene[data-result='success'] .legLeft {
+.entryScene[data-result="success"] .legLeft {
   animation: legSwing 240ms ease-in-out infinite alternate;
 }
 
-.entryScene[data-result='success'] .legRight {
+.entryScene[data-result="success"] .legRight {
   animation: legSwing 240ms ease-in-out infinite alternate-reverse;
 }
 
@@ -393,23 +383,16 @@
 .door {
   position: absolute;
   inset: 2px 2px 0;
-  background: linear-gradient(
-    180deg,
-    #173a62,
-    #0f2847 56%,
-    #0a1d34
-  );
+  background: linear-gradient(180deg, #173a62, #0f2847 56%, #0a1d34);
   box-shadow:
     inset 0 0 0 1px rgba(255, 255, 255, 0.08),
     0 0 0 1px rgba(12, 26, 46, 0.32);
   transform-origin: right center;
 }
 
-.entryScene[data-result='success'] .door {
-  animation: doorSequence 2.4s
-    cubic-bezier(0.45, 0, 0.2, 1) forwards;
+.entryScene[data-result="success"] .door {
+  animation: doorSequence 2.4s cubic-bezier(0.45, 0, 0.2, 1) forwards;
 }
-
 
 .doorKnob {
   position: absolute;
@@ -422,7 +405,6 @@
   box-shadow: 0 0 4px rgba(255, 235, 193, 0.4);
   transform: translateY(-50%);
 }
-
 
 /* Final success light values */
 
@@ -438,18 +420,13 @@
   background: linear-gradient(
     105deg,
     rgba(255, 232, 181, 0.03) 0%,
-    rgba(255, 235, 190, 0.10) 28%,
+    rgba(255, 235, 190, 0.1) 28%,
     rgba(255, 240, 207, 0.28) 58%,
     rgba(255, 246, 224, 0.58) 82%,
     rgba(255, 250, 238, 0.82) 100%
   );
 
-  clip-path: polygon(
-    100% 7%,
-    100% 70%,
-    0 100%,
-    17% 69%
-  );
+  clip-path: polygon(100% 7%, 100% 70%, 0 100%, 17% 69%);
 
   transform-origin: right center;
   transform: scaleX(0.04);
@@ -457,8 +434,7 @@
   opacity: 0;
   filter: blur(1.4px);
 
-  animation: doorLightSequence 2.4s
-    cubic-bezier(0.45, 0, 0.2, 1) forwards;
+  animation: doorLightSequence 2.4s cubic-bezier(0.45, 0, 0.2, 1) forwards;
 
   pointer-events: none;
 }
@@ -480,8 +456,7 @@
   transform-origin: right center;
   transform: scaleX(0.1);
   opacity: 0;
-  animation: doorGlowSequence 2.4s
-    cubic-bezier(0.45, 0, 0.2, 1) forwards;
+  animation: doorGlowSequence 2.4s cubic-bezier(0.45, 0, 0.2, 1) forwards;
   pointer-events: none;
 }
 
@@ -651,9 +626,8 @@
 
 /* Enhanced failed sign-in sequence */
 
-.entryScene[data-result='failure'] .walker {
-  animation: failedEntryCharacter 3.8s
-    cubic-bezier(0.4, 0, 0.2, 1) forwards;
+.entryScene[data-result="failure"] .walker {
+  animation: failedEntryCharacter 3.8s cubic-bezier(0.4, 0, 0.2, 1) forwards;
 }
 
 /*
@@ -661,7 +635,7 @@
  * walk -> reach handle -> pull/push -> recoil
  * -> scratch head -> return to walking pose
  */
-.entryScene[data-result='failure'] .armRight {
+.entryScene[data-result="failure"] .armRight {
   animation: failedEntryRightArm 3.8s ease-in-out forwards;
 }
 
@@ -669,30 +643,30 @@
  * Left arm adds a second push so the attempt
  * feels intentional rather than decorative.
  */
-.entryScene[data-result='failure'] .armLeft {
+.entryScene[data-result="failure"] .armLeft {
   animation: failedEntryLeftArm 3.8s ease-in-out forwards;
 }
 
-.entryScene[data-result='failure'] .personHead {
+.entryScene[data-result="failure"] .personHead {
   animation: failedEntryHead 3.8s ease-in-out forwards;
 }
 
-.entryScene[data-result='failure'] .personBody {
+.entryScene[data-result="failure"] .personBody {
   animation: failedEntryBody 3.8s ease-in-out forwards;
 }
 
-.entryScene[data-result='failure'] .legLeft {
+.entryScene[data-result="failure"] .legLeft {
   animation: failedEntryLeftLeg 3.8s ease-in-out forwards;
 }
 
-.entryScene[data-result='failure'] .legRight {
+.entryScene[data-result="failure"] .legRight {
   animation: failedEntryRightLeg 3.8s ease-in-out forwards;
 }
 
 /*
  * The whole frame reacts to the character's attempts.
  */
-.entryScene[data-result='failure'] .doorFrame {
+.entryScene[data-result="failure"] .doorFrame {
   animation: lockedFrameReaction 3.8s ease-in-out forwards;
 }
 
@@ -701,14 +675,13 @@
  * It gives slightly under pressure, shakes,
  * and briefly flashes red.
  */
-.entryScene[data-result='failure'] .door {
+.entryScene[data-result="failure"] .door {
   animation: lockedDoorReaction 3.8s ease-in-out forwards;
 }
 
-.entryScene[data-result='failure'] .doorKnob {
+.entryScene[data-result="failure"] .doorKnob {
   animation: lockedKnobReaction 3.8s ease-in-out forwards;
 }
-
 
 /* Character path */
 
@@ -733,64 +706,39 @@
 
   /* First attempt */
   42% {
-    transform:
-      translateX(114px)
-      rotate(-3deg)
-      scaleX(1);
+    transform: translateX(114px) rotate(-3deg) scaleX(1);
   }
 
   /* Pushes harder */
   49% {
-    transform:
-      translateX(116px)
-      translateY(1px)
-      rotate(-7deg)
-      scaleX(1);
+    transform: translateX(116px) translateY(1px) rotate(-7deg) scaleX(1);
   }
 
   /* Door wins — small recoil */
   56% {
-    transform:
-      translateX(108px)
-      translateY(1px)
-      rotate(3deg)
-      scaleX(1);
+    transform: translateX(108px) translateY(1px) rotate(3deg) scaleX(1);
   }
 
   /* Disappointed pause */
   63%,
   72% {
-    transform:
-      translateX(106px)
-      translateY(2px)
-      rotate(2deg)
-      scaleX(1);
+    transform: translateX(106px) translateY(2px) rotate(2deg) scaleX(1);
   }
 
   /* Turn around */
   77% {
-    transform:
-      translateX(100px)
-      translateY(2px)
-      scaleX(-1);
+    transform: translateX(100px) translateY(2px) scaleX(-1);
   }
 
   /* Walk back */
   88% {
-    transform:
-      translateX(53px)
-      translateY(2px)
-      scaleX(-1);
+    transform: translateX(53px) translateY(2px) scaleX(-1);
   }
 
   100% {
-    transform:
-      translateX(0)
-      translateY(2px)
-      scaleX(-1);
+    transform: translateX(0) translateY(2px) scaleX(-1);
   }
 }
-
 
 /* Character reaches and tries the handle */
 
@@ -896,7 +844,6 @@
   }
 }
 
-
 /* Facial/body emotion */
 
 @keyframes failedEntryHead {
@@ -967,7 +914,6 @@
     transform: rotate(3deg);
   }
 }
-
 
 /* Legs stop and brace during the failed attempt */
 
@@ -1076,7 +1022,6 @@
   }
 }
 
-
 /* Locked door reaction */
 
 @keyframes lockedFrameReaction {
@@ -1104,15 +1049,13 @@
   49% {
     transform: translateX(2px);
     border-color: rgba(255, 124, 124, 0.95);
-    box-shadow:
-      0 0 7px rgba(255, 78, 78, 0.34);
+    box-shadow: 0 0 7px rgba(255, 78, 78, 0.34);
   }
 
   51% {
     transform: translateX(-2px);
     border-color: rgba(255, 102, 102, 1);
-    box-shadow:
-      0 0 10px rgba(255, 66, 66, 0.44);
+    box-shadow: 0 0 10px rgba(255, 66, 66, 0.44);
   }
 
   53% {
@@ -1137,12 +1080,7 @@
   0%,
   37% {
     transform: rotateY(0deg);
-    background: linear-gradient(
-      180deg,
-      #173a62,
-      #0f2847 56%,
-      #0a1d34
-    );
+    background: linear-gradient(180deg, #173a62, #0f2847 56%, #0a1d34);
   }
 
   /*
@@ -1160,12 +1098,7 @@
 
   49% {
     transform: rotateY(5deg);
-    background: linear-gradient(
-      180deg,
-      #7b2936,
-      #591f2c 56%,
-      #361522
-    );
+    background: linear-gradient(180deg, #7b2936, #591f2c 56%, #361522);
     box-shadow:
       inset 0 0 0 1px rgba(255, 184, 184, 0.18),
       0 0 9px rgba(255, 66, 66, 0.36);
@@ -1181,12 +1114,7 @@
 
   56% {
     transform: rotateY(0deg);
-    background: linear-gradient(
-      180deg,
-      #173a62,
-      #0f2847 56%,
-      #0a1d34
-    );
+    background: linear-gradient(180deg, #173a62, #0f2847 56%, #0a1d34);
     box-shadow:
       inset 0 0 0 1px rgba(255, 255, 255, 0.08),
       0 0 0 1px rgba(12, 26, 46, 0.32);
@@ -1194,61 +1122,38 @@
 
   100% {
     transform: rotateY(0deg);
-    background: linear-gradient(
-      180deg,
-      #173a62,
-      #0f2847 56%,
-      #0a1d34
-    );
+    background: linear-gradient(180deg, #173a62, #0f2847 56%, #0a1d34);
   }
 }
 
 @keyframes lockedKnobReaction {
   0%,
   37% {
-    transform:
-      translateY(-50%)
-      translateX(0)
-      scale(1);
+    transform: translateY(-50%) translateX(0) scale(1);
     background: rgba(255, 235, 193, 0.9);
   }
 
   41% {
-    transform:
-      translateY(-50%)
-      translateX(-1px)
-      scale(1.15);
+    transform: translateY(-50%) translateX(-1px) scale(1.15);
   }
 
   45% {
-    transform:
-      translateY(-50%)
-      translateX(1px)
-      scale(1.05);
+    transform: translateY(-50%) translateX(1px) scale(1.05);
   }
 
   49% {
-    transform:
-      translateY(-50%)
-      translateX(-1px)
-      scale(1.2);
+    transform: translateY(-50%) translateX(-1px) scale(1.2);
     background: #ff8f8f;
     box-shadow: 0 0 6px rgba(255, 82, 82, 0.7);
   }
 
   52% {
-    transform:
-      translateY(-50%)
-      translateX(1px)
-      scale(1.12);
+    transform: translateY(-50%) translateX(1px) scale(1.12);
   }
 
   56%,
   100% {
-    transform:
-      translateY(-50%)
-      translateX(0)
-      scale(1);
+    transform: translateY(-50%) translateX(0) scale(1);
     background: rgba(255, 235, 193, 0.9);
     box-shadow: 0 0 4px rgba(255, 235, 193, 0.4);
   }
@@ -1281,22 +1186,14 @@
 
 .authDivider::before,
 .authDivider::after {
-  content: '';
+  content: "";
   flex: 1;
   height: 1px;
-  background: linear-gradient(
-    90deg,
-    transparent,
-    rgba(255, 255, 255, 0.12)
-  );
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.12));
 }
 
 .authDivider::after {
-  background: linear-gradient(
-    90deg,
-    rgba(255, 255, 255, 0.12),
-    transparent
-  );
+  background: linear-gradient(90deg, rgba(255, 255, 255, 0.12), transparent);
 }
 
 .socialRow {
@@ -1317,12 +1214,11 @@
   border: 1px solid rgba(210, 226, 255, 0.15);
   border-radius: 14px;
 
-  background:
-    linear-gradient(
-      145deg,
-      rgba(255, 255, 255, 0.085),
-      rgba(255, 255, 255, 0.028)
-    );
+  background: linear-gradient(
+    145deg,
+    rgba(255, 255, 255, 0.085),
+    rgba(255, 255, 255, 0.028)
+  );
 
   color: rgba(247, 250, 255, 0.94);
 
@@ -1334,15 +1230,11 @@
 
   box-shadow:
     inset 0 1px 0 rgba(255, 255, 255, 0.09),
-    0 9px 24px rgba(0, 0, 0, 0.10);
+    0 9px 24px rgba(0, 0, 0, 0.1);
 
-  backdrop-filter:
-    blur(18px)
-    saturate(135%);
+  backdrop-filter: blur(18px) saturate(135%);
 
-  -webkit-backdrop-filter:
-    blur(18px)
-    saturate(135%);
+  -webkit-backdrop-filter: blur(18px) saturate(135%);
 
   transition:
     transform 160ms ease,
@@ -1356,12 +1248,11 @@
 
   border-color: rgba(164, 193, 255, 0.3);
 
-  background:
-    linear-gradient(
-      145deg,
-      rgba(255, 255, 255, 0.13),
-      rgba(112, 157, 236, 0.055)
-    );
+  background: linear-gradient(
+    145deg,
+    rgba(255, 255, 255, 0.13),
+    rgba(112, 157, 236, 0.055)
+  );
 
   box-shadow:
     0 12px 28px rgba(0, 0, 0, 0.14),
@@ -1393,7 +1284,6 @@
   line-height: 1;
 }
 
-
 .googleLogo {
   display: block;
 
@@ -1404,9 +1294,8 @@
 }
 
 .appleMark {
-  color: #f8faff;
-  font-size: 1.25rem;
-  font-weight: 500;
+  width: 28px;
+  height: 28px;
 }
 
 .createAccount {

@@ -1,4 +1,5 @@
 import type { ChangeEvent, FormEvent } from 'react';
+import appleIcon from '../../assets/icons/apple.svg';
 
 import type {
   AuthProvider,
@@ -356,12 +357,11 @@ export function LoginForm({
           disabled={isBusy}
           onClick={() => onSocialLogin('apple')}
         >
-          <span
+          <img
+            src={appleIcon}
+            alt=""
             className={`${styles.providerMark} ${styles.appleMark}`}
-            aria-hidden="true"
-          >
-            
-          </span>
+          />
 
           <span>Apple</span>
         </button>
