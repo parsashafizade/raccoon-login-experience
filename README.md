@@ -10,11 +10,11 @@ Designed as a reusable developer-friendly implementation for modern applications
 
 <br>
 
-![Raccoon Login Experience](shared-assets/banner/main-banner.webp)
-
-<br>
-
 <div align="center">
+
+<img src="shared-assets/banner/main-banner.webp" alt="Raccoon Login Experience" />
+
+<br><br>
 
 <img src="https://skillicons.dev/icons?i=react,ts,vite,flutter,dart" alt="Technology Stack" />
 
@@ -29,7 +29,7 @@ Designed as a reusable developer-friendly implementation for modern applications
 
 ---
 
-## Architecture
+## ◈ Architecture
 
 The project contains two independent implementations sharing the same product concept.
 
@@ -60,34 +60,24 @@ G --> I[Domain/Data Layer]
 
 ---
 
-<div align="center">
-
-## Tech Stack
-
-</div>
-
-<div align="center">
+## ◇ Tech Stack
 
 ### Web
 
-React  
-TypeScript  
-Vite  
-CSS Modules
-
-<br>
+- React
+- TypeScript
+- Vite
+- CSS Modules
 
 ### Mobile
 
-Flutter  
-Dart  
-Feature-based Architecture
-
-</div>
+- Flutter
+- Dart
+- Feature-based architecture
 
 ---
 
-## Getting Started
+## ▷ Getting Started
 
 ### Web
 
@@ -113,7 +103,7 @@ flutter run
 
 ---
 
-## Future Improvements
+## ✦ Future Improvements
 
 - Real authentication backend integration
 - Additional mascot interaction states
@@ -122,7 +112,7 @@ flutter run
 
 ---
 
-## License
+## ⌘ License
 
 This project is licensed under the MIT License.
 
@@ -130,7 +120,7 @@ You are free to use, modify, and distribute this project while keeping the origi
 
 ---
 
-## Author
+## ◎ Author
 
 **Parsa Shafizade**
 
